@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "application",
+      "type": "fr.uga.config.ApplicationProperties",
+      "sourceType": "fr.uga.config.ApplicationProperties"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}
