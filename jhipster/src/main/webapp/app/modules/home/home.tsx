@@ -3,12 +3,15 @@ import './home.scss';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
-import { Row, Col, Alert } from 'reactstrap';
+import { Row, Col, Alert, Button } from 'reactstrap';
 
 import { useAppSelector } from 'app/config/store';
 
+
+
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
+
 
   return (
     <Row>
@@ -19,6 +22,7 @@ export const Home = () => {
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
+        <button onClick={() => console.log("test")}>Cliquez-moi</button>
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
