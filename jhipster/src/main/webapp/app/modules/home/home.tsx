@@ -1,9 +1,11 @@
 import './home.scss';
 
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { Row, Col, Alert, Button } from 'reactstrap';
+import TestButton from './TestButton';
 
 import { useAppSelector } from 'app/config/store';
 
@@ -22,7 +24,7 @@ export const Home = () => {
         <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
         </h2>
-        <button onClick={() => console.log("test")}>Cliquez-moi</button>
+        <TestButton/>
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
