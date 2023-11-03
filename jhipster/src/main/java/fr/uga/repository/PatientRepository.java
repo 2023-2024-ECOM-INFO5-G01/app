@@ -27,4 +27,6 @@ public interface PatientRepository extends PatientRepositoryWithBagRelationships
     default Page<Patient> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    List <Patient> findByNomStartingWithIgnoreCase(String query);
 }

@@ -165,6 +165,19 @@ public class PatientResource {
             return patientRepository.findAll();
         }
     }
+    /**
+     * {@code GET  /patients/suggestions} : get the patient that match the query.
+     * 
+     * @param query the query of the patient to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patient, or with status {@code 404 (Not Found)}.
+     */
+@GetMapping("/patients/suggestions/{query}")
+public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query) {
+    log.debug("REST request to get Patients starting with: {}", query);
+    List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCase(query);
+    return ResponseEntity.ok().body(patients);
+}
+
 
     /**
      * {@code GET  /patients/:id} : get the "id" patient.
