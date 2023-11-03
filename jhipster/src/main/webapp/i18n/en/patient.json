@@ -1,0 +1,38 @@
+{
+  "ecomApp": {
+    "patient": {
+      "home": {
+        "title": "Patients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Patient",
+        "createOrEditLabel": "Create or edit a Patient",
+        "notFound": "No Patients found"
+      },
+      "created": "A new Patient is created with identifier {{ param }}",
+      "updated": "A Patient is updated with identifier {{ param }}",
+      "deleted": "A Patient is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Patient {{ id }}?"
+      },
+      "detail": {
+        "title": "Patient"
+      },
+      "id": "ID",
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "statut": "Statut",
+      "dateNaissance": "Date Naissance",
+      "taille": "Taille",
+      "datearrive": "Datearrive",
+      "albumine": "Albumine",
+      "ehpad": "Ehpad",
+      "user": "User",
+      "poids": "Poids",
+      "ePA": "E PA",
+      "iMC": "I MC",
+      "repas": "Repas",
+      "rappel": "Rappel",
+      "note": "Note"
+    }
+  }
+}

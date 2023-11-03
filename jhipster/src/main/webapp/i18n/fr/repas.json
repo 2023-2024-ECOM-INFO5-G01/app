@@ -1,0 +1,27 @@
+{
+  "ecomApp": {
+    "repas": {
+      "home": {
+        "title": "Repas",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Repas",
+        "createOrEditLabel": "Créer ou éditer un Repas",
+        "notFound": "Aucun Repas trouvé"
+      },
+      "created": "Un nouveau Repas a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Repas avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Repas avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Repas {{ id }} ?"
+      },
+      "detail": {
+        "title": "Repas"
+      },
+      "id": "ID",
+      "date": "Date",
+      "calories": "Calories",
+      "patient": "Patient",
+      "aliment": "Aliment"
+    }
+  }
+}

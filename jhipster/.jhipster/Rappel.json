@@ -1,0 +1,34 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132653",
+  "entityTableName": "rappel",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "action",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Rappel",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "rappel",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "rappel",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

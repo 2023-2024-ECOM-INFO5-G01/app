@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "ehpad": {
+      "home": {
+        "title": "Ehpads",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Ehpad",
+        "createOrEditLabel": "Create or edit a Ehpad",
+        "notFound": "No Ehpads found"
+      },
+      "created": "A new Ehpad is created with identifier {{ param }}",
+      "updated": "A Ehpad is updated with identifier {{ param }}",
+      "deleted": "A Ehpad is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ehpad {{ id }}?"
+      },
+      "detail": {
+        "title": "Ehpad"
+      },
+      "id": "ID",
+      "nom": "Nom",
+      "user": "User",
+      "patient": "Patient"
+    }
+  }
+}

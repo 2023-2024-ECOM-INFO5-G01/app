@@ -1,0 +1,26 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132753",
+  "entityTableName": "poids",
+  "fields": [
+    {
+      "fieldName": "poids",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Poids",
+  "relationships": [
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "poids",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

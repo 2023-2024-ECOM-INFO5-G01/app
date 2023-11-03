@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "albumine": {
+      "home": {
+        "title": "Albumines",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Albumine",
+        "createOrEditLabel": "Créer ou éditer un Albumine",
+        "notFound": "Aucun Albumine trouvé"
+      },
+      "created": "Un nouveau Albumine a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Albumine avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Albumine avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Albumine {{ id }} ?"
+      },
+      "detail": {
+        "title": "Albumine"
+      },
+      "id": "ID",
+      "albu": "Albu",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

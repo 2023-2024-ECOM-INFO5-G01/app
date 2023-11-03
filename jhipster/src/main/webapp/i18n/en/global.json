@@ -7,7 +7,17 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "epa": "EPA",
+        "ehpad": "Ehpad",
+        "patient": "Patient",
+        "albumine": "Albumine",
+        "rappel": "Rappel",
+        "poids": "Poids",
+        "imc": "IMC",
+        "repas": "Repas",
+        "note": "Note",
+        "aliment": "Aliment"
       },
       "account": {
         "main": "Account",
