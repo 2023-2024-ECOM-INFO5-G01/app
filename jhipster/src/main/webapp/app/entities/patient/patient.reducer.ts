@@ -32,6 +32,14 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
+export const getPatientSearch = createAsyncThunk(
+  'patient/fetch_patient_search',
+  async (query: string) => {
+    const requestUrl = `${apiUrl}/suggestions/${query}`;
+    return axios.get<IPatient[]>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 export const createEntity = createAsyncThunk(
   'patient/create_entity',
   async (entity: IPatient, thunkAPI) => {
