@@ -65,13 +65,27 @@ export const Home = () => {
     sortEntities();
   }, [sortState.order, sortState.sort]);
 
- 
+  const sort = p => () => {
+    setSortState({
+      ...sortState,
+      order: sortState.order === ASC ? DESC : ASC,
+      sort: p,
+    });
+  };
 
   const handleSyncList = () => {
     sortEntities();
   };
 
-
+const getSortIconByFieldName = (fieldName: string) => {
+    const sortFieldName = sortState.sort;
+    const order = sortState.order;
+    if (sortFieldName !== fieldName) {
+      return faSort;
+    } else {
+      return order === ASC ? faSortUp : faSortDown;
+    }
+  };
   return (
     <div>
       {account?.login ? (
@@ -91,6 +105,32 @@ export const Home = () => {
             </div>
           </h2>
           <div className="d-flex justify-content-end">
+          <th className="hand" onClick={sort('id')}>
+                  <Translate contentKey="ecomApp.patient.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                </th>
+                <th className="hand" onClick={sort('nom')}>
+                  <Translate contentKey="ecomApp.patient.nom">Nom</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('nom')} />
+                </th>
+                <th className="hand" onClick={sort('prenom')}>
+                  <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('prenom')} />
+                </th>
+                <th className="hand" onClick={sort('statut')}>
+                  <Translate contentKey="ecomApp.patient.statut">Statut</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('statut')} />
+                </th>
+                <th className="hand" onClick={sort('dateNaissance')}>
+                  <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('dateNaissance')} />
+                </th>
+                <th className="hand" onClick={sort('taille')}>
+                  <Translate contentKey="ecomApp.patient.taille">Taille</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('taille')} />
+                </th>
+                <th className="hand" onClick={sort('datearrive')}>
+                  <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('datearrive')} />
+                </th>
       <input
         type="text"
         placeholder="ID du patient"
