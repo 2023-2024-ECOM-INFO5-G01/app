@@ -1,0 +1,26 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132553",
+  "entityTableName": "albumine",
+  "fields": [
+    {
+      "fieldName": "albu",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Albumine",
+  "relationships": [
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "albumine",
+      "relationshipName": "patient",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

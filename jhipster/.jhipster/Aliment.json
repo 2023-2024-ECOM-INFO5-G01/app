@@ -1,0 +1,26 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010133153",
+  "entityTableName": "aliment",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "calories",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "Aliment",
+  "relationships": [
+    {
+      "otherEntityName": "repas",
+      "otherEntityRelationshipName": "aliment",
+      "relationshipName": "repas",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

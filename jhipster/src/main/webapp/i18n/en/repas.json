@@ -1,0 +1,27 @@
+{
+  "ecomApp": {
+    "repas": {
+      "home": {
+        "title": "Repas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Repas",
+        "createOrEditLabel": "Create or edit a Repas",
+        "notFound": "No Repas found"
+      },
+      "created": "A new Repas is created with identifier {{ param }}",
+      "updated": "A Repas is updated with identifier {{ param }}",
+      "deleted": "A Repas is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Repas {{ id }}?"
+      },
+      "detail": {
+        "title": "Repas"
+      },
+      "id": "ID",
+      "date": "Date",
+      "calories": "Calories",
+      "patient": "Patient",
+      "aliment": "Aliment"
+    }
+  }
+}

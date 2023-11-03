@@ -1,0 +1,26 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132253",
+  "entityTableName": "epa",
+  "fields": [
+    {
+      "fieldName": "epa",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "EPA",
+  "relationships": [
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "ePA",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

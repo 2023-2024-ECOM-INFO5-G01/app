@@ -48,6 +48,26 @@ public class CacheConfiguration {
             createCache(cm, fr.uga.domain.User.class.getName());
             createCache(cm, fr.uga.domain.Authority.class.getName());
             createCache(cm, fr.uga.domain.User.class.getName() + ".authorities");
+            createCache(cm, fr.uga.domain.EPA.class.getName());
+            createCache(cm, fr.uga.domain.Ehpad.class.getName());
+            createCache(cm, fr.uga.domain.Ehpad.class.getName() + ".users");
+            createCache(cm, fr.uga.domain.Ehpad.class.getName() + ".patients");
+            createCache(cm, fr.uga.domain.Patient.class.getName());
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".users");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".poids");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".ePAS");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".iMCS");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".repas");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".rappels");
+            createCache(cm, fr.uga.domain.Patient.class.getName() + ".notes");
+            createCache(cm, fr.uga.domain.Albumine.class.getName());
+            createCache(cm, fr.uga.domain.Rappel.class.getName());
+            createCache(cm, fr.uga.domain.Poids.class.getName());
+            createCache(cm, fr.uga.domain.IMC.class.getName());
+            createCache(cm, fr.uga.domain.Repas.class.getName());
+            createCache(cm, fr.uga.domain.Repas.class.getName() + ".aliments");
+            createCache(cm, fr.uga.domain.Note.class.getName());
+            createCache(cm, fr.uga.domain.Aliment.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

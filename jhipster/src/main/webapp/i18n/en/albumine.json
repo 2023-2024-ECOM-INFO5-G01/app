@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "albumine": {
+      "home": {
+        "title": "Albumines",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Albumine",
+        "createOrEditLabel": "Create or edit a Albumine",
+        "notFound": "No Albumines found"
+      },
+      "created": "A new Albumine is created with identifier {{ param }}",
+      "updated": "A Albumine is updated with identifier {{ param }}",
+      "deleted": "A Albumine is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Albumine {{ id }}?"
+      },
+      "detail": {
+        "title": "Albumine"
+      },
+      "id": "ID",
+      "albu": "Albu",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

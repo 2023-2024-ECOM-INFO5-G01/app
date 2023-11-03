@@ -1,0 +1,99 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132453",
+  "entityTableName": "patient",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statut",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateNaissance",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "taille",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "datearrive",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Patient",
+  "relationships": [
+    {
+      "otherEntityName": "albumine",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "albumine",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "ehpad",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "ehpad",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "poids",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "poids",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "ePA",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "ePA",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "iMC",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "iMC",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "repas",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "repas",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "rappel",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "rappel",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "note",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "note",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

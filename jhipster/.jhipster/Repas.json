@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132953",
+  "entityTableName": "repas",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "calories",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "Repas",
+  "relationships": [
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "repas",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "aliment",
+      "otherEntityRelationshipName": "repas",
+      "relationshipName": "aliment",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}
