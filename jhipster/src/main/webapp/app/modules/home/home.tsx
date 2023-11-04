@@ -36,16 +36,24 @@ export const Home = () => {
       }),
     );
   };
-  const [selectedFilter, setSelectedFilter] = useState(''); // Initialize with an empty filter value
-  const filterPatients = (status) => {
-    if (status === '') {
-      // If no status filter is selected, show all patients
-      return patientList;
-    } else {
-      // Filter patients based on the selected status
-      return patientList.filter((patient) => patient.statut === status);
-    }
-  };
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState(''); // Initialize with an empty status filter value
+const [selectedEhpadFilter, setSelectedEhpadFilter] = useState(''); // Initialize with an empty Ehpad filter value
+const filterPatientsByStatus = (status) => {
+  if (status === '') {
+    return patientList;
+  } else {
+    return patientList.filter((patient) => patient.statut === status);
+  }
+};
+
+const filterPatientsByEhpad = (ehpadName) => {
+  if (ehpadName === '') {
+    return patientList;
+  } else {
+    return patientList.filter((patient) => patient.ehpad && patient.ehpad.nom === ehpadName);
+  }
+};
+
   
   const [patientsearch, setPatientsearch] = useState(''); // État local pour stocker l'ID du patient
   const [patientsuggestion, setpatientsuggestion] = useState([]);
@@ -176,20 +184,39 @@ const getSortIconByFieldName = (fieldName: string) => {
   </div>
 )}
         <select
-  value={selectedFilter}
+  value={selectedStatusFilter}
   onChange={(e) => {
-    setSelectedFilter(e.target.value);
+    setSelectedStatusFilter(e.target.value);
   }}
 >
   <option value="">All</option>
-  <option value="dénutrition avérée">Dénutrition Avérée</option>
+  <option value="dénutrition avérée">Dénutrition avérée</option>
   <option value="surveillance">Surveillance</option>
   <option value="normal">Normal</option>
 </select>
 
+<select
+  value={selectedEhpadFilter}
+  onChange={(e) => {
+    setSelectedEhpadFilter(e.target.value);
+  }}
+>
+  <option value="">All</option>
+  {patientList.map((patient) => (
+    <option key={patient.ehpad.id} value={patient.ehpad.nom}>
+      {patient.ehpad.nom}
+    </option>
+  ))}
+</select>
+
+
           <div className="d-flex flex-wrap">
-          {filterPatients(selectedFilter).map((patient, i) => (
-              <div key={`entity-${i}`} className="patient-card">
+          {filterPatientsByStatus(selectedStatusFilter)
+  .filter((patient) =>
+    selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter
+  )
+  .map((patient, i) => (
+                <div key={`entity-${i}`} className="patient-card">
                 <div className="patient-info">
                   <p>
                     <strong>
