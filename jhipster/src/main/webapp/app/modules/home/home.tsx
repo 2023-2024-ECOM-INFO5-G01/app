@@ -14,7 +14,7 @@ import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities,getPatientSearch } from 'app/entities/patient/patient.reducer';
+import { getEntities,getPatientSearch ,getPatientsByUserId} from 'app/entities/patient/patient.reducer';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -28,11 +28,11 @@ export const Home = () => {
 
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
-
   const getAllEntities = () => {
     dispatch(
-      getEntities({
+      getPatientsByUserId({
         sort: `${sortState.sort},${sortState.order}`,
+        login: account?.login,
       }),
     );
   };

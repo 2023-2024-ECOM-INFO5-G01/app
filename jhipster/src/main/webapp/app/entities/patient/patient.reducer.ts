@@ -4,6 +4,7 @@ import { ASC } from 'app/shared/util/pagination.constants';
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IPatient, defaultValue } from 'app/shared/model/patient.model';
+import { login } from 'app/shared/reducers/authentication';
 
 const initialState: EntityState<IPatient> = {
   loading: false,
@@ -22,6 +23,15 @@ export const getEntities = createAsyncThunk('patient/fetch_entity_list', async (
   const requestUrl = `${apiUrl}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
   return axios.get<IPatient[]>(requestUrl);
 });
+//je veux que getPatientsByUserId puissent faire la même chose que getEntities avec les sorts
+export const getPatientsByUserId = createAsyncThunk(
+  'patient/fetch_entity_list',
+  async ({ sort, login }: { sort?: string; login?: string }) => { 
+    const requestUrl = `${apiUrl}/user/${login}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
+    return axios.get<IPatient[]>(requestUrl);
+  },
+);
+
 
 export const getEntity = createAsyncThunk(
   'patient/fetch_entity',
