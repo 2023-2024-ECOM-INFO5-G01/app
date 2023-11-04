@@ -178,6 +178,21 @@ public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query)
     return ResponseEntity.ok().body(patients);
 }
 
+/**
+ * GET  /patients/by-user/{login} : get all the patients of a specific user.
+ *
+ * @param login the login of the user.
+ * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
+ */
+@GetMapping("/patients/user/{login}")
+public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String login) {
+    log.debug("REST request to get all Patients of user: {}", login);
+    
+    List<Patient> patients = patientRepository.findByUsers_Login(login); 
+
+    return ResponseEntity.ok().body(patients);
+}
+
 
     /**
      * {@code GET  /patients/:id} : get the "id" patient.
