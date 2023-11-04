@@ -36,7 +36,17 @@ export const Home = () => {
       }),
     );
   };
-
+  const [selectedFilter, setSelectedFilter] = useState(''); // Initialize with an empty filter value
+  const filterPatients = (status) => {
+    if (status === '') {
+      // If no status filter is selected, show all patients
+      return patientList;
+    } else {
+      // Filter patients based on the selected status
+      return patientList.filter((patient) => patient.statut === status);
+    }
+  };
+  
   const [patientsearch, setPatientsearch] = useState(''); // État local pour stocker l'ID du patient
   const [patientsuggestion, setpatientsuggestion] = useState([]);
 
@@ -165,9 +175,20 @@ const getSortIconByFieldName = (fieldName: string) => {
     </div>
   </div>
 )}
-        
+        <select
+  value={selectedFilter}
+  onChange={(e) => {
+    setSelectedFilter(e.target.value);
+  }}
+>
+  <option value="">All</option>
+  <option value="dénutrition avérée">Dénutrition Avérée</option>
+  <option value="surveillance">Surveillance</option>
+  <option value="normal">Normal</option>
+</select>
+
           <div className="d-flex flex-wrap">
-            {patientList.map((patient, i) => (
+          {filterPatients(selectedFilter).map((patient, i) => (
               <div key={`entity-${i}`} className="patient-card">
                 <div className="patient-info">
                   <p>
