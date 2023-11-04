@@ -53,6 +53,18 @@ const filterPatientsByEhpad = (ehpadName) => {
     return patientList.filter((patient) => patient.ehpad && patient.ehpad.nom === ehpadName);
   }
 };
+const getCardColorClass = (status) => {
+  switch (status) {
+    case 'dénutrition avérée':
+      return 'card-red';
+    case 'surveillance':
+      return 'card-orange';
+    case 'normal':
+      return 'card-blue';
+    default:
+      return '';
+  }
+};
 
   
   const [patientsearch, setPatientsearch] = useState(''); // État local pour stocker l'ID du patient
@@ -202,12 +214,14 @@ const getSortIconByFieldName = (fieldName: string) => {
   }}
 >
   <option value="">All</option>
-  {patientList.map((patient) => (
-    <option key={patient.ehpad.id} value={patient.ehpad.nom}>
-      {patient.ehpad.nom}
+  {[...new Set(patientList.map((patient) => patient.ehpad && patient.ehpad.nom))].filter(Boolean).map((ehpadName: string, index) => (
+    <option key={index} value={ehpadName}>
+      {ehpadName}
     </option>
   ))}
 </select>
+
+
 
 
           <div className="d-flex flex-wrap">
@@ -216,7 +230,10 @@ const getSortIconByFieldName = (fieldName: string) => {
     selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter
   )
   .map((patient, i) => (
-                <div key={`entity-${i}`} className="patient-card">
+    <div
+    key={`entity-${i}`}
+    className={`patient-card ${getCardColorClass(patient.statut)}`} // Apply the card color class
+  >
                 <div className="patient-info">
                   <p>
                     <strong>
