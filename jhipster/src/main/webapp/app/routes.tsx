@@ -16,6 +16,9 @@ import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 import Rappels from './shared/layout/menus/rappels';
 import Alerte from './shared/layout/menus/alerte';
+import Patient from './patient';
+import Note from './entities/note/note';
+import Notes from './note';
 
 const loading = <div>loading ...</div>;
 
@@ -46,6 +49,16 @@ const AppRoutes = () => {
         <Route path="alerte" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Alerte />
+          </PrivateRoute>
+        } />
+        <Route path="patients/:id" element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+            <Patient />
+          </PrivateRoute>
+        } />
+        <Route path="note/:id" element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+            <Notes />
           </PrivateRoute>
         } />
         <Route path="login" element={<Login />} />
