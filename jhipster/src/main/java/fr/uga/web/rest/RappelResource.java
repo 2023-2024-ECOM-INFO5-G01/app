@@ -150,6 +150,21 @@ public class RappelResource {
     }
 
     /**
+ * GET  /rappels/user/{login} : get all the patients of a specific user.
+ *
+ * @param login the login of the user.
+ * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
+ */
+@GetMapping("/rappels/user/{login}")
+public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String login) {
+    log.debug("REST request to get all Rappels of user: {}", login);
+    
+    List<Rappel> rappels = rappelRepository.findByUser_Login(login); 
+
+    return ResponseEntity.ok().body(rappels);
+}
+
+    /**
      * {@code GET  /rappels/:id} : get the "id" rappel.
      *
      * @param id the id of the rappel to retrieve.
