@@ -6,9 +6,10 @@ import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
-import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../menus';
+import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu ,Rappels} from '../menus';
 import { useAppDispatch } from 'app/config/store';
 import { setLocale } from 'app/shared/reducers/locale';
+import { Link } from 'react-router-dom';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -53,6 +54,16 @@ const Header = (props: IHeaderProps) => {
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ms-auto" navbar>
             <Home />
+            {props.isAuthenticated && (
+              <Link to="/rappels" className="nav-link" data-cy="rappelsLink">
+                Rappels
+              </Link>
+            )}   
+            {props.isAuthenticated && (
+              <Link to="/alerte" className="nav-link" data-cy="rappelsLink">
+                Alerte
+              </Link>
+            )}                
             {props.isAuthenticated && <EntitiesMenu />}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showOpenAPI={props.isOpenAPIEnabled} showDatabase={!props.isInProduction} />

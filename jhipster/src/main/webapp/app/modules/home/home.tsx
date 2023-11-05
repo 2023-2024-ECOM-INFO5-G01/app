@@ -118,10 +118,9 @@ const getSortIconByFieldName = (fieldName: string) => {
   };
   return (
     <div>
-      {account?.login ? (
         <div>
           <h2 id="patient-heading" data-cy="PatientHeading">
-            <Translate contentKey="home.title">Accueil</Translate>
+            <Translate contentKey="home.title">Patient</Translate>
             <div className="d-flex justify-content-end">
               <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
                 <FontAwesomeIcon icon="sync" spin={loading} />{' '}
@@ -265,29 +264,6 @@ const getSortIconByFieldName = (fieldName: string) => {
             ))}
           </div>
         </div>
-      ) : (
-        <div>
-          <Alert color="warning">
-            <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
-
-            <Link to="/login" className="alert-link">
-              <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
-            </Link>
-            <Translate contentKey="global.messages.info.authenticated.suffix">
-              , you can try the default accounts:
-              <br />- Administrator (login="admin" and password="admin")
-              <br />- User (login="user" and password="user").
-            </Translate>
-          </Alert>
-
-          <Alert color="warning">
-            <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
-            <Link to="/account/register" className="alert-link">
-              <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-            </Link>
-          </Alert>
-        </div>
-      )}
     </div>
   );
 };

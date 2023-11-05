@@ -14,6 +14,8 @@ import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
+import Rappels from './shared/layout/menus/rappels';
+import Alerte from './shared/layout/menus/alerte';
 
 const loading = <div>loading ...</div>;
 
@@ -31,9 +33,19 @@ const AppRoutes = () => {
   return (
     <div className="view-routes">
       <ErrorBoundaryRoutes>
-        <Route index element={
+        <Route index  element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Home />
+          </PrivateRoute>
+        } />
+        <Route path="rappels" element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+            <Rappels />
+          </PrivateRoute>
+        } />
+        <Route path="alerte" element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+            <Alerte />
           </PrivateRoute>
         } />
         <Route path="login" element={<Login />} />

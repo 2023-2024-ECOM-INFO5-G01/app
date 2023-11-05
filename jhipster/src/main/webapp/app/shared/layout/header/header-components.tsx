@@ -26,7 +26,7 @@ export const Home = () => (
     <NavLink tag={Link} to="/" className="d-flex align-items-center">
       <FontAwesomeIcon icon="home" />
       <span>
-        <Translate contentKey="global.menu.home">Home</Translate>
+        <Translate contentKey="global.menu.home">Patients</Translate>
       </span>
     </NavLink>
   </NavItem>

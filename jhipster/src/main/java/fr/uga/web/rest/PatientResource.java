@@ -179,7 +179,7 @@ public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query)
 }
 
 /**
- * GET  /patients/by-user/{login} : get all the patients of a specific user.
+ * GET  /patients/user/{login} : get all the patients of a specific user.
  *
  * @param login the login of the user.
  * @return the ResponseEntity with status 200 (OK) and the list of patients in body.

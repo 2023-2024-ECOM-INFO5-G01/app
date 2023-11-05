@@ -13,4 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface RappelRepository extends JpaRepository<Rappel, Long> {
     @Query("select rappel from Rappel rappel where rappel.user.login = ?#{principal.username}")
     List<Rappel> findByUserIsCurrentUser();
+
+    List<Rappel> findByUser_Login(String login);
+
 }

@@ -4,6 +4,7 @@ import { ASC } from 'app/shared/util/pagination.constants';
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IRappel, defaultValue } from 'app/shared/model/rappel.model';
+import { login } from 'app/shared/reducers/authentication';
 
 const initialState: EntityState<IRappel> = {
   loading: false,
@@ -27,6 +28,15 @@ export const getEntity = createAsyncThunk(
   'rappel/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
+    return axios.get<IRappel>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+
+export const getRappelforUser = createAsyncThunk(
+  'rappel/fetch_entity',
+  async (login: string) => {
+    const requestUrl = `${apiUrl}/user/${login}`;
     return axios.get<IRappel>(requestUrl);
   },
   { serializeError: serializeAxiosError },
