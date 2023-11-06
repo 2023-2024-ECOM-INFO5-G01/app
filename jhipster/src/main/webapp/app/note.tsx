@@ -16,7 +16,7 @@ export const Notes = () => {
   const { id } = useParams<'id'>();
 
   useEffect(() => {
-    dispatch(getEntity(id));
+   // dispatch(getEntity(id));
   }, []);
 
   const patientEntity = useAppSelector(state => state.patient.entity);
