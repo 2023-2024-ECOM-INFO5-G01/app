@@ -1,0 +1,24 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH client
+      run: sudo apt-get install -y openssh-client
+
+    - name: Deploy to Azure VM
+      run: |
+         PRIVATE_KEY_FILE=$(mktemp) && echo "$SSH_PRIVATE_KEY" > "$PRIVATE_KEY_FILE" && ssh -o "StrictHostKeyChecking no" -i "$PRIVATE_KEY_FILE" azureuser@40.66.55.135 'cd ~ && ./deploy.sh' && rm -f "$PRIVATE_KEY_FILE"
+
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
