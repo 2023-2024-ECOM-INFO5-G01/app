@@ -24,6 +24,8 @@ import {
   Legend,
 } from 'chart.js';
 
+import '../content/css/patient.css';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -142,9 +144,9 @@ const options1 = {
 };
 
 const [epa, setepas] = useState([]);
-  const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
-  const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
-  // Extraction des dates et des valeurs d'IMC pour le patient
+const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
+const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
+// Extraction des dates et des valeurs d'IMC pour le patient
 
 // Configuration des données pour le graphique
 const data2 = {
@@ -172,82 +174,135 @@ const options2 = {
   },
 };
 
+//code pour le bouton toogle fixed
+const [isFixed, setIsFixed] = useState(false);
+
+const togglePosition = () => {
+  setIsFixed((prevIsFixed) => !prevIsFixed);
+};
+
   const patientEntity = useAppSelector(state => state.patient.entity);
   return (
-    <Row>
-      <Col md="8">
-        <h2 data-cy="patientDetailsHeading">
-          <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
-        </h2>
-        <dl className="jh-entity-details">
-          <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.id}</dd>
-          <dt>
-            <span id="nom">
-              <Translate contentKey="ecomApp.patient.nom">Nom</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.nom}</dd>
-          <dt>
-            <span id="prenom">
-              <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.prenom}</dd>
-          <dt>
-            <span id="statut">
-              <Translate contentKey="ecomApp.patient.statut">Statut</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.statut}</dd>
-          <dt>
-            <span id="dateNaissance">
-              <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>
-            </span>
-          </dt>
-          <dd>
-            {patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
-          </dd>
-          <dt>
-            <span id="taille">
-              <Translate contentKey="ecomApp.patient.taille">Taille</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.taille}</dd>
-          <dt>
-            <span id="datearrive">
-              <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>
-            </span>
-          </dt>
-          <dd>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
-          <dt>
-            <Translate contentKey="ecomApp.patient.albumine">Albumine</Translate>
-          </dt>
-          <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ecomApp.patient.ehpad">Ehpad</Translate>
-          </dt>
-          <dd>{patientEntity.ehpad ? patientEntity.ehpad.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ecomApp.patient.user">User</Translate>
-          </dt>
-          <dd>
-            {patientEntity.users
-              ? patientEntity.users.map((val, i) => (
-                  <span key={val.id}>
-                    <a>{val.id}</a>
-                    {patientEntity.users && i === patientEntity.users.length - 1 ? '' : ', '}
+    <Row className="container">
+      <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
+        <button onClick={togglePosition}>
+          Position ({isFixed ? 'fixed' : 'relative'})
+        </button>
+        <div>
+          <Col md="8" className="fixed-flex-container">
+            <div>
+              <h2 data-cy="patientDetailsHeading">
+                <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
+              </h2>
+              <img src="../content/images/logo.jpeg" alt="Photo du patient"/>
+            </div>
+            <dl className="jh-entity-details">
+              <div>
+                <dt>
+                  <span id="id">
+                    <Translate contentKey="global.field.id">ID</Translate>
                   </span>
-                ))
-              : null}
-          </dd>
-        </dl>
-      </Col>
-      <Col md="8">
+                </dt>
+                <dd>{patientEntity.id}</dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="nom">
+                    <Translate contentKey="ecomApp.patient.nom">Nom</Translate>
+                  </span>
+                </dt>
+                <dd>{patientEntity.nom}</dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="prenom">
+                    <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>
+                  </span>
+                </dt>
+                <dd>{patientEntity.prenom}</dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="statut">
+                    <Translate contentKey="ecomApp.patient.statut">Statut</Translate>
+                  </span>
+                </dt>
+                <dd>{patientEntity.statut}</dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="dateNaissance">
+                    <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>
+                  </span>
+                </dt>
+                <dd>
+                  {patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="taille">
+                    <Translate contentKey="ecomApp.patient.taille">Taille</Translate>
+                  </span>
+                </dt>
+                <dd>{patientEntity.taille}</dd>
+              </div>
+              <div>
+                <dt>
+                  <span id="datearrive">
+                    <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>
+                  </span>
+                </dt>
+                <dd>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
+              </div>
+              <div>
+                <dt>
+                  <Translate contentKey="ecomApp.patient.albumine">Albumine</Translate>
+                </dt>
+                <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
+              </div>
+              <div>
+                <dt>
+                  <Translate contentKey="ecomApp.patient.ehpad">Ehpad</Translate>
+                </dt>
+                <dd>{patientEntity.ehpad ? patientEntity.ehpad.id : ''}</dd>
+              </div>
+              <div>
+                <dt>
+                  <Translate contentKey="ecomApp.patient.user">User</Translate>
+                </dt>
+                <dd>
+                  {patientEntity.users
+                    ? patientEntity.users.map((val, i) => (
+                        <span key={val.id}>
+                          <a>{val.id}</a>
+                          {patientEntity.users && i === patientEntity.users.length - 1 ? '' : ', '}
+                        </span>
+                      ))
+                    : null}
+                </dd>
+              </div>
+            </dl>
+          </Col>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Accueil</Link>
+            </li>
+            <li>
+              <Link to="/note">Notes</Link>
+            </li>
+            <li>
+              <Link to="/alerte">Alertes</Link>
+            </li>
+            <li>
+              <Link to="/rappel">Tâches</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <Col md="8" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
        <Line options={options} data={data} />
        <Line options={options1} data={data1} />
         <Line options={options2} data={data2} />
