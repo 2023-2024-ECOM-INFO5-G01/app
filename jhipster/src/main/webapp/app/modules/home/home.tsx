@@ -134,9 +134,6 @@ const getSortIconByFieldName = (fieldName: string) => {
             </div>
           </h2>
           <div className="d-flex justify-content-end">
-          <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="ecomApp.patient.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
-                </th>
                 <th className="hand" onClick={sort('nom')}>
                   <Translate contentKey="ecomApp.patient.nom">Nom</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('nom')} />
                 </th>
@@ -147,14 +144,6 @@ const getSortIconByFieldName = (fieldName: string) => {
                 <th className="hand" onClick={sort('statut')}>
                   <Translate contentKey="ecomApp.patient.statut">Statut</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('statut')} />
-                </th>
-                <th className="hand" onClick={sort('dateNaissance')}>
-                  <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('dateNaissance')} />
-                </th>
-                <th className="hand" onClick={sort('taille')}>
-                  <Translate contentKey="ecomApp.patient.taille">Taille</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('taille')} />
                 </th>
                 <th className="hand" onClick={sort('datearrive')}>
                   <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>{' '}
