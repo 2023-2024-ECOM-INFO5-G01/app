@@ -18,6 +18,7 @@ import { getEntities,getPatientSearch ,getPatientsByUserId} from 'app/entities/p
 import { set } from 'lodash';
 
 export const Home = () => {
+
   const account = useAppSelector(state => state.authentication.account);
 
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const [sortState, setSortState] = useState(overrideSortStateWithQueryParams(getSortState(location, 'id'), location.search));
+
 
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
@@ -92,15 +94,19 @@ const getCardColorClass = (status) => {
     }
   };
 
+
   useEffect(() => {
     sortEntities();
   }, [sortState.order, sortState.sort]);
 
-  const sort = p => () => {
-    setSortState({
-      ...sortState,
-      order: sortState.order === ASC ? DESC : ASC,
-      sort: p,
+  const sort = (fieldName) => () => {
+    setSortState((prevSortState) => {
+      const order = prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : ASC;
+      return {
+        ...prevSortState,
+        order,
+        sort: fieldName,
+      };
     });
   };
 
@@ -108,7 +114,7 @@ const getCardColorClass = (status) => {
     sortEntities();
   };
 
-const getSortIconByFieldName = (fieldName: string) => {
+  const getSortIconByFieldName = (fieldName) => {
     const sortFieldName = sortState.sort;
     const order = sortState.order;
     if (sortFieldName !== fieldName) {
@@ -118,8 +124,17 @@ const getSortIconByFieldName = (fieldName: string) => {
     }
   };
 
-  const filters = ['nom', 'prenom', 'statut', "date d'arrivée"];
+  const filters = ['nom', 'prenom', 'statut', "datearrive"];
 
+  const filterDisplayText = {
+    nom: 'Trier par nom',
+    prenom: 'Trier par prénom',
+    statut: 'Trier par statut',
+    datearrive: 'Trier par date d\'arrivée',
+  };
+
+  
+  
   // État local pour stocker le filtre sélectionné
   const [selectedFilter, setSelectedFilter] = useState('');
 
@@ -183,7 +198,7 @@ useEffect(() => {
     </div>
   </div>
 )}
-        <select
+<select
   value={selectedStatusFilter}
   onChange={(e) => {
     setSelectedStatusFilter(e.target.value);
@@ -207,17 +222,18 @@ useEffect(() => {
       {ehpadName}
     </option>
   ))}
-  
+
 </select>
     <select
     
       value={selectedFilter}
       onChange={(e) => setSelectedFilter(e.target.value)}
+      
     >
 
-      {filters.map((filter) => (
+      {Object.keys(filterDisplayText).map((filter) => (
         <option key={filter} value={filter}>
-          {filter}
+          {filterDisplayText[filter]}
         </option>
       ))}
     </select>
