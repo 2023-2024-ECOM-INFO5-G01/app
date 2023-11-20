@@ -118,7 +118,7 @@ const getSortIconByFieldName = (fieldName: string) => {
     }
   };
 
-  const filters = ['nom', 'prenom', "datearrive"];
+  const filters = ['nom', 'prenom', 'statut', "date d'arrivée"];
 
   // État local pour stocker le filtre sélectionné
   const [selectedFilter, setSelectedFilter] = useState('');
@@ -189,7 +189,7 @@ useEffect(() => {
     setSelectedStatusFilter(e.target.value);
   }}
 >
-  <option value="">Status</option>
+  <option value="">All</option>
   <option value="dénutrition avérée">Dénutrition avérée</option>
   <option value="surveillance">Surveillance</option>
   <option value="normal">Normal</option>
@@ -201,7 +201,7 @@ useEffect(() => {
     setSelectedEhpadFilter(e.target.value);
   }}
 >
-  <option value="">Ehpad</option>
+  <option value="">All</option>
   {[...new Set(patientList.map((patient) => patient.ehpad && patient.ehpad.nom))].filter(Boolean).map((ehpadName: string, index) => (
     <option key={index} value={ehpadName}>
       {ehpadName}
