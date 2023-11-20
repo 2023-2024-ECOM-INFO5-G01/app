@@ -194,7 +194,7 @@ const togglePosition = () => {
               <h2 data-cy="patientDetailsHeading">
                 <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
               </h2>
-              <img src="../content/images/logo.jpeg" alt="Photo du patient"/>
+              <img src="../content/images/logo.jpeg" alt="Photo du patient" className="logo"/>
             </div>
             <dl className="jh-entity-details">
               <div>
@@ -294,10 +294,10 @@ const togglePosition = () => {
               <Link to="/note">Notes</Link>
             </li>
             <li>
-              <Link to="/alerte">Alertes</Link>
+              <Link to="/rappel">Tâches</Link>
             </li>
             <li>
-              <Link to="/rappel">Tâches</Link>
+              <Link to="/alerte">Alertes</Link>
             </li>
           </ul>
         </nav>
