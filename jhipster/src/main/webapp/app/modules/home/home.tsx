@@ -8,7 +8,7 @@ import { Row, Col, Alert, Button, Table } from 'reactstrap';
 import TestButton from './TestButton';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown, faStarAndCrescent } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
@@ -101,7 +101,7 @@ const getCardColorClass = (status) => {
 
   const sort = (fieldName) => () => {
     setSortState((prevSortState) => {
-      const order = prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : ASC;
+      const order = prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : prevSortState.order;
       return {
         ...prevSortState,
         order,
