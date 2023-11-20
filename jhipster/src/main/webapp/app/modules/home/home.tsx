@@ -15,6 +15,7 @@ import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities,getPatientSearch ,getPatientsByUserId} from 'app/entities/patient/patient.reducer';
+import { set } from 'lodash';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -116,6 +117,19 @@ const getSortIconByFieldName = (fieldName: string) => {
       return order === ASC ? faSortUp : faSortDown;
     }
   };
+
+  const filters = ['nom', 'prenom', 'statut', "date d'arrivée"];
+
+  // État local pour stocker le filtre sélectionné
+  const [selectedFilter, setSelectedFilter] = useState('');
+
+// Lorsqu'un filtre est sélectionné, trier les entités
+useEffect(() => {
+  if (selectedFilter) {
+    sort(selectedFilter)();
+  }
+}, [selectedFilter]);
+
   return (
     <div>
         <div>
@@ -133,25 +147,11 @@ const getSortIconByFieldName = (fieldName: string) => {
               </Link>
             </div>
           </h2>
-          <div className="d-flex justify-content-end">
-                <th className="hand" onClick={sort('nom')}>
-                  <Translate contentKey="ecomApp.patient.nom">Nom</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('nom')} />
-                </th>
-                <th className="hand" onClick={sort('prenom')}>
-                  <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('prenom')} />
-                </th>
-                <th className="hand" onClick={sort('statut')}>
-                  <Translate contentKey="ecomApp.patient.statut">Statut</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('statut')} />
-                </th>
-                <th className="hand" onClick={sort('datearrive')}>
-                  <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('datearrive')} />
-                </th>
-      <input
+          
+    <div>
+    <input
         type="text"
-        placeholder="ID du patient"
+        placeholder="nom du patient"
         value={patientsearch}
         onChange={(e) => setPatientsearch(e.target.value)}
       />
@@ -207,8 +207,21 @@ const getSortIconByFieldName = (fieldName: string) => {
       {ehpadName}
     </option>
   ))}
+  
 </select>
+    <select
+    
+      value={selectedFilter}
+      onChange={(e) => setSelectedFilter(e.target.value)}
+    >
 
+      {filters.map((filter) => (
+        <option key={filter} value={filter}>
+          {filter}
+        </option>
+      ))}
+    </select>
+      <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
 
 
 
