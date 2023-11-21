@@ -168,7 +168,7 @@ public class IMCResource {
     @GetMapping("/imcs/patient/{id}")
     public List<IMC> getAllIMCSByPatientId(@PathVariable Long id) {
         log.debug("REST request to get all IMCS of patient : {}", id);
-        return iMCRepository.findByPatientIdOrderByDateDesc(id);
+        return iMCRepository.findByPatientIdOrderByDateAsc(id);
     }
 
     /**
