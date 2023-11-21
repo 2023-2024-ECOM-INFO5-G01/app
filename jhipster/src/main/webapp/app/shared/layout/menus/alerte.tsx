@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getAlertesByUser } from 'app/entities/alerte/alerte.reducer';
+import { getAlertesByUser,toggleVerif } from 'app/entities/alerte/alerte.reducer';
 import { Link } from 'react-router-dom';
 import './Alerte.css'; // Import your CSS file
 
@@ -22,6 +22,18 @@ export const Alerte = () => {
     }
   }, [account.login, dispatch]);
 
+  const handleToggleVerif = (id: string | number) => { // New function to handle click
+    dispatch(toggleVerif(id))
+    .then(() => {
+      // Refresh the alertes after toggling verif
+      if (account && account.login) {
+        dispatch(getAlertesByUser(account.login))
+        .then(response => {
+          setAlertes((response.payload as any).data);
+        });
+      }
+    });
+  };
   return (
     <div>
       <h1>Alerte Page</h1>
@@ -35,9 +47,9 @@ export const Alerte = () => {
               <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
               <p>Date: {alerte.date}</p>
             </div>
-            <div className="alerte-check">
-              {alerte.verif ? '✅' : '⬜'}
-            </div>
+            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+            {alerte.verif ? '✅' : '⬜'}
+            </button>
           </div>
           <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">Voir patient</Link>
         </div>

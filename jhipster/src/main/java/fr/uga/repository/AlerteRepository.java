@@ -38,8 +38,8 @@ public interface AlerteRepository extends JpaRepository<Alerte, Long> {
     @Query("select alerte from Alerte alerte left join fetch alerte.user where alerte.id =:id")
     Optional<Alerte> findOneWithToOneRelationships(@Param("id") Long id);
 
-    List<Alerte> findByUser_Login(String login);
+    List<Alerte> findByUser_LoginOrderByDateDesc(String login);
 
-    List<Alerte> findByPatient_IdAndUser_Login(Long id, String login);
+    List<Alerte> findByPatient_IdAndUser_LoginOrderByDateDesc(Long id, String login);
 
 }

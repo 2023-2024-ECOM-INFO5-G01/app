@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getAlertesByPatientAndUser } from 'app/entities/alerte/alerte.reducer';
+import { getAlertesByPatientAndUser ,toggleVerif} from 'app/entities/alerte/alerte.reducer';
 import { useParams } from 'react-router-dom';
 import './shared/layout/menus/Alerte.css'; // Import your CSS file
 
@@ -24,6 +24,18 @@ useEffect(() => {
     }
 }, [account.login, dispatch]);
 
+const handleToggleVerif = (alertId: string | number) => { // New function to handle click
+    dispatch(toggleVerif(alertId))
+    .then(() => {
+      // Refresh the alertes after toggling verif
+      if (account && account.login) {
+        dispatch(getAlertesByPatientAndUser({ id: id, login: account.login })) // Use patient's id here
+        .then(response => {
+          setAlertes((response.payload as any).data);
+        });
+      }
+    });
+  };
 return (
     <div>
       <h1>Alerte Page</h1>
@@ -36,9 +48,9 @@ return (
               <p>Action: {alerte.action}</p>
               <p>Date: {alerte.date}</p>
             </div>
-            <div className="alerte-check">
-              {alerte.verif ? '✅' : '⬜'}
-            </div>
+            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+            {alerte.verif ? '✅' : '⬜'}
+            </button>
           </div>
         </div>
       ))}

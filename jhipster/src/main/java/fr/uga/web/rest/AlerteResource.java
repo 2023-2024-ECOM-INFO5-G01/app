@@ -196,7 +196,7 @@ public class AlerteResource {
 public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String login) {
     log.debug("REST request to get all Alertes of user: {}", login);
     
-    List<Alerte> alertes = alerteRepository.findByUser_Login(login); 
+    List<Alerte> alertes = alerteRepository.findByUser_LoginOrderByDateDesc(login);
 
     return ResponseEntity.ok().body(alertes);
 }
@@ -211,8 +211,37 @@ public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String log
     public ResponseEntity<List<Alerte>> getAllAlertesByPatientAndUser(@PathVariable Long id, @PathVariable String login) {
         log.debug("REST request to get all Alertes of patient: {}", id);
         
-        List<Alerte> alertes = alerteRepository.findByPatient_IdAndUser_Login(id, login); 
+        List<Alerte> alertes = alerteRepository.findByPatient_IdAndUser_LoginOrderByDateDesc(id, login);
 
         return ResponseEntity.ok().body(alertes);
     }
+
+    /**
+     * PUT /alertes/{id}/toggle-verif : Toggle the verification status of a specific alert.
+     *
+     * @param id the id of the alerte to toggle verification status.
+     * @return the ResponseEntity with status 200 (OK) and with body the updated alerte,
+     * or with status 404 (Not Found) if the alerte is not found.
+     */
+    @PutMapping("/alertes/{id}/toggle-verif")
+    public ResponseEntity<Alerte> toggleVerificationStatus(@PathVariable Long id) {
+        log.debug("REST request to toggle verification status of Alerte : {}", id);
+
+        Optional<Alerte> alerteOptional = alerteRepository.findById(id);
+        
+        if (!alerteOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Alerte alerte = alerteOptional.get();
+
+        alerte.setVerif(!alerte.getVerif());
+
+        Alerte result = alerteRepository.save(alerte);
+        
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, alerte.getId().toString()))
+            .body(result);
+    }
+
 }

@@ -31,6 +31,14 @@ export const getAlertesByUser = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
+export const toggleVerif = createAsyncThunk(
+  'alerte/toggle_verif',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/${id}/toggle-verif`;
+    return axios.put<IAlerte>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 
 export const getAlertesByPatientAndUser = createAsyncThunk(
   'alerte/fetch_alertes_by_patient_and_user',

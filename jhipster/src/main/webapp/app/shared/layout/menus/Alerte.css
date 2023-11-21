@@ -30,3 +30,9 @@
     padding: 5px 10px;
     text-decoration: none;
   }
+  .alerte-check {
+    font-size: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
