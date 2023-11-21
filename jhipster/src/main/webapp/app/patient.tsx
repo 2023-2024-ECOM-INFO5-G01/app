@@ -122,7 +122,7 @@ const data1 = {
   labels: poidDates,
   datasets: [
     {
-      label: 'IMC du patient',
+      label: 'Poids du patient',
       data: poidValues,
       fill: false,
       borderColor: 'rgb(75, 192, 192)',
@@ -153,7 +153,7 @@ const data2 = {
   labels: epaDates,
   datasets: [
     {
-      label: 'IMC du patient',
+      label: 'EPA du patient',
       data: epaValues,
       fill: false,
       borderColor: 'rgb(75, 192, 192)',
