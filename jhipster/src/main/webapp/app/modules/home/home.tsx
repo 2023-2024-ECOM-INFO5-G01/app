@@ -8,15 +8,17 @@ import { Row, Col, Alert, Button, Table } from 'reactstrap';
 import TestButton from './TestButton';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown, faStarAndCrescent } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities,getPatientSearch ,getPatientsByUserId} from 'app/entities/patient/patient.reducer';
+import { set } from 'lodash';
 
 export const Home = () => {
+
   const account = useAppSelector(state => state.authentication.account);
 
   const dispatch = useAppDispatch();
@@ -24,7 +26,21 @@ export const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [sortState, setSortState] = useState(overrideSortStateWithQueryParams(getSortState(location, 'id'), location.search));
+  const [sortState, setSortState] = useState(() => {
+    const storedSortState = JSON.parse(localStorage.getItem('sortState'));
+  
+    if (storedSortState) {
+      // Use the stored sorting state if available
+      return storedSortState;
+    } else {
+      // If no stored sorting state, set the initial state with a default sorting field and order
+      return {
+        ...overrideSortStateWithQueryParams(getSortState(location, 'id'), location.search),
+        order: DESC, // Set the default order to DESC when there is no previous sorting state
+      };
+    }
+  });
+  
 
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
@@ -46,13 +62,6 @@ const filterPatientsByStatus = (status) => {
   }
 };
 
-const filterPatientsByEhpad = (ehpadName) => {
-  if (ehpadName === '') {
-    return patientList;
-  } else {
-    return patientList.filter((patient) => patient.ehpad && patient.ehpad.nom === ehpadName);
-  }
-};
 const getCardColorClass = (status) => {
   switch (status) {
     case 'dénutrition avérée':
@@ -61,6 +70,19 @@ const getCardColorClass = (status) => {
       return 'card-orange';
     case 'normal':
       return 'card-blue';
+    default:
+      return '';
+  }
+};
+
+const getStatusOrder = (status) => {
+  switch (status) {
+    case 'dénutrition avérée':
+      return 1;
+    case 'surveillance':
+      return 2;
+    case 'normal':
+      return 3;
     default:
       return '';
   }
@@ -91,15 +113,21 @@ const getCardColorClass = (status) => {
     }
   };
 
+
   useEffect(() => {
     sortEntities();
   }, [sortState.order, sortState.sort]);
 
-  const sort = p => () => {
-    setSortState({
-      ...sortState,
-      order: sortState.order === ASC ? DESC : ASC,
-      sort: p,
+  const sort = (fieldName) => () => {
+    setSortState((prevSortState) => {
+      const order = prevSortState
+  ? (prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : prevSortState.order)
+  : DESC;
+      return {
+        ...prevSortState,
+        order,
+        sort: fieldName,
+      };
     });
   };
 
@@ -107,7 +135,7 @@ const getCardColorClass = (status) => {
     sortEntities();
   };
 
-const getSortIconByFieldName = (fieldName: string) => {
+  const getSortIconByFieldName = (fieldName) => {
     const sortFieldName = sortState.sort;
     const order = sortState.order;
     if (sortFieldName !== fieldName) {
@@ -116,6 +144,29 @@ const getSortIconByFieldName = (fieldName: string) => {
       return order === ASC ? faSortUp : faSortDown;
     }
   };
+
+  const filters = ['nom', 'prenom', 'statut', "datearrive"];
+
+  const filterDisplayText = {
+    nom: 'Trier par nom',
+    prenom: 'Trier par prénom',
+    statut: 'Trier par statut',
+    datearrive: 'Trier par date d\'arrivée',
+  };
+
+  
+  
+  // État local pour stocker le filtre sélectionné
+  const [selectedFilter, setSelectedFilter] = useState('nom');
+  useEffect(() => {
+    if (selectedFilter) {
+      sort(selectedFilter)();
+    }
+  }, [selectedFilter]);
+  sort(selectedFilter);
+
+
+
   return (
     <div>
         <div>
@@ -133,36 +184,11 @@ const getSortIconByFieldName = (fieldName: string) => {
               </Link>
             </div>
           </h2>
-          <div className="d-flex justify-content-end">
-          <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="ecomApp.patient.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
-                </th>
-                <th className="hand" onClick={sort('nom')}>
-                  <Translate contentKey="ecomApp.patient.nom">Nom</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('nom')} />
-                </th>
-                <th className="hand" onClick={sort('prenom')}>
-                  <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('prenom')} />
-                </th>
-                <th className="hand" onClick={sort('statut')}>
-                  <Translate contentKey="ecomApp.patient.statut">Statut</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('statut')} />
-                </th>
-                <th className="hand" onClick={sort('dateNaissance')}>
-                  <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('dateNaissance')} />
-                </th>
-                <th className="hand" onClick={sort('taille')}>
-                  <Translate contentKey="ecomApp.patient.taille">Taille</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('taille')} />
-                </th>
-                <th className="hand" onClick={sort('datearrive')}>
-                  <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('datearrive')} />
-                </th>
-      <input
+          
+    <div>
+    <input
         type="text"
-        placeholder="ID du patient"
+        placeholder="nom du patient"
         value={patientsearch}
         onChange={(e) => setPatientsearch(e.target.value)}
       />
@@ -194,7 +220,7 @@ const getSortIconByFieldName = (fieldName: string) => {
     </div>
   </div>
 )}
-        <select
+<select
   value={selectedStatusFilter}
   onChange={(e) => {
     setSelectedStatusFilter(e.target.value);
@@ -218,8 +244,22 @@ const getSortIconByFieldName = (fieldName: string) => {
       {ehpadName}
     </option>
   ))}
-</select>
 
+</select>
+    <select
+    
+      value={selectedFilter}
+      onChange={(e) => setSelectedFilter(e.target.value)}
+      
+    >
+
+      {Object.keys(filterDisplayText).map((filter) => (
+        <option key={filter} value={filter}>
+          {filterDisplayText[filter]}
+        </option>
+      ))}
+    </select>
+      <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
 
 
 
