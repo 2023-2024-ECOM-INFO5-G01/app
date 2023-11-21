@@ -150,6 +150,8 @@ public class Alerte implements Serializable {
             ", date='" + getDate() + "'" +
             ", action='" + getAction() + "'" +
             ", verif='" + getVerif() + "'" +
+            ", user=" + getUser() +
+            ", patient=" + getPatient() +
             "}";
     }
 }
