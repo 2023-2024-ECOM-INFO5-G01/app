@@ -181,9 +181,93 @@ const togglePosition = () => {
   setIsFixed((prevIsFixed) => !prevIsFixed);
 };
 
+const getCardColorClass = (status) => {
+  switch (status) {
+    case 'dénutrition avérée':
+      return 'info-card-red';
+    case 'surveillance':
+      return 'info-card-orange';
+    case 'normal':
+      return 'info-card-blue';
+    default:
+      return '';
+  }
+};
+
   const patientEntity = useAppSelector(state => state.patient.entity);
   return (
     <Row className="container">
+      <div className="container_info">
+        <div className={`patient-card ${getCardColorClass(patientEntity.statut)}`}>
+          <div>
+            <img src="../content/images/logo.jpeg" alt="Photo du patient" className="photo_patient"/>
+          </div>
+          <div className="info_patient_administratives">
+            <div>
+              <div>
+                <span id="prenom">
+                  <Translate contentKey="ecomApp.patient.prenom"></Translate>{patientEntity.prenom}
+                </span>
+              </div>
+              <div>
+                <span id="nom">
+                  <Translate contentKey="ecomApp.patient.nom"></Translate>{patientEntity.nom}
+                </span>
+              </div>
+              <div>
+                <span id="dateNaissance">
+                  <Translate contentKey="ecomApp.patient.dateNaissance"></Translate>{patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
+                </span>
+              </div>
+            </div>
+            <div>
+              <div>
+                <span id="datearrive">
+                  <Translate contentKey="ecomApp.patient.datearrive"></Translate>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}
+                </span>
+              </div>
+              <div>
+                <button onClick={null}>
+                  Changement du statut
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="info_patient_perso">
+          <span id="taille">
+            <Translate contentKey="ecomApp.patient.taille"></Translate>
+          </span>
+          <dd>{patientEntity.taille}</dd>
+          <span id="poids">
+            <Translate contentKey="ecomApp.patient.poids"></Translate>
+          </span>
+          <dd>{patientEntity.poids}</dd>
+          <span id="ePA">
+            <Translate contentKey="ecomApp.patient.ePA"></Translate>
+          </span>
+          <dd>{patientEntity.ePA}</dd>
+          <span id="iMC">
+            <Translate contentKey="ecomApp.patient.iMC"></Translate>
+          </span>
+          <dd>{patientEntity.iMC}</dd>
+          <span id="albumine">
+            <Translate contentKey="ecomApp.patient.albumine"></Translate>
+          </span>
+          <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
+        </div>
+        <div className="info_buttons">
+          <button onClick={null}>
+            Données administratives
+          </button>
+          <button onClick={null}>
+            Données patient
+          </button>
+          <button onClick={null}>
+            Tâches
+          </button>
+        </div>
+      </div>
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
         <button onClick={togglePosition}>
           Position ({isFixed ? 'fixed' : 'relative'})

@@ -1,12 +1,52 @@
+.container_info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.photo_patient{
+    width: 80px;
+    height: 80px;
+}
+
+.info_patient_administratives {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.info-card-red {
+    background-color: red;
+    color: white;
+    display: flex;
+    border: 1px solid #ccc;
+}
+  
+.info-card-orange {
+    background-color: orange;
+    color: white;
+    display: flex;
+    border: 1px solid #ccc;
+}
+  
+.info-card-blue {
+    background-color: blue;
+    color: white;
+    display: flex;
+    border: 1px solid #ccc;
+}
+
+
+
+
 .container {
     margin-top: 5%;
     overflow: hidden;
 }
 
-.logo{
-    width: 200px;
-    height: 200px;
-}
+
 
 .fixed-flex-container {
     display: flex;
