@@ -26,8 +26,21 @@ export const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [sortState, setSortState] = useState(overrideSortStateWithQueryParams(getSortState(location, 'id'), location.search));
-
+  const [sortState, setSortState] = useState(() => {
+    const storedSortState = JSON.parse(localStorage.getItem('sortState'));
+  
+    if (storedSortState) {
+      // Use the stored sorting state if available
+      return storedSortState;
+    } else {
+      // If no stored sorting state, set the initial state with a default sorting field and order
+      return {
+        ...overrideSortStateWithQueryParams(getSortState(location, 'id'), location.search),
+        order: DESC, // Set the default order to DESC when there is no previous sorting state
+      };
+    }
+  });
+  
 
   const patientList = useAppSelector(state => state.patient.entities);
   const loading = useAppSelector(state => state.patient.loading);
@@ -49,13 +62,6 @@ const filterPatientsByStatus = (status) => {
   }
 };
 
-const filterPatientsByEhpad = (ehpadName) => {
-  if (ehpadName === '') {
-    return patientList;
-  } else {
-    return patientList.filter((patient) => patient.ehpad && patient.ehpad.nom === ehpadName);
-  }
-};
 const getCardColorClass = (status) => {
   switch (status) {
     case 'dénutrition avérée':
@@ -64,6 +70,19 @@ const getCardColorClass = (status) => {
       return 'card-orange';
     case 'normal':
       return 'card-blue';
+    default:
+      return '';
+  }
+};
+
+const getStatusOrder = (status) => {
+  switch (status) {
+    case 'dénutrition avérée':
+      return 1;
+    case 'surveillance':
+      return 2;
+    case 'normal':
+      return 3;
     default:
       return '';
   }
@@ -101,7 +120,9 @@ const getCardColorClass = (status) => {
 
   const sort = (fieldName) => () => {
     setSortState((prevSortState) => {
-      const order = prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : prevSortState.order;
+      const order = prevSortState
+  ? (prevSortState.sort === fieldName ? (prevSortState.order === ASC ? DESC : ASC) : prevSortState.order)
+  : DESC;
       return {
         ...prevSortState,
         order,
@@ -136,14 +157,15 @@ const getCardColorClass = (status) => {
   
   
   // État local pour stocker le filtre sélectionné
-  const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('nom');
+  useEffect(() => {
+    if (selectedFilter) {
+      sort(selectedFilter)();
+    }
+  }, [selectedFilter]);
+  sort(selectedFilter);
 
-// Lorsqu'un filtre est sélectionné, trier les entités
-useEffect(() => {
-  if (selectedFilter) {
-    sort(selectedFilter)();
-  }
-}, [selectedFilter]);
+
 
   return (
     <div>
