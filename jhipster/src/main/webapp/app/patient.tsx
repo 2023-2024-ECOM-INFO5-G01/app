@@ -297,7 +297,7 @@ const togglePosition = () => {
               <Link to="/rappel">Tâches</Link>
             </li>
             <li>
-              <Link to="/alerte">Alertes</Link>
+              <Link to={`/alertepatient/${id}`}>Alertes</Link>
             </li>
           </ul>
         </nav>

@@ -17,9 +17,8 @@ import { AUTHORITIES } from 'app/config/constants';
 import Rappels from './shared/layout/menus/rappels';
 import Alerte from './shared/layout/menus/alerte';
 import Patient from './patient';
-import Note from './entities/note/note';
 import Notes from './note';
-
+import AlertePatient from './alertespatient';
 const loading = <div>loading ...</div>;
 
 const Account = Loadable({
@@ -46,7 +45,7 @@ const AppRoutes = () => {
             <Rappels />
           </PrivateRoute>
         } />
-        <Route path="alerte" element={
+        <Route path="alertes" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Alerte />
           </PrivateRoute>
@@ -54,6 +53,11 @@ const AppRoutes = () => {
         <Route path="patients/:id" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Patient />
+          </PrivateRoute>
+        } />
+        <Route path="alertepatient/:id" element={
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+            <AlertePatient />
           </PrivateRoute>
         } />
         <Route path="note/:id" element={

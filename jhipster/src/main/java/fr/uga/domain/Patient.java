@@ -92,6 +92,11 @@ public class Patient implements Serializable {
     @JsonIgnoreProperties(value = { "user", "patient" }, allowSetters = true)
     private Set<Note> notes = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "user", "patient" }, allowSetters = true)
+    private Set<Alerte> alertes = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -420,6 +425,39 @@ public class Patient implements Serializable {
         return this;
     }
 
+    public Set<Alerte> getAlertes() {
+        return this.alertes;
+    }
+
+    public void setAlertes(Set<Alerte> alertes) {
+        if (this.alertes != null) {
+            this.alertes.forEach(i -> i.setPatient(null));
+        }
+        if (alertes != null) {
+            alertes.forEach(i -> i.setPatient(this));
+        }
+        this.alertes = alertes;
+    }
+
+    public Patient alertes(Set<Alerte> alertes) {
+        this.setAlertes(alertes);
+        return this;
+    }
+
+    public Patient addAlerte(Alerte alerte) {
+        this.alertes.add(alerte);
+        alerte.setPatient(this);
+        return this;
+    }
+
+    public Patient removeAlerte(Alerte alerte) {
+        this.alertes.remove(alerte);
+        alerte.setPatient(null);
+        return this;
+    }
+
+    
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -449,10 +487,9 @@ public class Patient implements Serializable {
             ", statut='" + getStatut() + "'" +
             ", dateNaissance='" + getDateNaissance() + "'" +
             ", taille=" + getTaille() +
-            ", datearrive='" + getDatearrive() + 
+            ", datearrive='" + getDatearrive() + "'" +
             ", albumine='" + getAlbumine() + "'" +
             ", ehpad='" + getEhpad() + "'" +
-            ", users='" + getUsers() + "'" +
             "}";
     }
 }
