@@ -5,7 +5,7 @@ import { getAlertesByPatientAndUser ,toggleVerif} from 'app/entities/alerte/aler
 import { useParams } from 'react-router-dom';
 import './shared/layout/menus/Alerte.css'; // Import your CSS file
 
-export const AlertePatient = () => {
+export const AlertePatient = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
   const { id } = useParams<'id'>();
@@ -13,7 +13,7 @@ export const AlertePatient = () => {
   const [alertes, setAlertes] = useState([]);
 useEffect(() => {
     if (account && account.login) {
-        dispatch(getAlertesByPatientAndUser({ id: id, login: account.login }))
+        dispatch(getAlertesByPatientAndUser({ id: idprops, login: account.login }))
             .then(response => {
                 setAlertes((response.payload as any).data);
                 console.log(alertes);
@@ -29,7 +29,7 @@ const handleToggleVerif = (alertId: string | number) => { // New function to han
     .then(() => {
       // Refresh the alertes after toggling verif
       if (account && account.login) {
-        dispatch(getAlertesByPatientAndUser({ id: id, login: account.login })) // Use patient's id here
+        dispatch(getAlertesByPatientAndUser({ id: idprops, login: account.login })) // Use patient's id here
         .then(response => {
           setAlertes((response.payload as any).data);
         });
@@ -38,7 +38,6 @@ const handleToggleVerif = (alertId: string | number) => { // New function to han
   };
 return (
     <div>
-      <h1>Alerte Page</h1>
       {alertes.map(alerte => (
         <div key={alerte.id} className="alerte">
           <div className="alerte-content">

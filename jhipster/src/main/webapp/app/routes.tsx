@@ -55,11 +55,7 @@ const AppRoutes = () => {
             <Patient />
           </PrivateRoute>
         } />
-        <Route path="alertepatient/:id" element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
-            <AlertePatient />
-          </PrivateRoute>
-        } />
+    
         <Route path="note/:id" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Notes />

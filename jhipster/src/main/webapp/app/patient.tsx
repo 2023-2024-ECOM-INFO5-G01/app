@@ -25,6 +25,7 @@ import {
 } from 'chart.js';
 
 import '../content/css/patient.css';
+import AlertePatient from './alertespatient';
 
 ChartJS.register(
   CategoryScale,
@@ -181,15 +182,38 @@ const togglePosition = () => {
   setIsFixed((prevIsFixed) => !prevIsFixed);
 };
 
+const [activeTab, setActiveTab] = useState('accueil');
+
+  const changeTab = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'note':
+        return <div>Notes content goes here</div>;
+      case 'rappel':
+        return <div>Rappel content goes here</div>;
+      case 'alerte':
+        return <div><AlertePatient idprops={id}/></div>;
+      default:
+        return <div><Col md="12" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
+        <Line options={options} data={data} />
+        <Line options={options1} data={data1} />
+         <Line options={options2} data={data2} />
+        </Col></div>;
+    }
+  };
+
   const patientEntity = useAppSelector(state => state.patient.entity);
   return (
-    <Row className="container">
+    <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
         <button onClick={togglePosition}>
           Position ({isFixed ? 'fixed' : 'relative'})
         </button>
         <div>
-          <Col md="8" className="fixed-flex-container">
+        <Col md="8" className="fixed-flex-container" xs="12">
             <div>
               <h2 data-cy="patientDetailsHeading">
                 <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
@@ -288,41 +312,36 @@ const togglePosition = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/">Accueil</Link>
+            <button onClick={() => changeTab('Courbes')}>Courbes</button>
             </li>
             <li>
-              <Link to="/note">Notes</Link>
+            <button onClick={() => changeTab('note')}>Notes</button>
             </li>
             <li>
-              <Link to="/rappel">Tâches</Link>
+            <button onClick={() => changeTab('rappel')}>Tâches</button>
             </li>
             <li>
-              <Link to={`/alertepatient/${id}`}>Alertes</Link>
+            <button onClick={() => changeTab('alerte')}>Alertes</button>
             </li>
           </ul>
         </nav>
       </div>
-      <Col md="8" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
-       <Line options={options} data={data} />
-       <Line options={options1} data={data1} />
-        <Line options={options2} data={data2} />
-       </Col>
+      {renderTabContent()}
       <Col md="9">
-      <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
-        </Button>
-        &nbsp;
-        <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Visualiser données</Translate>
-          </span>
-        </Button>
-      </Col>
-
+       <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
+           <FontAwesomeIcon icon="arrow-left" />{' '}
+           <span className="d-none d-md-inline">
+             <Translate contentKey="entity.action.back">Back</Translate>
+           </span>
+         </Button>
+         &nbsp;
+         <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
+           <FontAwesomeIcon icon="pencil-alt" />{' '}
+           <span className="d-none d-md-inline">
+             <Translate contentKey="entity.action.edit">Visualiser données</Translate>
+           </span>
+         </Button>
+       </Col>
     </Row>
     
   );
