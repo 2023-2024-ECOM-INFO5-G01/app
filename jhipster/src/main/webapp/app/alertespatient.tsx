@@ -4,12 +4,14 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getAlertesByPatientAndUser ,toggleVerif} from 'app/entities/alerte/alerte.reducer';
 import { useParams } from 'react-router-dom';
 import './shared/layout/menus/Alerte.css'; // Import your CSS file
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export const AlertePatient = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
   const { id } = useParams<'id'>();
   const [filter, setFilter] = useState('all'); 
+  const [selectedDate, setSelectedDate] = useState(null); 
 
   const [alertes, setAlertes] = useState([]);
 useEffect(() => {
@@ -38,9 +40,9 @@ const handleToggleVerif = (alertId: string | number) => {
   };
 
   const filteredAlertes = alertes.filter(alerte => {
-    if (filter === 'all') return true;
-    if (filter === 'verified' && alerte.verif) return true;
-    if (filter === 'unverified' && !alerte.verif) return true;
+    if (filter === 'all' && (!selectedDate || new Date(alerte.date).toDateString() === selectedDate.toDateString())) return true;
+    if (filter === 'verified' && alerte.verif && (!selectedDate || new Date(alerte.date).toDateString() === selectedDate.toDateString())) return true;
+    if (filter === 'unverified' && !alerte.verif && (!selectedDate || new Date(alerte.date).toDateString() === selectedDate.toDateString())) return true;
     return false;
   });
 return (
@@ -51,6 +53,7 @@ return (
         <option value="verified">Alertes vérifiées</option>
         <option value="unverified">Alertes non vérifiées</option>
       </select>
+      <DatePicker selected={selectedDate} onChange={date => setSelectedDate(date)} /> 
       </div>
       {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
