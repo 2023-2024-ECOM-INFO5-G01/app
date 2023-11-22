@@ -7,6 +7,7 @@ import './Alerte.css'; // Import your CSS file
 export const Alerte = () => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
+  const [filter, setFilter] = useState('all'); 
 
   const [alertes, setAlertes] = useState([]);
   useEffect(() => {
@@ -34,10 +35,23 @@ export const Alerte = () => {
       }
     });
   };
+
+  const filteredAlertes = alertes.filter(alerte => {
+    if (filter === 'all') return true;
+    if (filter === 'verified' && alerte.verif) return true;
+    if (filter === 'unverified' && !alerte.verif) return true;
+    return false;
+  });
   return (
     <div>
-      <h1>Alerte Page</h1>
-      {alertes.map(alerte => (
+      <div>
+      <select onChange={(e) => setFilter(e.target.value)}>
+        <option value="all">Toutes les alertes</option>
+        <option value="verified">Alertes vérifiées</option>
+        <option value="unverified">Alertes non vérifiées</option>
+      </select>
+      </div>
+      {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
           <div className="alerte-content">
             <div className="alerte-icon">⚠️</div>
