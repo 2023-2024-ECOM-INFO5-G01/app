@@ -174,13 +174,6 @@ const options2 = {
   },
 };
 
-//code pour le bouton toogle fixed
-const [isFixed, setIsFixed] = useState(false);
-
-const togglePosition = () => {
-  setIsFixed((prevIsFixed) => !prevIsFixed);
-};
-
 const getCardColorClass = (status) => {
   switch (status) {
     case 'dénutrition avérée':
@@ -227,34 +220,43 @@ const getCardColorClass = (status) => {
                 </span>
               </div>
               <div>
-                <button onClick={null}>
-                  Changement du statut
+                <button>
+                  Statut
                 </button>
               </div>
             </div>
           </div>
         </div>
         <div className="info_patient_perso">
-          <span id="taille">
-            <Translate contentKey="ecomApp.patient.taille"></Translate>
-          </span>
-          <dd>{patientEntity.taille}</dd>
-          <span id="poids">
-            <Translate contentKey="ecomApp.patient.poids"></Translate>
-          </span>
-          <dd>{patientEntity.poids}</dd>
-          <span id="ePA">
-            <Translate contentKey="ecomApp.patient.ePA"></Translate>
-          </span>
-          <dd>{patientEntity.ePA}</dd>
-          <span id="iMC">
-            <Translate contentKey="ecomApp.patient.iMC"></Translate>
-          </span>
-          <dd>{patientEntity.iMC}</dd>
-          <span id="albumine">
-            <Translate contentKey="ecomApp.patient.albumine"></Translate>
-          </span>
-          <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
+          <div>
+            <div>
+              <span id="taille">
+                <Translate contentKey="ecomApp.patient.taille"></Translate>{patientEntity.taille} cm
+              </span>
+            </div>
+            <div>
+              <span id="poids">
+                <Translate contentKey="ecomApp.patient.poids"></Translate>{patientEntity.poids} kg
+              </span>
+            </div>
+          </div>
+          <div>
+            <div>
+              <span id="ePA">
+                <Translate contentKey="ecomApp.patient.ePA"></Translate>{patientEntity.ePA}
+              </span>
+            </div>
+            <div>
+              <span id="iMC">
+                <Translate contentKey="ecomApp.patient.iMC"></Translate>{patientEntity.iMC}
+              </span>
+            </div>
+            <div>
+              <span id="albumine">
+                <Translate contentKey="ecomApp.patient.albumine"></Translate>{patientEntity.albumine ? patientEntity.albumine.id : ''}
+              </span>
+            </div>
+          </div>
         </div>
         <div className="info_buttons">
           <button onClick={null}>
@@ -264,115 +266,15 @@ const getCardColorClass = (status) => {
             Données patient
           </button>
           <button onClick={null}>
-            Tâches
+            Tâche
           </button>
         </div>
       </div>
-      <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
-        <button onClick={togglePosition}>
-          Position ({isFixed ? 'fixed' : 'relative'})
-        </button>
-        <div>
-          <Col md="8" className="fixed-flex-container">
-            <div>
-              <h2 data-cy="patientDetailsHeading">
-                <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
-              </h2>
-              <img src="../content/images/logo.jpeg" alt="Photo du patient" className="logo"/>
-            </div>
-            <dl className="jh-entity-details">
-              <div>
-                <dt>
-                  <span id="id">
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.id}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="nom">
-                    <Translate contentKey="ecomApp.patient.nom">Nom</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.nom}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="prenom">
-                    <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.prenom}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="statut">
-                    <Translate contentKey="ecomApp.patient.statut">Statut</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.statut}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="dateNaissance">
-                    <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>
-                  </span>
-                </dt>
-                <dd>
-                  {patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
-                </dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="taille">
-                    <Translate contentKey="ecomApp.patient.taille">Taille</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.taille}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="datearrive">
-                    <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
-              </div>
-              <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.albumine">Albumine</Translate>
-                </dt>
-                <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
-              </div>
-              <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.ehpad">Ehpad</Translate>
-                </dt>
-                <dd>{patientEntity.ehpad ? patientEntity.ehpad.id : ''}</dd>
-              </div>
-              <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.user">User</Translate>
-                </dt>
-                <dd>
-                  {patientEntity.users
-                    ? patientEntity.users.map((val, i) => (
-                        <span key={val.id}>
-                          <a>{val.id}</a>
-                          {patientEntity.users && i === patientEntity.users.length - 1 ? '' : ', '}
-                        </span>
-                      ))
-                    : null}
-                </dd>
-              </div>
-            </dl>
-          </Col>
-        </div>
+      <div className="menu_patient">
         <nav>
           <ul>
             <li>
-              <Link to="/">Accueil</Link>
+              <Link to="">Courbes</Link>
             </li>
             <li>
               <Link to="/note">Notes</Link>
@@ -386,7 +288,7 @@ const getCardColorClass = (status) => {
           </ul>
         </nav>
       </div>
-      <Col md="8" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
+      <Col md="8">
        <Line options={options} data={data} />
        <Line options={options1} data={data1} />
         <Line options={options2} data={data2} />
