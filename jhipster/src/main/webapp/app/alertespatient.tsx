@@ -6,6 +6,9 @@ import { useParams } from 'react-router-dom';
 import './shared/layout/menus/Alerte.css'; // Import your CSS file
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+
 export const AlertePatient = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -45,6 +48,17 @@ const handleToggleVerif = (alertId: string | number) => {
     if (filter === 'unverified' && !alerte.verif && (!selectedDate || new Date(alerte.date).toDateString() === selectedDate.toDateString())) return true;
     return false;
   });
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleCalendarIconClick = () => {
+    setShowDatePicker(!showDatePicker);
+  };
+
+  const handleDatePickerClose = () => {
+    setShowDatePicker(false);
+  };
+  
 return (
     <div>
       <div>
@@ -53,8 +67,14 @@ return (
         <option value="verified">Alertes vérifiées</option>
         <option value="unverified">Alertes non vérifiées</option>
       </select>
-      <DatePicker selected={selectedDate} onChange={date => setSelectedDate(date)} /> 
-      </div>
+      <FontAwesomeIcon icon={faCalendar} onClick={handleCalendarIconClick} />
+        {showDatePicker && (
+          <DatePicker
+            selected={selectedDate}
+            onChange={date => setSelectedDate(date)}
+            placeholderText='Sélectionnez une date'
+          />
+        )}      </div>
       {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
           <div className="alerte-content">

@@ -3,17 +3,25 @@
     margin-bottom: 10px;
     padding: 10px;
     background-color: #f8d7da;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
   }
-  
+
   .alerte-content {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to the start */
+    align-items: stretch; /* Change this from flex-start to stretch */
+    flex-grow: 1;
+    height: 150px;
   }
   
   .alerte-icon {
-    font-size: 30px;
+    font-size: 150px;
     margin-right: 10px;
+    display: flex;
+    align-items: center; /* Add this to center the icon vertically */
+    justify-content: center; /* Add this to center the icon horizontally */
   }
   
   .alerte-check {
@@ -24,11 +32,15 @@
   }
   
   .alerte-button {
-    margin-top: 10px;
-    color: white;
-    background-color: blue;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     padding: 5px 10px;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  .button-container {
+    align-self: flex-end;
   }
   .alerte-check {
     font-size: 20px;

@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getAlertesByUser,toggleVerif } from 'app/entities/alerte/alerte.reducer';
 import { Link } from 'react-router-dom';
 import './Alerte.css'; // Import your CSS file
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 export const Alerte = () => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -65,8 +66,12 @@ export const Alerte = () => {
             {alerte.verif ? '✅' : '⬜'}
             </button>
           </div>
-          <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">Voir patient</Link>
-        </div>
+          <div className="button-container">
+          <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">
+          <FontAwesomeIcon icon={faFileAlt} />
+            Voir patient</Link>
+          </div>  
+          </div>
       ))}
     </div>
   );
