@@ -174,6 +174,13 @@ const options2 = {
   },
 };
 
+//code pour le bouton toogle fixed
+const [isFixed, setIsFixed] = useState(false);
+
+const togglePosition = () => {
+  setIsFixed((prevIsFixed) => !prevIsFixed);
+};
+
 const getCardColorClass = (status) => {
   switch (status) {
     case 'dénutrition avérée':
@@ -187,130 +194,155 @@ const getCardColorClass = (status) => {
   }
 };
 
+const [activeTab, setActiveTab] = useState('accueil');
+
+  const changeTab = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'note':
+        return <div>Notes content goes here</div>;
+      case 'rappel':
+        return <div>Rappel content goes here</div>;
+      case 'alerte':
+        return <div>Alerte content goes here</div>;
+      default:
+        return <Col md="12" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
+        <Line options={options} data={data} />
+        <Line options={options1} data={data1} />
+         <Line options={options2} data={data2} />
+        </Col>;
+    }
+  };
+
   const patientEntity = useAppSelector(state => state.patient.entity);
   return (
-    <Row className="container">
-      <div className="container_info">
-        <div className={`patient-card ${getCardColorClass(patientEntity.statut)}`}>
-          <div>
-            <img src="../content/images/logo.jpeg" alt="Photo du patient" className="photo_patient"/>
+    <Row className="container-fluid">
+      <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
+        <button onClick={togglePosition}>
+            Position ({isFixed ? 'fixed' : 'relative'})
+        </button>
+        <Col className="fixed-flex-container">
+          <div className={`patient-card ${getCardColorClass(patientEntity.statut)}`}>
+            <div>
+              <img src="../content/images/logo.jpeg" alt="Photo du patient" className="photo_patient"/>
+            </div>
+            <div className="info_patient_administratives">
+              <div>
+                <div>
+                  <span id="prenom">
+                    <Translate contentKey="ecomApp.patient.prenom"></Translate>{patientEntity.prenom}
+                  </span>
+                </div>
+                <div>
+                  <span id="nom">
+                    <Translate contentKey="ecomApp.patient.nom"></Translate>{patientEntity.nom}
+                  </span>
+                </div>
+                <div>
+                  <span id="dateNaissance">
+                    <Translate contentKey="ecomApp.patient.dateNaissance"></Translate>{patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span id="datearrive">
+                    <Translate contentKey="ecomApp.patient.datearrive"></Translate>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}
+                  </span>
+                </div>
+                <div>
+                  <button>
+                    Statut
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="info_patient_administratives">
+          <div className="info_patient_perso">
             <div>
               <div>
-                <span id="prenom">
-                  <Translate contentKey="ecomApp.patient.prenom"></Translate>{patientEntity.prenom}
+                <span id="taille">
+                  <Translate contentKey="ecomApp.patient.taille"></Translate>{patientEntity.taille} cm
                 </span>
               </div>
               <div>
-                <span id="nom">
-                  <Translate contentKey="ecomApp.patient.nom"></Translate>{patientEntity.nom}
-                </span>
-              </div>
-              <div>
-                <span id="dateNaissance">
-                  <Translate contentKey="ecomApp.patient.dateNaissance"></Translate>{patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
+                <span id="poids">
+                  <Translate contentKey="ecomApp.patient.poids"></Translate>{patientEntity.poids} kg
                 </span>
               </div>
             </div>
             <div>
               <div>
-                <span id="datearrive">
-                  <Translate contentKey="ecomApp.patient.datearrive"></Translate>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}
+                <span id="ePA">
+                  <Translate contentKey="ecomApp.patient.ePA"></Translate>{patientEntity.ePA}
                 </span>
               </div>
               <div>
-                <button>
-                  Statut
-                </button>
+                <span id="iMC">
+                  <Translate contentKey="ecomApp.patient.iMC"></Translate>{patientEntity.iMC}
+                </span>
+              </div>
+                <div>
+                  <span id="albumine">
+                    <Translate contentKey="ecomApp.patient.albumine"></Translate>{patientEntity.albumine ? patientEntity.albumine.id : ''}
+                  </span>
+                </div>
               </div>
             </div>
+            <div className="info_buttons">
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Données administratives
+              </button>
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Données patient
+              </button>
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Tâche
+              </button>
+            </div>
+          </Col>
+          <div className="menu_patient">
+            <nav>
+              <ul>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('Courbes')}>Courbes</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('note')}>Notes</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('rappel')}>Tâches</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('alerte')}>Alertes</button>
+                </li>
+              </ul>
+            </nav>
           </div>
-        </div>
-        <div className="info_patient_perso">
-          <div>
-            <div>
-              <span id="taille">
-                <Translate contentKey="ecomApp.patient.taille"></Translate>{patientEntity.taille} cm
-              </span>
-            </div>
-            <div>
-              <span id="poids">
-                <Translate contentKey="ecomApp.patient.poids"></Translate>{patientEntity.poids} kg
-              </span>
-            </div>
-          </div>
-          <div>
-            <div>
-              <span id="ePA">
-                <Translate contentKey="ecomApp.patient.ePA"></Translate>{patientEntity.ePA}
-              </span>
-            </div>
-            <div>
-              <span id="iMC">
-                <Translate contentKey="ecomApp.patient.iMC"></Translate>{patientEntity.iMC}
-              </span>
-            </div>
-            <div>
-              <span id="albumine">
-                <Translate contentKey="ecomApp.patient.albumine"></Translate>{patientEntity.albumine ? patientEntity.albumine.id : ''}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="info_buttons">
-          <button onClick={null}>
-            Données administratives
-          </button>
-          <button onClick={null}>
-            Données patient
-          </button>
-          <button onClick={null}>
-            Tâche
-          </button>
-        </div>
       </div>
-      <div className="menu_patient">
-        <nav>
-          <ul>
-            <li>
-              <Link to="">Courbes</Link>
-            </li>
-            <li>
-              <Link to="/note">Notes</Link>
-            </li>
-            <li>
-              <Link to="/rappel">Tâches</Link>
-            </li>
-            <li>
-              <Link to="/alerte">Alertes</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <Col md="8">
-       <Line options={options} data={data} />
-       <Line options={options1} data={data1} />
-        <Line options={options2} data={data2} />
-       </Col>
+      {renderTabContent()}
       <Col md="9">
-      <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
-        </Button>
-        &nbsp;
-        <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Visualiser données</Translate>
-          </span>
-        </Button>
-      </Col>
-
+       <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
+           <FontAwesomeIcon icon="arrow-left" />{' '}
+           <span className="d-none d-md-inline">
+             <Translate contentKey="entity.action.back">Back</Translate>
+           </span>
+         </Button>
+         &nbsp;
+         <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
+           <FontAwesomeIcon icon="pencil-alt" />{' '}
+           <span className="d-none d-md-inline">
+             <Translate contentKey="entity.action.edit">Visualiser données</Translate>
+           </span>
+         </Button>
+       </Col>
     </Row>
-    
   );
 };
 
