@@ -227,12 +227,12 @@ public class PatientResource {
     /** 
      * PUT /patient/updateStatut: update patient entity status.
      * @param id the id of the patient to update status.
-     * @param string the status to change
+     * @param status the status to change
      * @return the ResponseEntity with status 200 (OK) and with body the updated patient,
         or with status 404 (Not Found) if the patient is not found.
     */
-    @PutMapping("/patient/updateStatut")
-    public ResponseEntity<Patient> updateStatus(@PathVariable String id, @PathVariable String statut) {
+    @PutMapping("/patients/updatestatut/{id}/{statut}")
+    public ResponseEntity<Patient> updateStatus(@PathVariable Long id, @PathVariable String statut) {
         log.debug("REST request to update Patient : {} with statut : {}", id, statut);
 
         Optional<Patient> patientOptional = patientRepository.findById(id);
