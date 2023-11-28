@@ -52,13 +52,24 @@ export const Home = () => {
       }),
     );
   };
-  const [selectedStatusFilter, setSelectedStatusFilter] = useState(''); // Initialize with an empty status filter value
 const [selectedEhpadFilter, setSelectedEhpadFilter] = useState(''); // Initialize with an empty Ehpad filter value
-const filterPatientsByStatus = (status) => {
-  if (status === '') {
+
+
+const [filteredStatuses, setFilteredStatuses] = useState([]);
+
+const handleStatusFilterChange = (status, isChecked) => {
+  if (isChecked) {
+    setFilteredStatuses(prevStatuses => [...prevStatuses, status]);
+  } else {
+    setFilteredStatuses(prevStatuses => prevStatuses.filter(s => s !== status));
+  }
+};
+
+const filterPatientsByStatus = () => {
+  if (filteredStatuses.length === 0) {
     return patientList;
   } else {
-    return patientList.filter((patient) => patient.statut === status);
+    return patientList.filter((patient) => filteredStatuses.includes(patient.statut));
   }
 };
 
@@ -221,18 +232,6 @@ const getStatusOrder = (status) => {
   </div>
 )}
 <select
-  value={selectedStatusFilter}
-  onChange={(e) => {
-    setSelectedStatusFilter(e.target.value);
-  }}
->
-  <option value="">All</option>
-  <option value="dénutrition avérée">Dénutrition avérée</option>
-  <option value="surveillance">Surveillance</option>
-  <option value="normal">Normal</option>
-</select>
-
-<select
   value={selectedEhpadFilter}
   onChange={(e) => {
     setSelectedEhpadFilter(e.target.value);
@@ -260,11 +259,21 @@ const getStatusOrder = (status) => {
       ))}
     </select>
       <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
-
+      <div>
+      <input type="checkbox" id="status1" name="status1" value="dénutrition avérée"
+             onChange={(e) => handleStatusFilterChange('dénutrition avérée', e.target.checked)} />
+      <label htmlFor="status1"> Dénutrition avérée</label><br/>
+      <input type="checkbox" id="status2" name="status2" value="surveillance"
+             onChange={(e) => handleStatusFilterChange('surveillance', e.target.checked)} />
+      <label htmlFor="status2"> Surveillance</label><br/>
+      <input type="checkbox" id="status3" name="status3" value="normal"
+             onChange={(e) => handleStatusFilterChange('normal', e.target.checked)} />
+      <label htmlFor="status3"> Normal</label><br/>
+    </div>
 
 
           <div className="d-flex flex-wrap">
-          {filterPatientsByStatus(selectedStatusFilter)
+          {filterPatientsByStatus()
   .filter((patient) =>
     selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter
   )
