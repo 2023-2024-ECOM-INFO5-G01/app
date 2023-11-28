@@ -23,6 +23,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { IAlerte } from 'app/shared/model/alerte.model';
+import {  createEntity, reset } from './entities/alerte/alerte.reducer';
+import { useForm } from 'react-hook-form';
 
 import '../content/css/patient.css';
 import AlertePatient from './alertespatient';
@@ -38,11 +41,11 @@ ChartJS.register(
 );
 export const Patient = () => {
   const dispatch = useAppDispatch();
+  const account = useAppSelector(state => state.authentication.account);
 
   const { id } = useParams<'id'>();
 
   useEffect(() => {
-    console.log("entity",patientEntity );
     dispatch(getEntity(id));
     dispatch(getIMC(id)).then((response) => {
       console.log(response);
@@ -206,6 +209,30 @@ const [activeTab, setActiveTab] = useState('accueil');
     }
   };
 
+  const createAlarmEntity = (userId, patientId) => {
+    const currentDate = new Date(); 
+    const entity: IAlerte = {
+      date: currentDate.toISOString(), 
+      user: { id: userId }, 
+      patient: { id: patientId }, 
+      verif: false, 
+      action: 'epa<7', 
+    };
+  
+    return entity;
+  };
+  
+  const alerteEntity = useAppSelector(state => state.alerte.entity);
+
+
+ const handlecreateAlerte = (userid, patientid) => {
+    const entity = createAlarmEntity(userid, patientid);
+    dispatch(createEntity(entity));
+  }
+// Inside your Alerte component
+const { register, handleSubmit, reset } = useForm();
+
+
   const patientEntity = useAppSelector(state => state.patient.entity);
   return (
     <Row className="container-fluid">
@@ -214,6 +241,7 @@ const [activeTab, setActiveTab] = useState('accueil');
           Position ({isFixed ? 'fixed' : 'relative'})
         </button>
         <div>
+          <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
         <Col md="8" className="fixed-flex-container" xs="12">
             <div>
               <h2 data-cy="patientDetailsHeading">

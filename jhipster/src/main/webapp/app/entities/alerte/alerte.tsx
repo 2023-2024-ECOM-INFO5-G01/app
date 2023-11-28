@@ -70,13 +70,13 @@ export const Alerte = () => {
   };
 
   const createAlarmEntity = (userId, patientId) => {
-    const currentDate = new Date(); // Obtenir la date actuelle
+    const currentDate = new Date(); 
     const entity: IAlerte = {
-      date: currentDate.toISOString(), // Utiliser la date actuelle au format ISO string
-      user: { id: userId }, // Utilisateur par son ID
-      patient: { id: patientId }, // Patient par son ID
-      verif: false, // Valeur par défaut pour "verif"
-      action: 'epa<7', // Valeur par défaut pour "action"
+      date: currentDate.toISOString(), 
+      user: { id: userId }, 
+      patient: { id: patientId }, 
+      verif: false, 
+      action: 'epa<7', 
     };
   
     return entity;
@@ -85,7 +85,7 @@ export const Alerte = () => {
   const alerteEntity = useAppSelector(state => state.alerte.entity);
 
 
-  const handlecreateAlerte = (userid, patientid) => {
+ const handlecreateAlerte = (userid, patientid) => {
     const entity = createAlarmEntity(userid, patientid);
     dispatch(createEntity(entity));
   }
