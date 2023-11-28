@@ -105,7 +105,7 @@ public class PatientResource {
     public ResponseEntity<Patient> partialUpdatePatient(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Patient patient
-    ) throws URISyntaxException {
+    ) throws URISyntaxException { 
         log.debug("REST request to partial update Patient partially : {}, {}", id, patient);
         if (patient.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -165,33 +165,34 @@ public class PatientResource {
             return patientRepository.findAll();
         }
     }
+
     /**
      * {@code GET  /patients/suggestions} : get the patient that match the query.
      * 
      * @param query the query of the patient to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patient, or with status {@code 404 (Not Found)}.
      */
-@GetMapping("/patients/suggestions/{query}")
-public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query) {
-    log.debug("REST request to get Patients starting with: {}", query);
-    List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCase(query);
-    return ResponseEntity.ok().body(patients);
-}
+    @GetMapping("/patients/suggestions/{query}")
+    public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query) {
+        log.debug("REST request to get Patients starting with: {}", query);
+        List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCase(query);
+        return ResponseEntity.ok().body(patients);
+    }
 
-/**
- * GET  /patients/user/{login} : get all the patients of a specific user.
- *
- * @param login the login of the user.
- * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
- */
-@GetMapping("/patients/user/{login}")
-public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String login) {
-    log.debug("REST request to get all Patients of user: {}", login);
-    
-    List<Patient> patients = patientRepository.findByUsers_Login(login); 
+    /**
+     * GET  /patients/user/{login} : get all the patients of a specific user.
+     *
+     * @param login the login of the user.
+     * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
+     */
+    @GetMapping("/patients/user/{login}")
+    public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String login) {
+        log.debug("REST request to get all Patients of user: {}", login);
+        
+        List<Patient> patients = patientRepository.findByUsers_Login(login); 
 
-    return ResponseEntity.ok().body(patients);
-}
+        return ResponseEntity.ok().body(patients);
+    }
 
 
     /**
@@ -221,5 +222,31 @@ public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String l
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /** 
+     * PUT /patient/updateStatut: update patient entity status.
+     * @param id the id of the patient to update status.
+     * @param status the status to change
+     * @return the ResponseEntity with status 200 (OK) and with body the updated patient,
+        or with status 404 (Not Found) if the patient is not found.
+    */
+    @PutMapping("/patients/updatestatut/{id}/{statut}")
+    public ResponseEntity<Patient> updateStatus(@PathVariable Long id, @PathVariable String statut) {
+        log.debug("REST request to update Patient : {} with statut : {}", id, statut);
+
+        Optional<Patient> patientOptional = patientRepository.findById(id);
+        if (!patientOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Patient patient = patientOptional.get();
+        patient.setStatut(statut);
+
+        Patient result = patientRepository.save(patient);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, patient.getId().toString()))
+            .body(result);
     }
 }
