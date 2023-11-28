@@ -61,6 +61,9 @@ export const Home = () => {
   };
 const [selectedEhpadFilter, setSelectedEhpadFilter] = useState(''); // Initialize with an empty Ehpad filter value
 
+const clearSearch = () => {
+  setPatientsearch('');
+};
 
 const [filteredStatuses, setFilteredStatuses] = useState([]);
 
@@ -174,7 +177,7 @@ const getCardColorClass = (status) => {
         <div>
           <PatientHeading loading={loading} handleSyncList={handleSyncList} />
           <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-          <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])}/>
+          <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
           <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
           <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
           <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
