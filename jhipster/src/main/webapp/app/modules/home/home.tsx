@@ -194,13 +194,14 @@ const getStatusOrder = (status) => {
     alertes.forEach(alerte => {
       if (!alerte.verif) {
         setCurrentAlerte(alerte);
-        notify(); 
-        console.log("alerte non verif: ", currentAlerte);
+        notify(alerte); 
+        console.log("alerte non verif: ", alerte);
       }
     });
   }, [alertes]);
-  const notify = () => {
-    toast("Alerte non vérifiée", {
+  
+  const notify = (alerte) => {
+    toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
