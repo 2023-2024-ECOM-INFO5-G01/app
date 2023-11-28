@@ -236,14 +236,11 @@ public class PatientResource {
         log.debug("REST request to update Patient : {} with statut : {}", id, statut);
 
         Optional<Patient> patientOptional = patientRepository.findById(id);
-        System.out.println("Patient opt : " + patientOptional);
         if (!patientOptional.isPresent()) {
-            System.out.println("Patient non trouvé");
             return ResponseEntity.notFound().build();
         }
 
         Patient patient = patientOptional.get();
-        System.out.println("Patient : " + patient);
         patient.setStatut(statut);
 
         Patient result = patientRepository.save(patient);

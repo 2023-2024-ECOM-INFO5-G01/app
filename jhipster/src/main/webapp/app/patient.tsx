@@ -80,6 +80,8 @@ export const Patient = () => {
     }
     );
   }, []);
+
+  const patientEntity = useAppSelector(state => state.patient.entity);
   
   const [imcs, setimcs] = useState([]);
   const [imcDates, setImcDates] = useState<string[]>([]); // Tableau de dates (chaînes)
@@ -194,21 +196,17 @@ export const Patient = () => {
     }
   };
 
-  const changeStatut = (status) => {
-    switch (status) {
-      case 'dénutrition avérée':
-        dispatch(updateStatus({ id: id, statut: "surveillance" }));
-        break;
-      case 'surveillance':
-        dispatch(updateStatus({ id: id, statut: "normal" }));
-        break;
-      case 'normal':
-        dispatch(updateStatus({ id: id, statut: "dénutrition avérée" }));
-        break;
-      default:
-        break;
-    }
-  }
+  // Options de statut disponibles
+  const optionsStatut = ['normal', 'surveillance', 'dénutrition avérée'];
+
+  // Gestionnaire d'événements pour la modification du statut
+  const handleStatutChange = (event) => {
+    const nouveauStatutSelectionne = event.target.value;
+    // changement de statut avec le nouveau statut
+    dispatch(updateStatus({ id: id, statut: nouveauStatutSelectionne }));
+    // Actualiser la page
+    window.location.reload();
+  };
 
   const [activeTab, setActiveTab] = useState('accueil');
 
@@ -233,7 +231,7 @@ export const Patient = () => {
     }
   };
 
-  const patientEntity = useAppSelector(state => state.patient.entity);
+  
   return (
     <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
@@ -270,9 +268,14 @@ export const Patient = () => {
                   </span>
                 </div>
                 <div>
-                  <button onClick={() => changeStatut(patientEntity.statut)}>
-                    Statut : {patientEntity.statut}
-                  </button>
+                  <label>Statut : </label>
+                  <select value={patientEntity.statut} onChange={handleStatutChange}>
+                    {optionsStatut.map((optionStatut) => (
+                      <option key={optionStatut} value={optionStatut}>
+                        {optionStatut}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
