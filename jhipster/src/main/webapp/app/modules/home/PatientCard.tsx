@@ -23,14 +23,6 @@ const PatientCard = ({ patient }) => {
                     <FontAwesomeIcon icon="eye" />{' '}
                     <Translate contentKey="entity.action.view">View</Translate>
                   </Button>
-                  <Button tag={Link} to={`/patient/${patient.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
-                    <FontAwesomeIcon icon="pencil-alt" />{' '}
-                    <Translate contentKey="entity.action.edit">Visualiser données</Translate>
-                  </Button>
-                  <Button tag={Link} to={`/note/${patient.id}`} color="primary" size="sm" data-cy="entityEditButton">
-                    <FontAwesomeIcon icon="pencil-alt" />{' '}
-                    <Translate contentKey="entity.action.note">Note</Translate>
-                  </Button>
                 </div>
     </div>
   );

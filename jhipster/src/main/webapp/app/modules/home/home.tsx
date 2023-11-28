@@ -92,21 +92,7 @@ const getCardColorClass = (status) => {
       return '';
   }
 };
-
-const getStatusOrder = (status) => {
-  switch (status) {
-    case 'dénutrition avérée':
-      return 1;
-    case 'surveillance':
-      return 2;
-    case 'normal':
-      return 3;
-    default:
-      return '';
-  }
-};
-
-  
+ 
   const [patientsearch, setPatientsearch] = useState(''); // État local pour stocker l'ID du patient
   const [patientsuggestion, setpatientsuggestion] = useState([]);
 
@@ -163,12 +149,11 @@ const getStatusOrder = (status) => {
     }
   };
 
-  const filters = ['nom', 'prenom', 'statut', "datearrive"];
+  const filters = ['nom', 'prenom', "datearrive"];
 
   const filterDisplayText = {
     nom: 'Trier par nom',
     prenom: 'Trier par prénom',
-    statut: 'Trier par statut',
     datearrive: 'Trier par date d\'arrivée',
   };
 
@@ -189,28 +174,19 @@ const getStatusOrder = (status) => {
     <div>
         <div>
           <PatientHeading loading={loading} handleSyncList={handleSyncList} />
-          
-    <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-    <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} />
-    <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
-    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
-      <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
-      <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
-
+          <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
+          <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])}/>
+          <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
+          <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
+          <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
+          <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
 
           <div className="d-flex flex-wrap">
-          {filterPatientsByStatus()
-  .filter((patient) =>
-    selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter
-  )
-  .map((patient, i) => (
-    <div
-    key={`entity-${i}`}
-    className={`patient-card ${getCardColorClass(patient.statut)}`} // Apply the card color class
-  >
-    <PatientCard patient={patient} />
-              </div>
-            ))}
+          {filterPatientsByStatus().filter((patient) => selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter).map((patient, i) => (
+            <div key={`entity-${i}`} className={`patient-card ${getCardColorClass(patient.statut)}`}>
+              <PatientCard patient={patient} />
+            </div>
+          ))}
           </div>
         </div>
     </div>

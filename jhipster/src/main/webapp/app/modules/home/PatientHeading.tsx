@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 
 const PatientHeading = ({ loading, handleSyncList }) => {
   return (
-    <h2 id="patient-heading" data-cy="PatientHeading">
-      <Translate contentKey="home.title">Patient</Translate>
       <div className="d-flex justify-content-end">
         <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
           <FontAwesomeIcon icon="sync" spin={loading} />{' '}
@@ -20,7 +18,6 @@ const PatientHeading = ({ loading, handleSyncList }) => {
           <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
         </Link>
       </div>
-    </h2>
   );
 };
 

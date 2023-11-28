@@ -4,6 +4,7 @@ import React from 'react';
 const StatusFilter = ({ handleStatusFilterChange }) => {
   return (
     <div>
+      <h6>Choix des statuts</h6>
       <input type="checkbox" id="status1" name="status1" value="dénutrition avérée"
              onChange={(e) => handleStatusFilterChange('dénutrition avérée', e.target.checked)} />
       <label htmlFor="status1"> Dénutrition avérée</label><br/>
