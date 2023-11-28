@@ -186,11 +186,11 @@ export const Patient = () => {
   const getCardColorClass = (status) => {
     switch (status) {
       case 'dénutrition avérée':
-        return 'info-card-red';
+        return 'info-card red';
       case 'surveillance':
-        return 'info-card-orange';
+        return 'info-card orange';
       case 'normal':
-        return 'info-card-blue';
+        return 'info-card blue';
       default:
         return '';
     }

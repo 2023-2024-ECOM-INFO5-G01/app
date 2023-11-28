@@ -24,28 +24,23 @@
     height: 150px;
 }
 
-.info-card-red {
+.info-card {
+    color: white;
+    display: flex;
+    border: 2px solid #000;
+    margin: 0px;
+}
+
+.info-card.red {
     background-color: rgb(238, 116, 116);
-    color: white;
-    display: flex;
-    border: 2px solid #000;
-    margin: 0px;
 }
-  
-.info-card-orange {
+
+.info-card.orange {
     background-color: orange;
-    color: white;
-    display: flex;
-    border: 2px solid #000;
-    margin: 0px;
 }
-  
-.info-card-blue {
+
+.info-card.blue {
     background-color: rgb(111, 111, 235);
-    color: white;
-    display: flex;
-    border: 2px solid #000;
-    margin: 0px;
 }
 
 .info_patient_perso {
