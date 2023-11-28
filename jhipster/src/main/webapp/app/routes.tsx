@@ -81,9 +81,9 @@ const AppRoutes = () => {
           </Route>
         </Route>
         <Route path='patient/new' element ={
-          //<PrivateRoute hasAnyAuthorities={[AUTHORITIES.MEDECIN]}>
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <PatientUpdate />
-          //</PrivateRoute>
+          </PrivateRoute>
         } />
         <Route
           path="admin/*"
