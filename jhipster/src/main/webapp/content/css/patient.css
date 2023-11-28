@@ -4,6 +4,12 @@
     justify-content: space-between;
 }
 
+.flex_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .photo_patient{
     width: 80px;
     height: 80px;
@@ -124,10 +130,31 @@
     color: #fff; /* Couleur du texte (blanc dans cet exemple) */
 }
 
+.button_clicked {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: #c8e6c9; /* Vert clair */
+    cursor: pointer;
+}
+
+.button_release{
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: #8bc34a;
+    cursor: pointer;
+}
+
 .img_patient_plus {
     width: 25px;
     height: 25px;
     margin-right: 5px;
+}
+
+.img_patient_pin {
+    width: 25px;
+    height: 25px;
 }
 
 nav {

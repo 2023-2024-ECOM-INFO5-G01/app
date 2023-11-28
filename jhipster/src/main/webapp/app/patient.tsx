@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './entities/patient/patient.reducer';
+import { getEntity, updateStatus } from './entities/patient/patient.reducer';
 
 import { getIMC } from './entities/imc/imc.reducer';
 import { getEpas } from './entities/epa/epa.reducer';
@@ -86,115 +86,131 @@ export const Patient = () => {
   const [imcValues, setImcValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
   // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data = {
-  labels: imcDates,
-  datasets: [
-    {
-      label: 'IMC du patient',
-      data: imcValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data = {
+    labels: imcDates,
+    datasets: [
+      {
+        label: 'IMC du patient',
+        data: imcValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe imc du patient',
+      },
     },
-  ],
-};
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe imc du patient',
-    },
-  },
-};
+  };
 
-const [poids, setpoids] = useState([]);
+  const [poids, setpoids] = useState([]);
   const [poidDates, setPoidDates] = useState<string[]>([]); // Tableau de dates (chaînes)
   const [poidValues, setPoidValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
   // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data1 = {
-  labels: poidDates,
-  datasets: [
-    {
-      label: 'Poids du patient',
-      data: poidValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data1 = {
+    labels: poidDates,
+    datasets: [
+      {
+        label: 'Poids du patient',
+        data: poidValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options1 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe poids du patient',
+      },
     },
-  ],
-};
-const options1 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe poids du patient',
-    },
-  },
-};
+  };
 
-const [epa, setepas] = useState([]);
-const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
-const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
-// Extraction des dates et des valeurs d'IMC pour le patient
+  const [epa, setepas] = useState([]);
+  const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
+  const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
+  // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data2 = {
-  labels: epaDates,
-  datasets: [
-    {
-      label: 'EPA du patient',
-      data: epaValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data2 = {
+    labels: epaDates,
+    datasets: [
+      {
+        label: 'EPA du patient',
+        data: epaValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options2 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe epa du patient',
+      },
     },
-  ],
-};
-const options2 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe epa du patient',
-    },
-  },
-};
+  };
 
-//code pour le bouton toogle fixed
-const [isFixed, setIsFixed] = useState(false);
+  //code pour le bouton toogle fixed
+  const [isFixed, setIsFixed] = useState(false);
 
-const togglePosition = () => {
-  setIsFixed((prevIsFixed) => !prevIsFixed);
-};
+  const togglePosition = () => {
+    setIsFixed((prevIsFixed) => !prevIsFixed);
+  };
 
-const getCardColorClass = (status) => {
-  switch (status) {
-    case 'dénutrition avérée':
-      return 'info-card-red';
-    case 'surveillance':
-      return 'info-card-orange';
-    case 'normal':
-      return 'info-card-blue';
-    default:
-      return '';
+  const getCardColorClass = (status) => {
+    switch (status) {
+      case 'dénutrition avérée':
+        return 'info-card-red';
+      case 'surveillance':
+        return 'info-card-orange';
+      case 'normal':
+        return 'info-card-blue';
+      default:
+        return '';
+    }
+  };
+
+  const changeStatut = (status) => {
+    switch (status) {
+      case 'dénutrition avérée':
+        dispatch(updateStatus({ id: id, statut: "surveillance" }));
+        break;
+      case 'surveillance':
+        dispatch(updateStatus({ id: id, statut: "normal" }));
+        break;
+      case 'normal':
+        dispatch(updateStatus({ id: id, statut: "dénutrition avérée" }));
+        break;
+      default:
+        break;
+    }
   }
-};
 
-const [activeTab, setActiveTab] = useState('accueil');
+  const [activeTab, setActiveTab] = useState('accueil');
 
   const changeTab = (tabName) => {
     setActiveTab(tabName);
@@ -221,13 +237,13 @@ const [activeTab, setActiveTab] = useState('accueil');
   return (
     <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
-        <button onClick={togglePosition}>
-            Position ({isFixed ? 'fixed' : 'relative'})
-        </button>
         <Col className="fixed-flex-container">
           <div className={`patient-card ${getCardColorClass(patientEntity.statut)}`}>
-            <div>
+            <div className="flex_div">
               <img src="../content/images/logo.jpeg" alt="Photo du patient" className="photo_patient"/>
+              <button onClick={togglePosition} className={`button_${isFixed ? 'release' : 'clicked'}`}>
+                <img src="../content/images/pin.svg" alt="Punaise" className="img_patient_pin"/>
+              </button>
             </div>
             <div className="info_patient_administratives">
               <div>
@@ -254,7 +270,7 @@ const [activeTab, setActiveTab] = useState('accueil');
                   </span>
                 </div>
                 <div>
-                  <button>
+                  <button onClick={() => changeStatut(patientEntity.statut)}>
                     Statut : {patientEntity.statut}
                   </button>
                 </div>

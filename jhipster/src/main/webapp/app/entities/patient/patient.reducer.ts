@@ -91,6 +91,15 @@ export const deleteEntity = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
+export const updateStatus = createAsyncThunk(
+  '/patient/updateStatus',
+  async ({id, statut}: { id: string | number; statut: string }) => {
+    const requestUrl = `${apiUrl}/updateStatus`;
+    return axios.put<IPatient>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+
 // slice
 
 export const PatientSlice = createEntitySlice({
