@@ -19,6 +19,7 @@ import Alerte from './shared/layout/menus/alerte';
 import Patient from './patient';
 import Note from './entities/note/note';
 import Notes from './note';
+import PatientUpdate from './entities/patient/patient-update';
 
 const loading = <div>loading ...</div>;
 
@@ -79,6 +80,11 @@ const AppRoutes = () => {
             <Route path="finish" element={<PasswordResetFinish />} />
           </Route>
         </Route>
+        <Route path='patient/new' element ={
+          //<PrivateRoute hasAnyAuthorities={[AUTHORITIES.MEDECIN]}>
+            <PatientUpdate />
+          //</PrivateRoute>
+        } />
         <Route
           path="admin/*"
           element={
