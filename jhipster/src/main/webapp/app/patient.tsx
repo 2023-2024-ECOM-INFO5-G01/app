@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './entities/patient/patient.reducer';
+import { getEntity, updateStatus } from './entities/patient/patient.reducer';
 
 import { getIMC } from './entities/imc/imc.reducer';
 import { getEpas } from './entities/epa/epa.reducer';
@@ -80,108 +80,135 @@ export const Patient = () => {
     }
     );
   }, []);
+
+  const patientEntity = useAppSelector(state => state.patient.entity);
   
   const [imcs, setimcs] = useState([]);
   const [imcDates, setImcDates] = useState<string[]>([]); // Tableau de dates (chaînes)
   const [imcValues, setImcValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
   // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data = {
-  labels: imcDates,
-  datasets: [
-    {
-      label: 'IMC du patient',
-      data: imcValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data = {
+    labels: imcDates,
+    datasets: [
+      {
+        label: 'IMC du patient',
+        data: imcValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe imc du patient',
+      },
     },
-  ],
-};
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe imc du patient',
-    },
-  },
-};
+  };
 
-const [poids, setpoids] = useState([]);
+  const [poids, setpoids] = useState([]);
   const [poidDates, setPoidDates] = useState<string[]>([]); // Tableau de dates (chaînes)
   const [poidValues, setPoidValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
   // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data1 = {
-  labels: poidDates,
-  datasets: [
-    {
-      label: 'Poids du patient',
-      data: poidValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data1 = {
+    labels: poidDates,
+    datasets: [
+      {
+        label: 'Poids du patient',
+        data: poidValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options1 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe poids du patient',
+      },
     },
-  ],
-};
-const options1 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe poids du patient',
-    },
-  },
-};
+  };
 
-const [epa, setepas] = useState([]);
-const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
-const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
-// Extraction des dates et des valeurs d'IMC pour le patient
+  const [epa, setepas] = useState([]);
+  const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
+  const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
+  // Extraction des dates et des valeurs d'IMC pour le patient
 
-// Configuration des données pour le graphique
-const data2 = {
-  labels: epaDates,
-  datasets: [
-    {
-      label: 'EPA du patient',
-      data: epaValues,
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
+  // Configuration des données pour le graphique
+  const data2 = {
+    labels: epaDates,
+    datasets: [
+      {
+        label: 'EPA du patient',
+        data: epaValues,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+  const options2 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Courbe epa du patient',
+      },
     },
-  ],
-};
-const options2 = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Courbe epa du patient',
-    },
-  },
-};
+  };
 
-//code pour le bouton toogle fixed
-const [isFixed, setIsFixed] = useState(false);
+  //code pour le bouton toogle fixed
+  const [isFixed, setIsFixed] = useState(false);
 
-const togglePosition = () => {
-  setIsFixed((prevIsFixed) => !prevIsFixed);
-};
+  const togglePosition = () => {
+    setIsFixed((prevIsFixed) => !prevIsFixed);
+  };
 
-const [activeTab, setActiveTab] = useState('accueil');
+  const getCardColorClass = (status) => {
+    switch (status) {
+      case 'dénutrition avérée':
+        return 'info-card red';
+      case 'surveillance':
+        return 'info-card orange';
+      case 'normal':
+        return 'info-card blue';
+      default:
+        return '';
+    }
+  };
+
+  // Options de statut disponibles
+  const optionsStatut = ['normal', 'surveillance', 'dénutrition avérée'];
+
+  // Gestionnaire d'événements pour la modification du statut
+  const handleStatutChange = (event) => {
+    const nouveauStatutSelectionne = event.target.value;
+    // changement de statut avec le nouveau statut
+    dispatch(updateStatus({ id: id, statut: nouveauStatutSelectionne }));
+    // Actualiser la page
+    window.location.reload();
+  };
+
+  const [activeTab, setActiveTab] = useState('accueil');
 
   const changeTab = (tabName) => {
     setActiveTab(tabName);
@@ -196,134 +223,127 @@ const [activeTab, setActiveTab] = useState('accueil');
       case 'alerte':
         return <div>Alerte content goes here</div>;
       default:
-        return <div><Col md="12" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
+        return <Col md="12" className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
         <Line options={options} data={data} />
         <Line options={options1} data={data1} />
          <Line options={options2} data={data2} />
-        </Col></div>;
+        </Col>;
     }
   };
 
-  const patientEntity = useAppSelector(state => state.patient.entity);
+  
   return (
     <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
-        <button onClick={togglePosition}>
-          Position ({isFixed ? 'fixed' : 'relative'})
-        </button>
-        <div>
-        <Col md="8" className="fixed-flex-container" xs="12">
-            <div>
-              <h2 data-cy="patientDetailsHeading">
-                <Translate contentKey="ecomApp.patient.detail.title">Patient</Translate>
-              </h2>
-              <img src="../content/images/logo.jpeg" alt="Photo du patient" className="logo"/>
+        <Col className="fixed-flex-container">
+          <div className={`patient-card ${getCardColorClass(patientEntity.statut)}`}>
+            <div className="flex_div">
+              <img src="../content/images/logo.jpeg" alt="Photo du patient" className="photo_patient"/>
+              <button onClick={togglePosition} className={`button_${isFixed ? 'release' : 'clicked'}`}>
+                <img src="../content/images/pin.svg" alt="Punaise" className="img_patient_pin"/>
+              </button>
             </div>
-            <dl className="jh-entity-details">
+            <div className="info_patient_administratives">
               <div>
-                <dt>
-                  <span id="id">
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.id}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="nom">
-                    <Translate contentKey="ecomApp.patient.nom">Nom</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.nom}</dd>
-              </div>
-              <div>
-                <dt>
+                <div>
                   <span id="prenom">
-                    <Translate contentKey="ecomApp.patient.prenom">Prenom</Translate>
+                    <Translate contentKey="ecomApp.patient.prenom"></Translate>{patientEntity.prenom}
                   </span>
-                </dt>
-                <dd>{patientEntity.prenom}</dd>
-              </div>
-              <div>
-                <dt>
-                  <span id="statut">
-                    <Translate contentKey="ecomApp.patient.statut">Statut</Translate>
+                </div>
+                <div>
+                  <span id="nom">
+                    <Translate contentKey="ecomApp.patient.nom"></Translate>{patientEntity.nom}
                   </span>
-                </dt>
-                <dd>{patientEntity.statut}</dd>
-              </div>
-              <div>
-                <dt>
+                </div>
+                <div>
                   <span id="dateNaissance">
-                    <Translate contentKey="ecomApp.patient.dateNaissance">Date Naissance</Translate>
+                    <Translate contentKey="ecomApp.patient.dateNaissance"></Translate>{patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
                   </span>
-                </dt>
-                <dd>
-                  {patientEntity.dateNaissance ? <TextFormat value={patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT} /> : null}
-                </dd>
+                </div>
               </div>
               <div>
-                <dt>
-                  <span id="taille">
-                    <Translate contentKey="ecomApp.patient.taille">Taille</Translate>
-                  </span>
-                </dt>
-                <dd>{patientEntity.taille}</dd>
-              </div>
-              <div>
-                <dt>
+                <div>
                   <span id="datearrive">
-                    <Translate contentKey="ecomApp.patient.datearrive">Datearrive</Translate>
+                    <Translate contentKey="ecomApp.patient.datearrive"></Translate>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}
                   </span>
-                </dt>
-                <dd>{patientEntity.datearrive ? <TextFormat value={patientEntity.datearrive} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
+                </div>
+                <div>
+                  <label>Statut : </label>
+                  <select value={patientEntity.statut} onChange={handleStatutChange}>
+                    {optionsStatut.map((optionStatut) => (
+                      <option key={optionStatut} value={optionStatut}>
+                        {optionStatut}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="info_patient_perso">
+            <div>
+              <div>
+                <span id="taille">
+                  <Translate contentKey="ecomApp.patient.taille"></Translate>{patientEntity.taille} cm
+                </span>
               </div>
               <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.albumine">Albumine</Translate>
-                </dt>
-                <dd>{patientEntity.albumine ? patientEntity.albumine.id : ''}</dd>
+                <span id="poids">
+                  <Translate contentKey="ecomApp.patient.poids"></Translate>{patientEntity.poids} kg
+                </span>
+              </div>
+            </div>
+            <div>
+              <div>
+                <span id="ePA">
+                  <Translate contentKey="ecomApp.patient.ePA"></Translate>{patientEntity.ePA}
+                </span>
               </div>
               <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.ehpad">Ehpad</Translate>
-                </dt>
-                <dd>{patientEntity.ehpad ? patientEntity.ehpad.id : ''}</dd>
+                <span id="iMC">
+                  <Translate contentKey="ecomApp.patient.iMC"></Translate>{patientEntity.iMC}
+                </span>
               </div>
-              <div>
-                <dt>
-                  <Translate contentKey="ecomApp.patient.user">User</Translate>
-                </dt>
-                <dd>
-                  {patientEntity.users
-                    ? patientEntity.users.map((val, i) => (
-                        <span key={val.id}>
-                          <a>{val.id}</a>
-                          {patientEntity.users && i === patientEntity.users.length - 1 ? '' : ', '}
-                        </span>
-                      ))
-                    : null}
-                </dd>
+                <div>
+                  <span id="albumine">
+                    <Translate contentKey="ecomApp.patient.albumine"></Translate>{patientEntity.albumine ? patientEntity.albumine.id : ''}
+                  </span>
+                </div>
               </div>
-            </dl>
+            </div>
+            <div className="info_buttons">
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Données administratives
+              </button>
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Données patient
+              </button>
+              <button className="bouton_modif_patient" onClick={null}>
+                <img src="../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+                Tâche
+              </button>
+            </div>
           </Col>
-        </div>
-        <nav>
-          <ul>
-            <li>
-            <button onClick={() => changeTab('Courbes')}>Courbes</button>
-            </li>
-            <li>
-            <button onClick={() => changeTab('note')}>Notes</button>
-            </li>
-            <li>
-            <button onClick={() => changeTab('rappel')}>Tâches</button>
-            </li>
-            <li>
-            <button onClick={() => changeTab('alerte')}>Alertes</button>
-            </li>
-          </ul>
-        </nav>
+          <div className="menu_patient">
+            <nav>
+              <ul>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('Courbes')}>Courbes</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('note')}>Notes</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('rappel')}>Tâches</button>
+                </li>
+                <li>
+                  <button className="bouton_menu_patient" onClick={() => changeTab('alerte')}>Alertes</button>
+                </li>
+              </ul>
+            </nav>
+          </div>
       </div>
       {renderTabContent()}
       <Col md="9">
@@ -342,7 +362,6 @@ const [activeTab, setActiveTab] = useState('accueil');
          </Button>
        </Col>
     </Row>
-    
   );
 };
 
