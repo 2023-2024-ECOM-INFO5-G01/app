@@ -8,8 +8,13 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-
+import { IAlerte } from 'app/shared/model/alerte.model';
+import { getEntity, updateEntity, createEntity, reset } from './alerte.reducer';
 import { getEntities } from './alerte.reducer';
+import { IPatient } from 'app/shared/model/patient.model';
+import { IUser } from 'app/shared/model/user.model';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { useForm } from 'react-hook-form';
 
 export const Alerte = () => {
   const dispatch = useAppDispatch();
@@ -64,6 +69,33 @@ export const Alerte = () => {
     }
   };
 
+  const createAlarmEntity = (userId, patientId) => {
+    const currentDate = new Date(); // Obtenir la date actuelle
+    const entity: IAlerte = {
+      date: currentDate.toISOString(), // Utiliser la date actuelle au format ISO string
+      user: { id: userId }, // Utilisateur par son ID
+      patient: { id: patientId }, // Patient par son ID
+      verif: false, // Valeur par défaut pour "verif"
+      action: 'epa<7', // Valeur par défaut pour "action"
+    };
+  
+    return entity;
+  };
+  
+  const alerteEntity = useAppSelector(state => state.alerte.entity);
+
+
+  const handlecreateAlerte = (userid, patientid) => {
+    const entity = createAlarmEntity(userid, patientid);
+    dispatch(createEntity(entity));
+  }
+// Inside your Alerte component
+const { register, handleSubmit, reset } = useForm();
+
+const onSubmit = data => {
+  handlecreateAlerte(data.userid, data.patientid);
+  reset();
+};
   return (
     <div>
       <h2 id="alerte-heading" data-cy="AlerteHeading">
@@ -80,6 +112,11 @@ export const Alerte = () => {
           </Link>
         </div>
       </h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+  <input {...register('userid')} placeholder="User ID" />
+  <input {...register('patientid')} placeholder="Patient ID" />
+  <button type="submit">Create Alerte</button>
+</form>
       <div className="table-responsive">
         {alerteList && alerteList.length > 0 ? (
           <Table responsive>

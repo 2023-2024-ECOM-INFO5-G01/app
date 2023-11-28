@@ -42,6 +42,7 @@ export const Patient = () => {
   const { id } = useParams<'id'>();
 
   useEffect(() => {
+    console.log("entity",patientEntity );
     dispatch(getEntity(id));
     dispatch(getIMC(id)).then((response) => {
       console.log(response);
