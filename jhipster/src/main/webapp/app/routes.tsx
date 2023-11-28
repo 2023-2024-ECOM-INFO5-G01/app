@@ -17,8 +17,9 @@ import { AUTHORITIES } from 'app/config/constants';
 import Rappels from './shared/layout/menus/rappels';
 import Alerte from './shared/layout/menus/alerte';
 import Patient from './patient';
-import Note from './entities/note/note';
 import Notes from './note';
+
+import AlertePatient from './alertespatient';
 import PatientUpdate from './entities/patient/patient-update';
 
 const loading = <div>loading ...</div>;
@@ -47,7 +48,7 @@ const AppRoutes = () => {
             <Rappels />
           </PrivateRoute>
         } />
-        <Route path="alerte" element={
+        <Route path="alertes" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Alerte />
           </PrivateRoute>
@@ -57,6 +58,7 @@ const AppRoutes = () => {
             <Patient />
           </PrivateRoute>
         } />
+    
         <Route path="note/:id" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Notes />

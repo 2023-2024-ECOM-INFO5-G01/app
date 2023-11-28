@@ -17,7 +17,8 @@
         "imc": "IMC",
         "repas": "Repas",
         "note": "Note",
-        "aliment": "Aliment"
+        "aliment": "Aliment",
+        "alerte": "Alerte"
       },
       "account": {
         "main": "Account",
