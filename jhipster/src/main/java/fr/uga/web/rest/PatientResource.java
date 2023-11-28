@@ -42,7 +42,9 @@ public class PatientResource {
      * {@code POST  /patients} : Create a new patient.
      *
      * @param patient the patient to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new patient, or with status {@code 400 (Bad Request)} if the patient has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new patient, or with status {@code 400 (Bad Request)} if the
+     *         patient has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/patients")
@@ -53,24 +55,28 @@ public class PatientResource {
         }
         Patient result = patientRepository.save(patient);
         return ResponseEntity
-            .created(new URI("/api/patients/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .created(new URI("/api/patients/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
+                        result.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /patients/:id} : Updates an existing patient.
      *
-     * @param id the id of the patient to save.
+     * @param id      the id of the patient to save.
      * @param patient the patient to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated patient,
-     * or with status {@code 400 (Bad Request)} if the patient is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the patient couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated patient,
+     *         or with status {@code 400 (Bad Request)} if the patient is not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the patient
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/patients/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable(value = "id", required = false) final Long id, @RequestBody Patient patient)
-        throws URISyntaxException {
+    public ResponseEntity<Patient> updatePatient(@PathVariable(value = "id", required = false) final Long id,
+            @RequestBody Patient patient)
+            throws URISyntaxException {
         log.debug("REST request to update Patient : {}, {}", id, patient);
         if (patient.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -85,27 +91,30 @@ public class PatientResource {
 
         Patient result = patientRepository.save(patient);
         return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, patient.getId().toString()))
-            .body(result);
+                .ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
+                        patient.getId().toString()))
+                .body(result);
     }
 
     /**
-     * {@code PATCH  /patients/:id} : Partial updates given fields of an existing patient, field will ignore if it is null
+     * {@code PATCH  /patients/:id} : Partial updates given fields of an existing
+     * patient, field will ignore if it is null
      *
-     * @param id the id of the patient to save.
+     * @param id      the id of the patient to save.
      * @param patient the patient to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated patient,
-     * or with status {@code 400 (Bad Request)} if the patient is not valid,
-     * or with status {@code 404 (Not Found)} if the patient is not found,
-     * or with status {@code 500 (Internal Server Error)} if the patient couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated patient,
+     *         or with status {@code 400 (Bad Request)} if the patient is not valid,
+     *         or with status {@code 404 (Not Found)} if the patient is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the patient
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/patients/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Patient> partialUpdatePatient(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Patient patient
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to partial update Patient partially : {}, {}", id, patient);
         if (patient.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -119,42 +128,43 @@ public class PatientResource {
         }
 
         Optional<Patient> result = patientRepository
-            .findById(patient.getId())
-            .map(existingPatient -> {
-                if (patient.getNom() != null) {
-                    existingPatient.setNom(patient.getNom());
-                }
-                if (patient.getPrenom() != null) {
-                    existingPatient.setPrenom(patient.getPrenom());
-                }
-                if (patient.getStatut() != null) {
-                    existingPatient.setStatut(patient.getStatut());
-                }
-                if (patient.getDateNaissance() != null) {
-                    existingPatient.setDateNaissance(patient.getDateNaissance());
-                }
-                if (patient.getTaille() != null) {
-                    existingPatient.setTaille(patient.getTaille());
-                }
-                if (patient.getDatearrive() != null) {
-                    existingPatient.setDatearrive(patient.getDatearrive());
-                }
+                .findById(patient.getId())
+                .map(existingPatient -> {
+                    if (patient.getNom() != null) {
+                        existingPatient.setNom(patient.getNom());
+                    }
+                    if (patient.getPrenom() != null) {
+                        existingPatient.setPrenom(patient.getPrenom());
+                    }
+                    if (patient.getStatut() != null) {
+                        existingPatient.setStatut(patient.getStatut());
+                    }
+                    if (patient.getDateNaissance() != null) {
+                        existingPatient.setDateNaissance(patient.getDateNaissance());
+                    }
+                    if (patient.getTaille() != null) {
+                        existingPatient.setTaille(patient.getTaille());
+                    }
+                    if (patient.getDatearrive() != null) {
+                        existingPatient.setDatearrive(patient.getDatearrive());
+                    }
 
-                return existingPatient;
-            })
-            .map(patientRepository::save);
+                    return existingPatient;
+                })
+                .map(patientRepository::save);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, patient.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, patient.getId().toString()));
     }
 
     /**
      * {@code GET  /patients} : get all the patients.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of patients in body.
+     * @param eagerload flag to eager load entities from relationships (This is
+     *                  applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of patients in body.
      */
     @GetMapping("/patients")
     public List<Patient> getAllPatients(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
@@ -165,40 +175,43 @@ public class PatientResource {
             return patientRepository.findAll();
         }
     }
+
     /**
      * {@code GET  /patients/suggestions} : get the patient that match the query.
      * 
      * @param query the query of the patient to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patient, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the patient, or with status {@code 404 (Not Found)}.
      */
-@GetMapping("/patients/suggestions/{query}")
-public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query) {
-    log.debug("REST request to get Patients starting with: {}", query);
-    List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCase(query);
-    return ResponseEntity.ok().body(patients);
-}
+    @GetMapping("/patients/suggestions/{login}/{query}")
+    public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query, @PathVariable String login) {
+        log.debug("REST request to get Patients starting with: {}, with login: {}", query, login);
+        List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCaseAndUsers_Login(query, login);
+        return ResponseEntity.ok().body(patients);
+    }
 
-/**
- * GET  /patients/user/{login} : get all the patients of a specific user.
- *
- * @param login the login of the user.
- * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
- */
-@GetMapping("/patients/user/{login}")
-public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String login) {
-    log.debug("REST request to get all Patients of user: {}", login);
-    
-    List<Patient> patients = patientRepository.findByUsers_Login(login); 
+    /**
+     * GET /patients/user/{login} : get all the patients of a specific user.
+     *
+     * @param login the login of the user.
+     * @return the ResponseEntity with status 200 (OK) and the list of patients in
+     *         body.
+     */
+    @GetMapping("/patients/user/{login}")
+    public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String login) {
+        log.debug("REST request to get all Patients of user: {}", login);
 
-    return ResponseEntity.ok().body(patients);
-}
+        List<Patient> patients = patientRepository.findByUsers_Login(login);
 
+        return ResponseEntity.ok().body(patients);
+    }
 
     /**
      * {@code GET  /patients/:id} : get the "id" patient.
      *
      * @param id the id of the patient to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patient, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the patient, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/patients/{id}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
@@ -218,8 +231,8 @@ public ResponseEntity<List<Patient>> getAllPatientsByUser(@PathVariable String l
         log.debug("REST request to delete Patient : {}", id);
         patientRepository.deleteById(id);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
     }
 }

@@ -99,7 +99,7 @@ const getCardColorClass = (status) => {
   const handleRunPatient = () => {
     if (patientsearch != '') {
     // Appelez l'action getPoidsByPatientId avec l'ID du patient
-    dispatch(getPatientSearch(patientsearch)).then((response) => {
+    dispatch(getPatientSearch({query : patientsearch, login: account.login})).then((response) => {
       console.log(response);
       if (response.payload && (response.payload as any).data) {
         setpatientsuggestion((response.payload as any).data);
