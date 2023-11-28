@@ -255,7 +255,7 @@ const [activeTab, setActiveTab] = useState('accueil');
                 </div>
                 <div>
                   <button>
-                    Statut
+                    Statut : {patientEntity.statut}
                   </button>
                 </div>
               </div>
