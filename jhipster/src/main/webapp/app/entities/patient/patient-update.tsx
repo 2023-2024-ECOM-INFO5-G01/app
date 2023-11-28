@@ -198,7 +198,7 @@ export const PatientUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-                label={translate('ecomApp.patient.user')}
+                label= "Medecin"
                 id="patient-user"
                 data-cy="user"
                 type="select"
@@ -209,7 +209,7 @@ export const PatientUpdate = () => {
                 {users
                   ? users.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
+                        {otherEntity.login}
                       </option>
                     ))
                   : null}
