@@ -29,6 +29,7 @@ import { useForm } from 'react-hook-form';
 
 import '../content/css/patient.css';
 import AlertePatient from './alertespatient';
+import { set } from 'lodash';
 
 ChartJS.register(
   CategoryScale,
@@ -44,6 +45,7 @@ export const Patient = () => {
   const account = useAppSelector(state => state.authentication.account);
 
   const { id } = useParams<'id'>();
+  const [statuschange, setStatuschange] = useState(false);
 
   useEffect(() => {
     dispatch(getEntity(id));
@@ -84,7 +86,8 @@ export const Patient = () => {
       }
     }
     );
-  }, []);
+    setStatuschange(false);
+  }, [statuschange]);
 
   
   const [imcs, setimcs] = useState([]);
@@ -199,7 +202,6 @@ export const Patient = () => {
         return '';
     }
   };
-
   // Options de statut disponibles
   const optionsStatut = ['normal', 'surveillance', 'dénutrition avérée'];
 
@@ -208,6 +210,7 @@ export const Patient = () => {
     const nouveauStatutSelectionne = event.target.value;
     // changement de statut avec le nouveau statut
     dispatch(updateStatus({ id: id, statut: nouveauStatutSelectionne }));
+    setStatuschange(true);
     // Actualiser la page
     window.location.reload();
   };
@@ -257,6 +260,7 @@ export const Patient = () => {
   }
 // Inside your Alerte component
 const { register, handleSubmit, reset } = useForm();
+//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
 
 
   const patientEntity = useAppSelector(state => state.patient.entity);
@@ -271,7 +275,6 @@ const { register, handleSubmit, reset } = useForm();
               <button onClick={togglePosition} className={`button_${isFixed ? 'release' : 'clicked'}`}>
                 <img src="../content/images/pin.svg" alt="Punaise" className="img_patient_pin"/>
               </button>
-              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
             </div>
             <div className="info_patient_administratives">
               <div>
@@ -313,6 +316,7 @@ const { register, handleSubmit, reset } = useForm();
           <div className="info_patient_perso">
             <div>
               <div>
+              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
                 <span id="taille">
                   <Translate contentKey="ecomApp.patient.taille"></Translate>{patientEntity.taille} cm
                 </span>
