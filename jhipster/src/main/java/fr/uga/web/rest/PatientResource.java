@@ -180,10 +180,11 @@ public class PatientResource {
      * {@code GET  /patients/suggestions} : get the patient that match the query.
      * 
      * @param query the query of the patient to retrieve.
+     * @param login the login of the user.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
      *         the patient, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/patients/suggestions/{login}/{query}")
+    @GetMapping("/patients/suggestions/{query}/{login}")
     public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query, @PathVariable String login) {
         log.debug("REST request to get Patients starting with: {}, with login: {}", query, login);
         List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCaseAndUsers_Login(query, login);

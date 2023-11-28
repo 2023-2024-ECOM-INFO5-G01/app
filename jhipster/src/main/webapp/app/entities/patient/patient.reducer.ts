@@ -42,9 +42,9 @@ export const getEntity = createAsyncThunk(
 );
 
 export const getPatientSearch = createAsyncThunk(
-  'patient/fetch_patient_search',
+  'patient/suggestions',
   async ({ query, login }: { query: string, login: string }) => {
-    const requestUrl = `${apiUrl}/patients/suggestions/${query}/${login}`;
+    const requestUrl = `${apiUrl}/suggestions/${query}/${login}`;
     const response = await axios.get<IPatient[]>(requestUrl);
     return response.data;
   },
