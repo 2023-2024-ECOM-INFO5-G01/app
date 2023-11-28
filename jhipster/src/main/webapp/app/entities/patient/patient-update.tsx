@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm, getPaginationState } from 'react-jhipster';
+import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -13,13 +13,9 @@ import { getEntities as getAlbumines } from 'app/entities/albumine/albumine.redu
 import { IEhpad } from 'app/shared/model/ehpad.model';
 import { getEntities as getEhpads } from 'app/entities/ehpad/ehpad.reducer';
 import { IUser } from 'app/shared/model/user.model';
-import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants'
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
-
-import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
-import { getUsersAsAdmin } from 'app/modules/administration/user-management/user-management.reducer';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -32,26 +28,11 @@ export const PatientUpdate = () => {
   const albumines = useAppSelector(state => state.albumine.entities);
   const ehpads = useAppSelector(state => state.ehpad.entities);
   const users = useAppSelector(state => state.userManagement.users);
+  const medecins = useAppSelector(state => state.userManagement.users.medecins)
   const patientEntity = useAppSelector(state => state.patient.entity);
   const loading = useAppSelector(state => state.patient.loading);
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
-  
-  const location = useLocation();
-
-  const [pagination, setPagination] = useState(
-    overridePaginationStateWithQueryParams(getPaginationState(location, ITEMS_PER_PAGE, 'id'), location.search),
-  );
-
-  const getUsersFromProps = () => {
-    dispatch(
-      getUsersAsAdmin({
-        page: pagination.activePage - 1,
-        size: pagination.itemsPerPage,
-        sort: `${pagination.sort},${pagination.order}`,
-      }),
-    ); }
-
 
   const handleClose = () => {
     navigate('/patient');
@@ -83,6 +64,7 @@ export const PatientUpdate = () => {
     const entity = {
       ...patientEntity,
       ...values,
+      users: mapIdList(values.users),
       albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
       ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
     };
