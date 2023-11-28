@@ -10,5 +10,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface IMCRepository extends JpaRepository<IMC, Long> {
-    List <IMC> findByPatientIdOrderByDateDesc(Long patientId);
+    List <IMC> findByPatientIdOrderByDateAsc(Long patientId);
 }

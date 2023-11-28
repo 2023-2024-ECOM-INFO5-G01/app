@@ -161,6 +161,17 @@ public class EPAResource {
     }
 
     /**
+     * {@code GET /epas/patient/:id} : get all the epa of a patient by id sorted by date.
+     * @param id the id of the patient.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of epas in body.
+     */
+    @GetMapping("/epas/patient/{id}")
+    public List<EPA> getAllEPASByPatientId(@PathVariable Long id) {
+        log.debug("REST request to get all EPAS of patient : {}", id);
+        return ePARepository.findByPatientIdOrderByDateAsc(id);
+    }
+
+    /**
      * {@code DELETE  /epas/:id} : delete the "id" ePA.
      *
      * @param id the id of the ePA to delete.

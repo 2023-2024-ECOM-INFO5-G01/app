@@ -22,7 +22,14 @@ export const getEntities = createAsyncThunk('ePA/fetch_entity_list', async ({ so
   const requestUrl = `${apiUrl}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
   return axios.get<IEPA[]>(requestUrl);
 });
-
+export const getEpas = createAsyncThunk(
+  'epas/fetch_patient',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/patient/${id}`;
+    return axios.get<IEPA>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 export const getEntity = createAsyncThunk(
   'ePA/fetch_entity',
   async (id: string | number) => {
