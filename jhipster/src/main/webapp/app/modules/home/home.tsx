@@ -151,18 +151,18 @@ const getCardColorClass = (status) => {
     }
   };
 
-  const filters = ['nom', 'prenom', "datearrive"];
+  const filters = ['statut', "datearrive"];
 
   const filterDisplayText = {
-    nom: 'Trier par nom',
-    prenom: 'Trier par prénom',
+    statut: 'Trier par statut',
     datearrive: 'Trier par date d\'arrivée',
   };
 
   
   
   // État local pour stocker le filtre sélectionné
-  const [selectedFilter, setSelectedFilter] = useState('nom');
+  const [selectedFilter, setSelectedFilter] = useState('statut');
+  
   useEffect(() => {
     if (selectedFilter) {
       sort(selectedFilter)();

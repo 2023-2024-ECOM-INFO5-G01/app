@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * REST controller for managing {@link fr.uga.domain.Patient}.
@@ -187,8 +191,17 @@ public class PatientResource {
     @GetMapping("/patients/suggestions/{query}/{login}")
     public ResponseEntity<List<Patient>> suggestPatients(@PathVariable String query, @PathVariable String login) {
         log.debug("REST request to get Patients starting with: {}, with login: {}", query, login);
-        List<Patient> patients = patientRepository.findByNomStartingWithIgnoreCaseAndUsers_Login(query, login);
-        return ResponseEntity.ok().body(patients);
+        List<Patient> patientsByNom = patientRepository.findByNomStartingWithIgnoreCaseAndUsers_Login(query, login);
+        List<Patient> patientsByPrenom = patientRepository.findByPrenomStartingWithIgnoreCaseAndUsers_Login(query,
+                login);
+        Set<Patient> uniquePatients = new HashSet<>();
+        uniquePatients.addAll(patientsByNom);
+        uniquePatients.addAll(patientsByPrenom);
+
+        // Convertissez l'ensemble en liste avant de renvoyer la réponse
+        List<Patient> uniquePatientsList = new ArrayList<>(uniquePatients);
+
+        return ResponseEntity.ok().body(uniquePatientsList);
     }
 
     /**

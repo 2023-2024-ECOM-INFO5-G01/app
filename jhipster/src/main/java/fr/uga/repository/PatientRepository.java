@@ -31,6 +31,8 @@ public interface PatientRepository extends PatientRepositoryWithBagRelationships
 
     List<Patient> findByNomStartingWithIgnoreCaseAndUsers_Login(String query, String login);
 
+    List<Patient> findByPrenomStartingWithIgnoreCaseAndUsers_Login(String query, String login);
+
     List<Patient> findByUsers_Login(String login);
 
 }
