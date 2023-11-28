@@ -97,15 +97,14 @@ const getCardColorClass = (status) => {
   const [patientsuggestion, setpatientsuggestion] = useState([]);
 
   const handleRunPatient = () => {
-    if (patientsearch != '') {
-    // Appelez l'action getPoidsByPatientId avec l'ID du patient
-    dispatch(getPatientSearch({query : patientsearch, login: account.login})).then((response) => {
-      console.log(response);
-      if (response.payload && (response.payload as any).data) {
-        setpatientsuggestion((response.payload as any).data);
-      }
-    });
-  }
+    if (patientsearch !== '') {
+      dispatch(getPatientSearch({ query: patientsearch, login: account.login })).then((response) => {
+        console.log("response", response);
+        if (response.payload) {
+          setpatientsuggestion(response.payload as any[]);
+        }
+      });
+    }
   };
 
 
