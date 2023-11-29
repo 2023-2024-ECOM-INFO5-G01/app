@@ -95,6 +95,9 @@ export const Rappel = () => {
                   <Translate contentKey="ecomApp.rappel.action">Action</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('action')} />
                 </th>
+                <th className="hand" onClick={sort('verif')}>
+                  <Translate contentKey="ecomApp.rappel.verif">Verif</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('verif')} />
+                </th>
                 <th>
                   <Translate contentKey="ecomApp.rappel.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -114,6 +117,7 @@ export const Rappel = () => {
                   </td>
                   <td>{rappel.date ? <TextFormat type="date" value={rappel.date} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{rappel.action}</td>
+                  <td>{rappel.verif ? 'true' : 'false'}</td>
                   <td>{rappel.user ? rappel.user.id : ''}</td>
                   <td>{rappel.patient ? <Link to={`/patient/${rappel.patient.id}`}>{rappel.patient.id}</Link> : ''}</td>
                   <td className="text-end">

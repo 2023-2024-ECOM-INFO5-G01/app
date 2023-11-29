@@ -8,7 +8,7 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntity, updateStatus } from './entities/patient/patient.reducer';
-
+import RappelPatient from './rappelspatient';
 import { getIMC } from './entities/imc/imc.reducer';
 import { getEpas } from './entities/epa/epa.reducer';
 import { getPoids } from './entities/poids/poids.reducer';
@@ -226,7 +226,7 @@ export const Patient = () => {
       case 'note':
         return <div>Notes content goes here</div>;
       case 'rappel':
-        return <div>Rappel content goes here</div>;
+        return <div><RappelPatient idprops={id}/></div>;
       case 'alerte':
         return <div><AlertePatient idprops={id}/></div>;
       default:

@@ -7,7 +7,6 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities,getPatientSearch ,getPatientsByUserId} from 'app/entities/patient/patient.reducer';
-import { getRappelforUser } from 'app/entities/rappel/rappel.reducer';
 
 export const Notes = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -28,7 +27,7 @@ export const Notes = () => {
 
   return (
     <div>
-      <h1>Rappels</h1>
+      <h1>Notes</h1>
     </div>
   );
 };

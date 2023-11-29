@@ -74,7 +74,11 @@ public class RappelGatlingTest extends Simulation {
                     http("Create new rappel")
                         .post("/api/rappels")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"date\": \"2020-01-01T00:00:00.000Z\"" + ", \"action\": \"SAMPLE_TEXT\"" + "}"))
+                        .body(
+                            StringBody(
+                                "{" + "\"date\": \"2020-01-01T00:00:00.000Z\"" + ", \"action\": \"SAMPLE_TEXT\"" + ", \"verif\": null" + "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_rappel_url"))

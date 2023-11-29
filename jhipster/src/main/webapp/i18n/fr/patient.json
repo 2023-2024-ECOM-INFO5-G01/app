@@ -17,22 +17,22 @@
       "detail": {
         "title": "Patient"
       },
-      "id": "ID : ",
-      "nom": "Nom : ",
-      "prenom": "Prénom : ",
-      "statut": "Statut : ",
-      "dateNaissance": "Date de naissance : ",
-      "taille": "Taille : ",
-      "datearrive": "Date d'arrivée : ",
-      "albumine": "Albumine : ",
-      "ehpad": "Ehpad : ",
-      "user": "User : ",
-      "poids": "Poids : ",
-      "ePA": "EPA : ",
-      "iMC": "IMC : ",
-      "repas": "Repas : ",
-      "rappel": "Rappel : ",
-      "note": "Note : "
+      "id": "ID",
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "statut": "Statut",
+      "dateNaissance": "Date Naissance",
+      "taille": "Taille",
+      "datearrive": "Datearrive",
+      "albumine": "Albumine",
+      "ehpad": "Ehpad",
+      "user": "User",
+      "poids": "Poids",
+      "ePA": "E PA",
+      "iMC": "I MC",
+      "repas": "Repas",
+      "rappel": "Rappel",
+      "note": "Note"
     }
   }
 }
