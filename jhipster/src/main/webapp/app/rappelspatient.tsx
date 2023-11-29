@@ -8,6 +8,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import CreationRappel from './shared/layout/menus/creationRappel';
+import Modal from 'react-modal';
+import { Button } from 'reactstrap';
 
 export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
@@ -15,7 +18,9 @@ export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const { id } = useParams<'id'>();
   const [filter, setFilter] = useState('all'); 
   const [selectedDate, setSelectedDate] = useState(null); 
+  const [modal, setModal] = useState(false);
 
+  const toggle = () => setModal(!modal);
   const [rappels, setRappels] = useState([]);
 useEffect(() => {
     if (account && account.login) {
@@ -74,7 +79,10 @@ return (
             onChange={date => setSelectedDate(date)}
             placeholderText='Sélectionnez une date'
           />
-        )}      </div>
+        )}     
+         </div>
+         <Button color="danger" onClick={toggle}>Create Rappel</Button>
+      <CreationRappel modal={modal} toggle={toggle} idprops={idprops}/>
       {filteredRappels.map(rappel => (
         <div key={rappel.id} className="alerte">
           <div className="alerte-content">
