@@ -24,6 +24,7 @@ export const getEntities = createAsyncThunk('rappel/fetch_entity_list', async ({
 });
 
 
+
 export const getRappelsByUser = createAsyncThunk(
   'rappel/fetch_rappels_by_user',
   async (login: string) => {
@@ -37,6 +38,14 @@ export const toggleVerif = createAsyncThunk(
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}/toggle-verif`;
     return axios.put<IRappel>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+export const getRappelsByPatient = createAsyncThunk(
+  'rappel/fetch_rappels_by_patient',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/patient/${id}`;
+    return axios.get<IRappel[]>(requestUrl);
   },
   { serializeError: serializeAxiosError },
 );

@@ -18,4 +18,6 @@ public interface RappelRepository extends JpaRepository<Rappel, Long> {
 
     List<Rappel> findByPatient_IdAndUser_LoginOrderByDateDesc(Long id, String login);
 
+    List<Rappel> findByPatient_IdOrderByDateDesc(Long id);
+
 }

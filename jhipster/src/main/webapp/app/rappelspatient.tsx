@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getRappelsByPatientAndUser ,toggleVerif} from 'app/entities/rappel/rappel.reducer';
+import { getRappelsByPatient ,toggleVerif} from 'app/entities/rappel/rappel.reducer';
 import { useParams } from 'react-router-dom';
 import './shared/layout/menus/Alerte.css'; // Import your CSS file
 import DatePicker from 'react-datepicker';
@@ -24,7 +24,7 @@ export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const [rappels, setRappels] = useState([]);
 useEffect(() => {
     if (account && account.login) {
-        dispatch(getRappelsByPatientAndUser({ id: idprops, login: account.login }))
+        dispatch(getRappelsByPatient(idprops))
             .then(response => {
                 setRappels((response.payload as any).data);
                 console.log(rappels);
@@ -39,7 +39,7 @@ const handleToggleVerif = (alertId: string | number) => {
     dispatch(toggleVerif(alertId))
     .then(() => {
       if (account && account.login) {
-        dispatch(getRappelsByPatientAndUser({ id: idprops, login: account.login })) 
+        dispatch(getRappelsByPatient(idprops))
         .then(response => {
             setRappels((response.payload as any).data);
         });

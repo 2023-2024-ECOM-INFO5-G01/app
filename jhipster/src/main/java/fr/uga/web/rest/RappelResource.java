@@ -212,6 +212,21 @@ public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String log
         return ResponseEntity.ok().body(rappels);
     }
 
+
+/**
+ * GET  /rappels/patient/{id} : get all the rappels of a specific patient.
+ * @param id the id of the patient 
+ * @return the ResponseEntity with status 200 (OK) and the list of rappels in body.
+ */
+@GetMapping("/rappels/patient/{id}")
+public ResponseEntity<List<Rappel>> getAllRappelsByPatient(@PathVariable Long id) {
+    log.debug("REST request to get all Rappels of patient: {}", id);
+    
+    List<Rappel> rappels = rappelRepository.findByPatient_IdOrderByDateDesc(id);
+
+    return ResponseEntity.ok().body(rappels);
+}
+
     /**
      * PUT /rappels/{id}/toggle-verif : Toggle the verification status of a specific rappel.
      *
