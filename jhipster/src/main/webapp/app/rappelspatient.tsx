@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getRappelsByPatient ,toggleVerif} from 'app/entities/rappel/rappel.reducer';
 import { useParams } from 'react-router-dom';
-import './shared/layout/menus/Alerte.css'; // Import your CSS file
+import './shared/layout/menus/Rappel.css'; // Import your CSS file
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -78,21 +78,23 @@ return (
             selected={selectedDate}
             onChange={date => setSelectedDate(date)}
             placeholderText='Sélectionnez une date'
+            isClearable
           />
-        )}     
+        )}    
          </div>
          <Button color="danger" onClick={toggle}>Create Rappel</Button>
       <CreationRappel modal={modal} toggle={toggle} idprops={idprops}/>
       {filteredRappels.map(rappel => (
-        <div key={rappel.id} className="alerte">
-          <div className="alerte-content">
-            <div className="alerte-icon">⚠️</div>
+        <div key={rappel.id} className="rappel">
+          <div className="rappel-content">
+          <div className="rappel-icon">
+        {rappel.action === 'surveillance' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+      </div>
             <div>
-              <h2>Rappel</h2>
-              <p>Action: {rappel.action}</p>
+              <p>Tâche: {rappel.action}</p>
               <p>Date: {rappel.date}</p>
             </div>
-            <button className="alerte-check" onClick={() => handleToggleVerif(rappel.id)}>
+            <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
             {rappel.verif ? '✅' : '⬜'}
             </button>
           </div>

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getRappelsByUser,toggleVerif } from 'app/entities/rappel/rappel.reducer';
 import { Link } from 'react-router-dom';
-import './Alerte.css'; // Import your CSS file
+import './Rappel.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt,faCalendar } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export const Rappels = () => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -23,6 +25,7 @@ export const Rappels = () => {
       });
     }
   }, [account.login, dispatch]);
+  const [selectedDate, setSelectedDate] = useState(null); 
 
   const handleToggleVerif = (id: string | number) => { // New function to handle click
     dispatch(toggleVerif(id))
@@ -37,12 +40,23 @@ export const Rappels = () => {
     });
   };
 
+  
   const filteredRappels = rappels.filter(rappel => {
-    if (filter === 'all') return true;
-    if (filter === 'verified' && rappel.verif) return true;
-    if (filter === 'unverified' && !rappel.verif) return true;
+    if (filter === 'all' && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
+    if (filter === 'verified' && rappel.verif && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
+    if (filter === 'unverified' && !rappel.verif && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
     return false;
   });
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleCalendarIconClick = () => {
+    setShowDatePicker(!showDatePicker);
+  };
+
+  const handleDatePickerClose = () => {
+    setShowDatePicker(false);
+  };
   return (
     <div>
       <div>
@@ -51,24 +65,34 @@ export const Rappels = () => {
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
       </select>
+      <FontAwesomeIcon icon={faCalendar} onClick={handleCalendarIconClick} />
+        {showDatePicker && (
+          <DatePicker
+            selected={selectedDate}
+            onChange={date => setSelectedDate(date)}
+            placeholderText='Sélectionnez une date'
+            isClearable
+          />
+        )}   
       </div>
       {filteredRappels.map(rappel => (
-  <div key={rappel.id} className="alerte">
-    <div className="alerte-content">
-      <div className="alerte-icon">⚠️</div>
+  <div key={rappel.id} className="rappel">
+    <div className="rappel-content">
+    <div className="rappel-icon">
+        {rappel.action === 'surveillance' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+      </div>
       <div>
-        <h2>Rappel </h2>
-        <p>Action: {rappel.action}</p>
+        <p>Tâche: {rappel.action}</p>
         {rappel.patient && <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>}
         <p>Date: {rappel.date}</p>
       </div>
-      <button className="alerte-check" onClick={() => handleToggleVerif(rappel.id)}>
+      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
       {rappel.verif ? '✅' : '⬜'}
       </button>
     </div>
     {rappel.patient && 
       <div className="button-container">
-        <Link to={`/patients/${rappel.patient.id}`} className="alerte-button">
+        <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
         <FontAwesomeIcon icon={faFileAlt} />
           Voir patient</Link>
       </div>
