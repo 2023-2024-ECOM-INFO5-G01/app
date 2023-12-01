@@ -48,9 +48,18 @@ const handleToggleVerif = (alertId: string | number) => {
   };
 
   const filteredRappels = rappels.filter(rappel => {
-    if (filter === 'all' && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
-    if (filter === 'verified' && rappel.verif && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
-    if (filter === 'unverified' && !rappel.verif && (!selectedDate || new Date(rappel.date).toDateString() === selectedDate.toDateString())) return true;
+    const rappelDate = new Date(rappel.date);
+    const today = new Date();
+  
+    rappelDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+  
+    const isFuture = rappelDate.getTime() > today.getTime();
+  
+    if (filter === 'all' && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
+    if (filter === 'verified' && rappel.verif && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
+    if (filter === 'unverified' && !rappel.verif && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
+    if (filter === 'futur' && isFuture) return true; 
     return false;
   });
 
@@ -71,6 +80,7 @@ return (
         <option value="all">Tout les Rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
+        <option value="futur">Rappels futurs</option>
       </select>
       <FontAwesomeIcon icon={faCalendar} onClick={handleCalendarIconClick} />
         {showDatePicker && (
