@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import { Translate, translate, ValidatedField, ValidatedForm, isEmail } from 'react-jhipster';
 import { toast } from 'react-toastify';
@@ -7,11 +7,22 @@ import { locales, languages } from 'app/config/translation';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getSession } from 'app/shared/reducers/authentication';
 import { saveAccountSettings, reset } from './settings.reducer';
+import Modal from 'react-modal';
+
 
 export const SettingsPage = () => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(state => state.authentication.account);
   const successMessage = useAppSelector(state => state.settings.successMessage);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleDelete = () => {
+    // Perform the delete operation here
+    console.log('Deleting...');
+    // Close the modal after deletion or handle cancellation
+    setModalIsOpen(false);
+  };
+
 
   useEffect(() => {
     dispatch(getSession());
@@ -57,9 +68,10 @@ export const SettingsPage = () => {
               }}
               data-cy="firstname"
             />
+            
             <ValidatedField
               name="lastName"
-              label={translate('settings.form.lastname')}
+              label={"test"}
               id="lastName"
               placeholder={translate('settings.form.lastname.placeholder')}
               validate={{
@@ -92,6 +104,18 @@ export const SettingsPage = () => {
             <Button color="primary" type="submit" data-cy="submit">
               <Translate contentKey="settings.form.button">Save</Translate>
             </Button>
+            <Button color='primary' onClick={() => setModalIsOpen(true)}>
+              Delete account
+            </Button>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={() => setModalIsOpen(false)}
+              contentLabel="Delete Confirmation"
+            >
+              <p>Are you sure you want to delete?</p>
+              <button onClick={handleDelete}>Yes</button>
+              <button onClick={() => setModalIsOpen(false)}>No</button>
+            </Modal>
           </ValidatedForm>
         </Col>
       </Row>
