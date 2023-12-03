@@ -35,7 +35,7 @@ export const PatientUpdate = () => {
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
 
   const handleClose = () => {
-    navigate('/patient');
+    navigate('/');
   };
 
   useEffect(() => {

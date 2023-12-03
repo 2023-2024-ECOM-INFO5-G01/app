@@ -30,7 +30,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   const updateSuccess = useAppSelector(state => state.rappel.updateSuccess);
   const [selectedAction, setSelectedAction] = useState('surveillance');
   const handleClose = () => {
-    navigate('/rappel');
+    navigate(`/patients/${idprops}`);
   };
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   useEffect(() => {
     if (updateSuccess) {
       handleClose();
+      toggle();
     }
   }, [updateSuccess]);
 
