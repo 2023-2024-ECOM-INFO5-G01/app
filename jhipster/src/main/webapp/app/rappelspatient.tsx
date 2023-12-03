@@ -98,7 +98,7 @@ return (
         <div key={rappel.id} className="rappel">
           <div className="rappel-content">
           <div className="rappel-icon">
-        {rappel.action === 'surveillance' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+        {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
       </div>
             <div>
               <p>Tâche: {rappel.action}</p>

@@ -28,7 +28,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   const loading = useAppSelector(state => state.rappel.loading);
   const updating = useAppSelector(state => state.rappel.updating);
   const updateSuccess = useAppSelector(state => state.rappel.updateSuccess);
-  const [selectedAction, setSelectedAction] = useState('surveillance');
+  const [selectedAction, setSelectedAction] = useState('Regarder le dossier');
   const handleClose = () => {
     navigate(`/patients/${idprops}`);
   };
@@ -196,7 +196,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   type="select"
   onChange={e => setSelectedAction(e.target.value)}
 >
-  <option value="surveillance">Surveillance</option>
+  <option value="Regarder le dossier">Regarder le dossier</option>
   <option value="prise de poids">Prise de poids</option>
   </ValidatedField>
 
@@ -216,9 +216,9 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
                         name="date"
                         data-cy="date"
                         type="datetime-local"
-                        style={{ display: selectedAction === 'surveillance' ? 'block' : 'none' }}
+                        style={{ display: selectedAction === 'Regarder le dossier' ? 'block' : 'none' }}
                         validate={{
-                        required: selectedAction === 'surveillance' ? 'Ce champ est obligatoire' : false}}
+                        required: selectedAction === 'Regarder le dossier' ? 'Ce champ est obligatoire' : false}}
                         placeholder="YYYY-MM-DD HH:mm" />
     <ValidatedField
       id="rappel-frequency"
