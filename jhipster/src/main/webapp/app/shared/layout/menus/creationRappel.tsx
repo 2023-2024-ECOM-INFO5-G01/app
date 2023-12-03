@@ -135,7 +135,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
       }
 
       // Check if the reminder date is still within the same month
-      if (reminderDate2.getTime() < endDate.getTime()) {
+      if (reminderDate2.getTime() < endDate.getTime() && reminderDate2.getTime() > date.getTime()) {
         datetab.push(new Date(reminderDate2));
       }
     }
@@ -143,10 +143,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     // Increment the month of the reminder date
     reminderDate2.setMonth(reminderDate2.getMonth() + 1);
 
-    // Handle the edge case where the reminder date rolls over to the next year
-    if (reminderDate2.getMonth() === 0) {
-      reminderDate2.setFullYear(reminderDate2.getFullYear() + 1);
-    }
+
   }
   break;
         
@@ -159,7 +156,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
           reminderDate3.setMonth(i * yearInterval);
 
           // Check if the reminder date is still within the same year
-          if ( reminderDate3.getTime() < endDate.getTime()) {
+          if ( reminderDate3.getTime() < endDate.getTime() && reminderDate3.getTime() > date.getTime()) {
             datetab.push(new Date(reminderDate3));
           }
         }
