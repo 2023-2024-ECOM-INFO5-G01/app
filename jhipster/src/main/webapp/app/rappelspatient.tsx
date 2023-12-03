@@ -33,7 +33,7 @@ useEffect(() => {
                 console.error('Une erreur s\'est produite :', error);
             });
     }
-}, [account.login, dispatch]);
+}, [account.login, dispatch,modal]);
 
 const handleToggleVerif = (alertId: string | number) => { 
     dispatch(toggleVerif(alertId))
