@@ -79,6 +79,16 @@ export const createEntity = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
+export const createEntity1 = createAsyncThunk(
+  'rappel/create_entity',
+  async (entity: IRappel, thunkAPI) => {
+    const result = await axios.post<IRappel>(apiUrl, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
+  },
+  { serializeError: serializeAxiosError },
+);
+
 export const updateEntity = createAsyncThunk(
   'rappel/update_entity',
   async (entity: IRappel, thunkAPI) => {

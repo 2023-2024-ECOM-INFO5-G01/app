@@ -16,6 +16,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
+import { createEntity1 } from '../rappel/rappel.reducer';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ export const PatientUpdate = () => {
   const loading = useAppSelector(state => state.patient.loading);
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
-
+  const rappelEntity = useAppSelector(state => state.rappel.entity);
   const handleClose = () => {
     navigate('/');
   };
@@ -50,13 +51,24 @@ export const PatientUpdate = () => {
     dispatch(getUsers({}));
     dispatch(getRoles());
   }, []);
-
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   useEffect(() => {
-    if (updateSuccess) {
+    if (updateSuccess && selectedUser) {
       handleClose();
+      const daterappel = new Date();
+      daterappel.setDate(daterappel.getDate() + 1);
+      const entityrappel = {
+        ...rappelEntity,
+        verif: false,
+        user: selectedUser,
+        patient: patientEntity,
+        action : 'prise de poids',
+        date: daterappel,
+      };
+      console.log("entity rappel : ", entityrappel);
+      dispatch(createEntity1(entityrappel));
     }
-  }, [updateSuccess]);
-
+  }, [updateSuccess, selectedUser]);
   const saveEntity = values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
@@ -200,25 +212,30 @@ export const PatientUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-                label= "Médecin"
-                id="patient-user"
-                data-cy="user"
-                type="select"
-                multiple
-                name="users"
-                validate={{
-                  required: 'Veuillez choisir un médecin',
-                }}
-              >
-                <option value="" key="0" />
-                {users
-                  ? users.map((user,i) => (
-                      <option value={user.id} key={user.id}>
-                        {user.login}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+  label= "Médecin"
+  id="patient-user"
+  data-cy="user"
+  type="select"
+  multiple
+  name="users"
+  onChange={event => {
+    const userId = event.target.value;
+    const user = users.find(user => user.id.toString() === userId);
+    setSelectedUser(user);
+  }}
+  validate={{
+    required: 'Veuillez choisir un médecin',
+  }}
+>
+  <option value="" key="0" />
+  {users
+    ? users.map((user,i) => (
+        <option value={user.id} key={user.id}>
+          {user.login}
+        </option>
+      ))
+    : null}
+</ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
