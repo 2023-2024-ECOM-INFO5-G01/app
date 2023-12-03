@@ -28,6 +28,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   const loading = useAppSelector(state => state.rappel.loading);
   const updating = useAppSelector(state => state.rappel.updating);
   const updateSuccess = useAppSelector(state => state.rappel.updateSuccess);
+  const [selectedAction, setSelectedAction] = useState('surveillance');
   const handleClose = () => {
     navigate('/rappel');
   };
@@ -45,17 +46,130 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   }, [updateSuccess]);
 
   const saveEntity = values => {
-    values.date = convertDateTimeToServer(values.date);
-
+    
+  
     const entity = {
       ...rappelEntity,
       ...values,
+      verif: false,
       user: users.find(it => it.id.toString() === values.user.toString()),
       patient: patients.find(it => it.id.toString() === idprops),
     };
-      dispatch(createEntity(entity));
-
+  
+    if (selectedAction === 'prise de poids') {
+      const startDate = new Date();
+      const endDate =values.endDate ? convertDateTimeToServer(values.endDate) : null;
+      console.log("date : " + startDate+ ""+ "endDate:" + endDate + "period:" + values.period + "frequence:" + values.frequency );
+      if (!startDate || !endDate || startDate >= endDate) {
+        alert("La date de fin doit être postérieure à la date de début");
+        return;
+      }
+      if (startDate.getTime() < endDate.getTime()) {
+        console.log('entity:', entity, 'currentDate:', startDate);
+        const dates = addPeriod(startDate, values.period, values.frequency, endDate);
+        console.log('dates:', dates);
+        for (let date of dates) {
+          const newEntity = {
+            ...entity,
+            date: date,
+          };
+          dispatch(createEntity(newEntity));
+        }
+      }
+    } else {
+      values.date = convertDateTimeToServer(values.date);
+      console.log('values.date:', values.date);
+      const newEntity = {
+        ...entity,
+        date: values.date,
+      };
+      dispatch(createEntity(newEntity));
+    }
   };
+  
+  
+  
+  function addPeriod(date, period, frequency, endDate) {
+    let newDate = new Date(date);
+    const datetab = [] ;
+    switch (period) {
+      case 'day':
+        let interval = Math.round(24 / frequency); // Divide the day into equal intervals
+        let reminderDate = new Date(newDate);
+        //ajouter un jour à reminderDate
+        reminderDate.setDate(reminderDate.getDate() + 1);
+        reminderDate.setHours(0); // Set the hour to the first hour of the day
+
+        while (reminderDate.getTime() < endDate.getTime()) {
+        for (let i = 0; i < frequency; i++) {
+        // Create a new date object with the same date but different time
+            reminderDate.setHours(i * interval); // Set the hour to the current interval
+
+          // Check if the reminder date is still within the same day
+            if ( reminderDate.getTime() < endDate.getTime()) {
+              datetab.push(new Date(reminderDate));
+              console.log("date add : " + reminderDate);
+              console.log("datetab add : " + datetab);
+          }
+          }
+          reminderDate.setHours(0); // Reset the hours to zero
+          reminderDate.setDate(reminderDate.getDate() + 1);
+          console.log("ajoute un jour:" + "reminderdate" + reminderDate + "endDate" + endDate);
+
+        }
+        break;
+        case 'month':
+  let reminderDate2 = new Date(newDate);
+        let monthInterval = Math.round(30 / frequency); // Divide the month into equal intervals
+  while (reminderDate2.getTime() < endDate.getTime()) {
+    for (let i = 0; i < frequency; i++) {
+      // Save the current month
+      let currentMonth = reminderDate2.getMonth();
+      // Set the day of the month to i + 1
+      reminderDate2.setDate(i * monthInterval + 1);
+
+      // Check if the month has changed
+      if (reminderDate2.getMonth() !== currentMonth) {
+        // The day was too big for the month, so reset it to the last day of the previous month
+        reminderDate2.setDate(0);
+      }
+
+      // Check if the reminder date is still within the same month
+      if (reminderDate2.getTime() < endDate.getTime()) {
+        datetab.push(new Date(reminderDate2));
+      }
+    }
+
+    // Increment the month of the reminder date
+    reminderDate2.setMonth(reminderDate2.getMonth() + 1);
+
+    // Handle the edge case where the reminder date rolls over to the next year
+    if (reminderDate2.getMonth() === 0) {
+      reminderDate2.setFullYear(reminderDate2.getFullYear() + 1);
+    }
+  }
+  break;
+        
+      case 'year':
+        let yearInterval = Math.round(12 / frequency); // Divide the year into equal intervals
+        let reminderDate3 = new Date(newDate);
+      while (reminderDate3.getTime() < endDate.getTime()) {
+        for (let i = 0; i < frequency; i++) {
+          // Create a new date object with the same date but different time
+          reminderDate3.setMonth(i * yearInterval);
+
+          // Check if the reminder date is still within the same year
+          if ( reminderDate3.getTime() < endDate.getTime()) {
+            datetab.push(new Date(reminderDate3));
+          }
+        }
+        reminderDate3.setMonth(1); // Reset the month to the first month of the year
+        reminderDate3.setFullYear(reminderDate3.getFullYear() + 1);
+      }
+        break;
+    }
+    return datetab;
+  }
 
   const defaultValues = () =>
     isNew
@@ -75,55 +189,78 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     <ModalBody>
       <Row className="justify-content-center">
         <Col md="8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              <ValidatedField
-                label={translate('ecomApp.rappel.date')}
-                id="rappel-date"
-                name="date"
-                data-cy="date"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-              />
-<ValidatedField id="rappel-action" name="action" data-cy="action" label={translate('ecomApp.rappel.action')} type="select">
+<ValidatedField
+  id="rappel-action"
+  name="action"
+  data-cy="action"
+  label={translate('ecomApp.rappel.action')}
+  type="select"
+  onChange={e => setSelectedAction(e.target.value)}
+>
   <option value="surveillance">Surveillance</option>
   <option value="prise de poids">Prise de poids</option>
-</ValidatedField>
-              <ValidatedField
-                label={translate('ecomApp.rappel.verif')}
-                id="rappel-verif"
-                name="verif"
-                data-cy="verif"
-                check
-                type="checkbox"
-              />
-              <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select">
-                <option value="" key="0" />
-                {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.login}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/rappel" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
-              </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+  </ValidatedField>
+
+  <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select" >
+                      <option value="" key="0" />
+                      {users
+                        ? users.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.login}
+                          </option>
+                        ))
+                        : null}
+                    </ValidatedField>
+                    <ValidatedField
+                        label={translate('ecomApp.rappel.date')}
+                        id="rappel-date"
+                        name="date"
+                        data-cy="date"
+                        type="datetime-local"
+                        style={{ display: selectedAction === 'surveillance' ? 'block' : 'none' }}
+                        validate={{
+                        required: selectedAction === 'surveillance' ? 'Ce champ est obligatoire' : false}}
+                        placeholder="YYYY-MM-DD HH:mm" />
+    <ValidatedField
+      id="rappel-frequency"
+      name="frequency"
+      data-cy="frequency"
+      label="Fréquence"
+      type="number"
+      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
+      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
+    />
+    <ValidatedField
+      id="rappel-period"
+      name="period"
+      data-cy="period"
+      label="Période"
+      type="select"
+      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
+      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
+    >
+      <option value="day">Jour</option>
+      <option value="month">Mois</option>
+      <option value="year">Année</option>
+    </ValidatedField>
+    <ValidatedField
+      id="rappel-endDate"
+      name="endDate"
+      data-cy="endDate"
+      label="Date de fin"
+      type="datetime-local"
+      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
+      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
+      placeholder="YYYY-MM-DD HH:mm" />
+   
+
+<Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
             </ValidatedForm>
-          )}
         </Col>
       </Row>
       </ModalBody>
