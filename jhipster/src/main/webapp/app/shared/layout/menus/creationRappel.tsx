@@ -50,7 +50,6 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     
   
     const entity = {
-      ...rappelEntity,
       ...values,
       verif: false,
       user: users.find(it => it.id.toString() === values.user.toString()),
@@ -169,25 +168,13 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     return datetab;
   }
 
-  const defaultValues = () =>
-    isNew
-      ? {
-          date: displayDefaultDateTime(),
-        }
-      : {
-          ...rappelEntity,
-          date: convertDateTimeFromServer(rappelEntity.date),
-          user: rappelEntity?.user?.id,
-          patient: rappelEntity?.patient?.id,
-        };
-
   return (
     <Modal isOpen={modal} toggle={toggle}>
     <ModalHeader toggle={toggle}>Create Rappel</ModalHeader>
     <ModalBody>
       <Row className="justify-content-center">
         <Col md="8">
-            <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+            <ValidatedForm  onSubmit={saveEntity}>
 <ValidatedField
   id="rappel-action"
   name="action"
