@@ -9,23 +9,116 @@ Main page styles
   background-size: contain;
 }
 
+
 .patient-card {
-  border: 1px solid #ccc; /* Ajoutez une bordure pour séparer les patients */
+  border: 1px solid #cccccc; /* Ajoutez une bordure pour séparer les patients */
   padding: 16px; /* Ajoutez un espace interne de 16px autour de chaque patient */
   margin: 8px; /* Ajoutez une marge de 8px autour de chaque patient */
+  height: 200px;
 }
 
 .card-red {
-  background-color: red;
+  background-color: rgb(240, 98, 98);
   color: white;
 }
 
 .card-orange {
-  background-color: orange;
+  background-color: rgb(234, 153, 61);
   color: white;
 }
 
 .card-blue {
-  background-color: blue;
+  background-color: rgb(103, 103, 237);
   color: white;
 }
+
+.view_data_button {
+  background-color:rgb(39, 37, 37);
+  border: 1px solid white;
+}
+
+.custom-primary-button {
+  background-color:rgb(39, 37, 37);
+  border: 1px solid white;
+}
+
+.custom-search-button {
+  color:white;
+  padding:5px;
+  margin:3px;
+}
+
+.status-filter-container {
+  position: relative;
+  margin-bottom: 10px; /* Ajoutez une marge en bas pour séparer de l'élément suivant */
+}
+
+.status-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Ajoutez un espacement entre les éléments du menu */
+}
+
+.status-filter-container{
+  width: 200px;
+}
+
+.status-menu {
+  width: 200px;
+  border: 1px solid black;
+}
+
+.checkbox-label{
+  margin:4px;
+}
+
+.sort-filter-container {
+  margin-right: 6px;
+}
+.filter-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Ajoutez ces styles pour personnaliser le bouton */
+.d-flex.justify-content-end .btn-primary {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 16px;
+  margin-top: 2px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.custom-search-button {
+  background-color: rgb(39, 37, 37);
+  color: white; /* Couleur du texte pendant le survol */
+  border: 1px solid white;
+}
+
+
+.custom-search-button:hover {
+  background-color: black;
+  color: white; /* Couleur du texte pendant le survol */
+  border: 1px solid black;
+}
+
+.custom-create-button {
+  background-color: rgb(39, 37, 37); /* Couleur de fond noire par défaut */
+  color: white; /* Texte blanc par défaut */
+  border: 1px solid white;
+}
+
+.custom-create-button:hover {
+  background-color: black;
+  color: white;
+}
+

@@ -162,7 +162,7 @@ const getCardColorClass = (status) => {
   
   // État local pour stocker le filtre sélectionné
   const [selectedFilter, setSelectedFilter] = useState('statut');
-  
+
   useEffect(() => {
     if (selectedFilter) {
       sort(selectedFilter)();
@@ -173,25 +173,35 @@ const getCardColorClass = (status) => {
 
 
   return (
-    <div>
-        <div>
-          <PatientHeading loading={loading} handleSyncList={handleSyncList} />
-          <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-          <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
-          <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
-          <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
-          <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
-          <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
+    <div style={{ backgroundColor: 'grey'}}>
+<div>
+  <PatientHeading loading={loading} handleSyncList={handleSyncList} />
 
-          <div className="d-flex flex-wrap">
-          {filterPatientsByStatus().filter((patient) => selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter).map((patient, i) => (
-            <div key={`entity-${i}`} className={`patient-card ${getCardColorClass(patient.statut)}`}>
-              <PatientCard patient={patient} />
-            </div>
-          ))}
-          </div>
-        </div>
-    </div>
+  <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
+  <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
+
+  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '6px' }}>
+  <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
+ 
+    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
+
+ 
+  <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
+  <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
+</div>
+
+
+
+
+  <div className="d-flex flex-wrap">
+    {filterPatientsByStatus().filter((patient) => selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter).map((patient, i) => (
+      <div key={`entity-${i}`} className={`patient-card ${getCardColorClass(patient.statut)}`}>
+        <PatientCard patient={patient} />
+      </div>
+    ))}
+  </div>
+</div>
+</div>
   );
 };
 
