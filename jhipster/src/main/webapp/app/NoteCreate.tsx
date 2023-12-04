@@ -34,6 +34,7 @@ export const NoteCreate = ({ modal, toggle ,patientId}: { modal: boolean; toggle
   };
   const handleClose = () => {
     navigate(`/patients/${patientId}`);
+    toggle();
   };
 
   useEffect(() => {
@@ -44,7 +45,6 @@ export const NoteCreate = ({ modal, toggle ,patientId}: { modal: boolean; toggle
   useEffect(() => {
     if (updateSuccess) {
       handleClose();
-      toggle();
     }
   }, [updateSuccess]);
 

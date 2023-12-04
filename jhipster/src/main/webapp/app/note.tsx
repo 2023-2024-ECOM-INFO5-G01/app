@@ -15,6 +15,8 @@ import { NoteCreate } from './NoteCreate';
 import Modal from 'react-modal';
 import { NoteEdit } from './NoteUpdate';
 import { set, update } from 'lodash';
+import { deleteEntity as deleteNote } from 'app/entities/note/note.reducer';
+
 export const Notes = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -62,6 +64,20 @@ useEffect(() => {
     };
     const [editingNote, setEditingNote] = useState(null);
 
+
+    const handleDeleteNote = (noteId) => {
+      dispatch(deleteNote(noteId))
+        .then(() => {
+          dispatch(getNotesByPatientAndUser({ id: idprops, login: account.login }))
+            .then(response => {
+              setNotes((response.payload as any).data);
+            })
+            .catch(error => {
+              console.error('Une erreur s\'est produite :', error);
+            });
+        });
+    };
+
   return (
     <div>
       {notes.map(note => (
@@ -78,9 +94,9 @@ useEffect(() => {
       <FontAwesomeIcon icon={faPencilAlt} />
     </button>
   )}
-  <button className="note-button">
-    <FontAwesomeIcon icon={faTrash} />
-  </button>
+  <button className="note-button" onClick={() => handleDeleteNote(note.id)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
 </div>
         </div>
       ))}
