@@ -59,11 +59,7 @@ const AppRoutes = () => {
           </PrivateRoute>
         } />
     
-        <Route path="note/:id" element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
-            <Notes />
-          </PrivateRoute>
-        } />
+        
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
         <Route path="account">

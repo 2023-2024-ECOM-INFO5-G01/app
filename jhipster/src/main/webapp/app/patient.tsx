@@ -26,7 +26,7 @@ import {
 import { IAlerte } from 'app/shared/model/alerte.model';
 import {  createEntity, reset } from './entities/alerte/alerte.reducer';
 import { useForm } from 'react-hook-form';
-
+import Notes from './note';
 import '../content/css/patient.css';
 import AlertePatient from './alertespatient';
 import { set } from 'lodash';
@@ -224,7 +224,7 @@ export const Patient = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'note':
-        return <div>Notes content goes here</div>;
+        return <div><Notes idprops={id}/></div>;
       case 'rappel':
         return <div>Rappel content goes here</div>;
       case 'alerte':

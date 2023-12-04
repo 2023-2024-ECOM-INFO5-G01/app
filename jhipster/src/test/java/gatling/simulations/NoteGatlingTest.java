@@ -74,7 +74,15 @@ public class NoteGatlingTest extends Simulation {
                     http("Create new note")
                         .post("/api/notes")
                         .headers(headers_http_authenticated)
-                        .body(StringBody("{" + "\"date\": \"2020-01-01T00:00:00.000Z\"" + ", \"note\": \"SAMPLE_TEXT\"" + "}"))
+                        .body(
+                            StringBody(
+                                "{" +
+                                "\"date\": \"2020-01-01T00:00:00.000Z\"" +
+                                ", \"note\": \"SAMPLE_TEXT\"" +
+                                ", \"titre\": \"SAMPLE_TEXT\"" +
+                                "}"
+                            )
+                        )
                         .asJson()
                         .check(status().is(201))
                         .check(headerRegex("Location", "(.*)").saveAs("new_note_url"))
