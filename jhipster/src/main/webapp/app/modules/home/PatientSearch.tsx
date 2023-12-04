@@ -9,9 +9,10 @@ const PatientSearch = ({ patientsearch, setPatientsearch, handleRunPatient }) =>
     <div>
       <input
         type="text"
-        placeholder="nom du patient"
+        placeholder="Nom ou prénom du patient"
         value={patientsearch}
         onChange={(e) => setPatientsearch(e.target.value)}
+        style={{ width: '30%'}}
       />
       <Button
         color="primary"

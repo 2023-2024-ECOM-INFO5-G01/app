@@ -15,7 +15,7 @@ const StatusFilter = ({ handleStatusFilterChange }) => {
 
   return (
     <div className="status-filter-container">
-      <button type="button" onClick={toggleStatusMenu}>
+      <button className="custom-search-button" type="button" onClick={toggleStatusMenu}>
         Choix des statuts
       </button>
 

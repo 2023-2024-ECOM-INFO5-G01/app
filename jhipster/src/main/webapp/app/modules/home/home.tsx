@@ -173,7 +173,7 @@ const getCardColorClass = (status) => {
 
 
   return (
-    <div style={{ backgroundColor: 'grey'}}>
+    <div style={{ backgroundColor: '#F5F5F5'}}>
 <div>
   <PatientHeading loading={loading} handleSyncList={handleSyncList} />
 
@@ -200,6 +200,8 @@ const getCardColorClass = (status) => {
       </div>
     ))}
   </div>
+</div>
+<div>
 </div>
 </div>
   );
