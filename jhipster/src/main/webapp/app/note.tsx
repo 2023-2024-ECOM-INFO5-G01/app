@@ -11,12 +11,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { getNotesByPatientAndUser } from 'app/entities/note/note.reducer';
+import { NoteCreate } from './NoteCreate';
+import Modal from 'react-modal';
 export const Notes = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
   const { id } = useParams<'id'>();
   const [filter, setFilter] = useState('all'); 
   const [selectedDate, setSelectedDate] = useState(null); 
+  const [modal, setModal] = useState(false);
 
   const [notes, setNotes] = useState([]);
 useEffect(() => {
@@ -30,7 +33,7 @@ useEffect(() => {
                 console.error('Une erreur s\'est produite :', error);
             });
     }
-}, [account.login, dispatch]);
+}, [account.login, dispatch,modal]);
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -41,7 +44,9 @@ useEffect(() => {
   const handleDatePickerClose = () => {
     setShowDatePicker(false);
   };
-  
+  const [creatingNote, setCreatingNote] = useState(false);
+  const toggle = () => setModal(!modal);
+
   return (
     <div>
       {notes.map(note => (
@@ -60,9 +65,13 @@ useEffect(() => {
           </div>
         </div>
       ))}
-      <button className="add-note-button">
-        <FontAwesomeIcon icon={faPlus} />
-      </button>
+     {creatingNote ? (
+        <NoteCreate modal={modal} toggle={toggle} patientId={idprops} />
+      ) : (
+        <button className="add-note-button" onClick={() => {setCreatingNote(true);setModal(true);}}>
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+      )}
     </div>
   );
 }
