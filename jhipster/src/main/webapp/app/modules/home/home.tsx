@@ -151,7 +151,7 @@ const getCardColorClass = (status) => {
     }
   };
 
-  const filters = ['datearrive', "nom", "prenom"];
+  const filters = ['datearrive'];
 
   const filterDisplayText = {
     datearrive: 'Les patients sont triés par ordre d\'arrivée',
