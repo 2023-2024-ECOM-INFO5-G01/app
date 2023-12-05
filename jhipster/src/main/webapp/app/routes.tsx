@@ -16,7 +16,7 @@ import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 import Rappels from './shared/layout/menus/rappels';
 import Alerte from './shared/layout/menus/alerte';
-import Patient from './patient';
+import Patient from './PatientView/patient';
 import Notes from './note';
 
 import AlertePatient from './alertespatient';
@@ -58,7 +58,7 @@ const AppRoutes = () => {
             <Patient />
           </PrivateRoute>
         } />
-    
+
         <Route path="note/:id" element={
           <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
             <Notes />
