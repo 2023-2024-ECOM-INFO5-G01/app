@@ -56,7 +56,7 @@ const Header = (props: IHeaderProps) => {
             <Home />
             {props.isAuthenticated && (
               <Link to="/rappels" className="nav-link" data-cy="rappelsLink">
-                Rappels
+                Tâches
               </Link>
             )}   
             {props.isAuthenticated && (

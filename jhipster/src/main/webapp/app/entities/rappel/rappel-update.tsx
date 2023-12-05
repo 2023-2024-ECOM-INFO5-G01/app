@@ -114,6 +114,14 @@ export const RappelUpdate = () => {
                 placeholder="YYYY-MM-DD HH:mm"
               />
               <ValidatedField label={translate('ecomApp.rappel.action')} id="rappel-action" name="action" data-cy="action" type="text" />
+              <ValidatedField
+                label={translate('ecomApp.rappel.verif')}
+                id="rappel-verif"
+                name="verif"
+                data-cy="verif"
+                check
+                type="checkbox"
+              />
               <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select">
                 <option value="" key="0" />
                 {users

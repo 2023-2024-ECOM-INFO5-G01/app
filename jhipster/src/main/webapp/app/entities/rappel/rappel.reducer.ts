@@ -4,7 +4,6 @@ import { ASC } from 'app/shared/util/pagination.constants';
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IRappel, defaultValue } from 'app/shared/model/rappel.model';
-import { login } from 'app/shared/reducers/authentication';
 
 const initialState: EntityState<IRappel> = {
   loading: false,
@@ -24,6 +23,43 @@ export const getEntities = createAsyncThunk('rappel/fetch_entity_list', async ({
   return axios.get<IRappel[]>(requestUrl);
 });
 
+
+
+export const getRappelsByUser = createAsyncThunk(
+  'rappel/fetch_rappels_by_user',
+  async (login: string) => {
+    const requestUrl = `${apiUrl}/user/${login}`;
+    return axios.get<IRappel[]>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+export const toggleVerif = createAsyncThunk(
+  'rappel/toggle_verif',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/${id}/toggle-verif`;
+    return axios.put<IRappel>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+export const getRappelsByPatient = createAsyncThunk(
+  'rappel/fetch_rappels_by_patient',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/patient/${id}`;
+    return axios.get<IRappel[]>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+
+export const getRappelsByPatientAndUser = createAsyncThunk(
+  'rappel/fetch_rappels_by_patient_and_user',
+  async ({ id, login }: { id: string | number; login: string }) => {
+    const requestUrl = `${apiUrl}/patient/${id}/${login}`;
+    return axios.get<IRappel[]>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+
+
 export const getEntity = createAsyncThunk(
   'rappel/fetch_entity',
   async (id: string | number) => {
@@ -33,16 +69,17 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
-export const getRappelforUser = createAsyncThunk(
-  'rappel/fetch_entity',
-  async (login: string) => {
-    const requestUrl = `${apiUrl}/user/${login}`;
-    return axios.get<IRappel>(requestUrl);
+export const createEntity = createAsyncThunk(
+  'rappel/create_entity',
+  async (entity: IRappel, thunkAPI) => {
+    const result = await axios.post<IRappel>(apiUrl, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
   },
   { serializeError: serializeAxiosError },
 );
 
-export const createEntity = createAsyncThunk(
+export const createEntity1 = createAsyncThunk(
   'rappel/create_entity',
   async (entity: IRappel, thunkAPI) => {
     const result = await axios.post<IRappel>(apiUrl, cleanEntity(entity));

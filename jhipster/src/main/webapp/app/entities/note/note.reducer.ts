@@ -32,7 +32,14 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
-
+export const getNotesByPatientAndUser = createAsyncThunk(
+  'note/fetch_notes_by_patient_and_user',
+  async ({ id, login }: { id: string | number; login: string }) => {
+    const requestUrl = `${apiUrl}/patient/${id}/${login}`;
+    return axios.get<INote[]>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 
 export const createEntity = createAsyncThunk(
   'note/create_entity',

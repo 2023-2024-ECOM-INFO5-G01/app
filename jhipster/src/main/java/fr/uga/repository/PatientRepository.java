@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the Patient entity.
  *
  * When extending this class, extend PatientRepositoryWithBagRelationships too.
- * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
+ * For more information refer to
+ * https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
 public interface PatientRepository extends PatientRepositoryWithBagRelationships, JpaRepository<Patient, Long> {
@@ -28,7 +29,10 @@ public interface PatientRepository extends PatientRepositoryWithBagRelationships
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
-    List <Patient> findByNomStartingWithIgnoreCase(String query);
+    List<Patient> findByNomStartingWithIgnoreCaseAndUsers_Login(String query, String login);
+
+    List<Patient> findByPrenomStartingWithIgnoreCaseAndUsers_Login(String query, String login);
+
     List<Patient> findByUsers_Login(String login);
 
 }

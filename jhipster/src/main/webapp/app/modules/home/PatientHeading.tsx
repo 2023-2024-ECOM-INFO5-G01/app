@@ -7,20 +7,19 @@ import { Link } from 'react-router-dom';
 
 const PatientHeading = ({ loading, handleSyncList }) => {
   return (
-    <h2 id="patient-heading" data-cy="PatientHeading">
-      <Translate contentKey="home.title">Patient</Translate>
-      <div className="d-flex justify-content-end">
-        <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
-          <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-          <Translate contentKey="ecomApp.patient.home.refreshListLabel">Refresh List</Translate>
-        </Button>
-        <Link to="/patient/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
-        </Link>
-      </div>
-    </h2>
+<div className="d-flex justify-content-end">
+  <Link
+    to="/patient/new"
+    className="btn jh-create-entity custom-create-button"
+    id="jh-create-entity"
+    data-cy="entityCreateButton"
+    color='primary'
+  >
+    <FontAwesomeIcon icon="plus" />
+    &nbsp;
+    <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
+  </Link>
+</div>
   );
 };
 

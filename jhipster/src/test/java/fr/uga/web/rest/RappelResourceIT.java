@@ -37,6 +37,9 @@ class RappelResourceIT {
     private static final String DEFAULT_ACTION = "AAAAAAAAAA";
     private static final String UPDATED_ACTION = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_VERIF = false;
+    private static final Boolean UPDATED_VERIF = true;
+
     private static final String ENTITY_API_URL = "/api/rappels";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +64,7 @@ class RappelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Rappel createEntity(EntityManager em) {
-        Rappel rappel = new Rappel().date(DEFAULT_DATE).action(DEFAULT_ACTION);
+        Rappel rappel = new Rappel().date(DEFAULT_DATE).action(DEFAULT_ACTION).verif(DEFAULT_VERIF);
         return rappel;
     }
 
@@ -72,7 +75,7 @@ class RappelResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Rappel createUpdatedEntity(EntityManager em) {
-        Rappel rappel = new Rappel().date(UPDATED_DATE).action(UPDATED_ACTION);
+        Rappel rappel = new Rappel().date(UPDATED_DATE).action(UPDATED_ACTION).verif(UPDATED_VERIF);
         return rappel;
     }
 
@@ -96,6 +99,7 @@ class RappelResourceIT {
         Rappel testRappel = rappelList.get(rappelList.size() - 1);
         assertThat(testRappel.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testRappel.getAction()).isEqualTo(DEFAULT_ACTION);
+        assertThat(testRappel.getVerif()).isEqualTo(DEFAULT_VERIF);
     }
 
     @Test
@@ -129,7 +133,8 @@ class RappelResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(rappel.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].action").value(hasItem(DEFAULT_ACTION)));
+            .andExpect(jsonPath("$.[*].action").value(hasItem(DEFAULT_ACTION)))
+            .andExpect(jsonPath("$.[*].verif").value(hasItem(DEFAULT_VERIF.booleanValue())));
     }
 
     @Test
@@ -145,7 +150,8 @@ class RappelResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(rappel.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.action").value(DEFAULT_ACTION));
+            .andExpect(jsonPath("$.action").value(DEFAULT_ACTION))
+            .andExpect(jsonPath("$.verif").value(DEFAULT_VERIF.booleanValue()));
     }
 
     @Test
@@ -167,7 +173,7 @@ class RappelResourceIT {
         Rappel updatedRappel = rappelRepository.findById(rappel.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedRappel are not directly saved in db
         em.detach(updatedRappel);
-        updatedRappel.date(UPDATED_DATE).action(UPDATED_ACTION);
+        updatedRappel.date(UPDATED_DATE).action(UPDATED_ACTION).verif(UPDATED_VERIF);
 
         restRappelMockMvc
             .perform(
@@ -183,6 +189,7 @@ class RappelResourceIT {
         Rappel testRappel = rappelList.get(rappelList.size() - 1);
         assertThat(testRappel.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testRappel.getAction()).isEqualTo(UPDATED_ACTION);
+        assertThat(testRappel.getVerif()).isEqualTo(UPDATED_VERIF);
     }
 
     @Test
@@ -253,7 +260,7 @@ class RappelResourceIT {
         Rappel partialUpdatedRappel = new Rappel();
         partialUpdatedRappel.setId(rappel.getId());
 
-        partialUpdatedRappel.date(UPDATED_DATE);
+        partialUpdatedRappel.action(UPDATED_ACTION);
 
         restRappelMockMvc
             .perform(
@@ -267,8 +274,9 @@ class RappelResourceIT {
         List<Rappel> rappelList = rappelRepository.findAll();
         assertThat(rappelList).hasSize(databaseSizeBeforeUpdate);
         Rappel testRappel = rappelList.get(rappelList.size() - 1);
-        assertThat(testRappel.getDate()).isEqualTo(UPDATED_DATE);
-        assertThat(testRappel.getAction()).isEqualTo(DEFAULT_ACTION);
+        assertThat(testRappel.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testRappel.getAction()).isEqualTo(UPDATED_ACTION);
+        assertThat(testRappel.getVerif()).isEqualTo(DEFAULT_VERIF);
     }
 
     @Test
@@ -283,7 +291,7 @@ class RappelResourceIT {
         Rappel partialUpdatedRappel = new Rappel();
         partialUpdatedRappel.setId(rappel.getId());
 
-        partialUpdatedRappel.date(UPDATED_DATE).action(UPDATED_ACTION);
+        partialUpdatedRappel.date(UPDATED_DATE).action(UPDATED_ACTION).verif(UPDATED_VERIF);
 
         restRappelMockMvc
             .perform(
@@ -299,6 +307,7 @@ class RappelResourceIT {
         Rappel testRappel = rappelList.get(rappelList.size() - 1);
         assertThat(testRappel.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testRappel.getAction()).isEqualTo(UPDATED_ACTION);
+        assertThat(testRappel.getVerif()).isEqualTo(UPDATED_VERIF);
     }
 
     @Test

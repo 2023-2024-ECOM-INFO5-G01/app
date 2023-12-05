@@ -69,6 +69,9 @@ export const Home = () => {
   };
 const [selectedEhpadFilter, setSelectedEhpadFilter] = useState(''); // Initialize with an empty Ehpad filter value
 
+const clearSearch = () => {
+  setPatientsearch('');
+};
 
 const [filteredStatuses, setFilteredStatuses] = useState([]);
 
@@ -100,34 +103,19 @@ const getCardColorClass = (status) => {
       return '';
   }
 };
-
-const getStatusOrder = (status) => {
-  switch (status) {
-    case 'dénutrition avérée':
-      return 1;
-    case 'surveillance':
-      return 2;
-    case 'normal':
-      return 3;
-    default:
-      return '';
-  }
-};
-
-  
+ 
   const [patientsearch, setPatientsearch] = useState(''); // État local pour stocker l'ID du patient
   const [patientsuggestion, setpatientsuggestion] = useState([]);
 
   const handleRunPatient = () => {
-    if (patientsearch != '') {
-    // Appelez l'action getPoidsByPatientId avec l'ID du patient
-    dispatch(getPatientSearch(patientsearch)).then((response) => {
-      console.log(response);
-      if (response.payload && (response.payload as any).data) {
-        setpatientsuggestion((response.payload as any).data);
-      }
-    });
-  }
+    if (patientsearch !== '') {
+      dispatch(getPatientSearch({ query: patientsearch, login: account.login })).then((response) => {
+        console.log("response", response);
+        if (response.payload) {
+          setpatientsuggestion(response.payload as any[]);
+        }
+      });
+    }
   };
 
 
@@ -171,19 +159,15 @@ const getStatusOrder = (status) => {
     }
   };
 
-  const filters = ['nom', 'prenom', 'statut', "datearrive"];
+  const filters = ['datearrive'];
 
   const filterDisplayText = {
-    nom: 'Trier par nom',
-    prenom: 'Trier par prénom',
-    statut: 'Trier par statut',
-    datearrive: 'Trier par date d\'arrivée',
+    datearrive: 'Les patients sont triés par ordre d\'arrivée',
   };
 
-  
-  
   // État local pour stocker le filtre sélectionné
-  const [selectedFilter, setSelectedFilter] = useState('nom');
+  const [selectedFilter, setSelectedFilter] = useState('datearrive');
+
   useEffect(() => {
     if (selectedFilter) {
       sort(selectedFilter)();
@@ -231,16 +215,22 @@ const getStatusOrder = (status) => {
     });
   }
   return (
-    <div>
-        <div>
-          <PatientHeading loading={loading} handleSyncList={handleSyncList} />
-          
-    <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-    <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} />
-    <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
+    <div style={{ backgroundColor: '#F5F5F5'}}>
+<div>
+  <PatientHeading loading={loading} handleSyncList={handleSyncList} />
+
+  <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
+  <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
+
+  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '6px' }}>
+  <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
+ 
     <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
-      <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
-      <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
+
+ 
+  <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
+  <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
+</div>
 
 
           <div className="d-flex flex-wrap">

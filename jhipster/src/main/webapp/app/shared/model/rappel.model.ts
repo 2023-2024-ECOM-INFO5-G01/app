@@ -5,8 +5,11 @@ export interface IRappel {
   id?: number;
   date?: string | null;
   action?: string | null;
+  verif?: boolean | null;
   user?: IUser | null;
   patient?: IPatient | null;
 }
 
-export const defaultValue: Readonly<IRappel> = {};
+export const defaultValue: Readonly<IRappel> = {
+  verif: false,
+};

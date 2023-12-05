@@ -1,11 +1,11 @@
-id;date;action
-1;2023-10-10T07:00:53;de par du fait que
-2;2023-10-09T20:08:05;rattacher avant-hier
-3;2023-10-09T17:58:08;avant-hier renforcer
-4;2023-10-10T05:30:54;crac dans la mesure où à moins de
-5;2023-10-09T20:57:28;disputer vite puisque
-6;2023-10-10T08:38:07;malade autoriser debout
-7;2023-10-10T10:39:34;nonobstant
-8;2023-10-09T23:02:23;interrompre
-9;2023-10-10T03:41:46;fonctionnaire de
-10;2023-10-10T06:17:33;électorat espiègle redire
+id;date;action;verif
+1;2023-10-10T07:00:53;de par du fait que;false
+2;2023-10-10T01:43:47;analyser;false
+3;2023-10-10T03:32:46;camarade groin groin jusqu’à ce que;true
+4;2023-10-10T06:54:35;présidence;true
+5;2023-10-09T21:55:07;depuis;false
+6;2023-10-09T20:57:28;disputer vite puisque;true
+7;2023-10-09T18:22:53;serviable téméraire;false
+8;2023-10-10T02:03:05;sitôt dormir;true
+9;2023-10-10T00:45:10;à l'instar de;true
+10;2023-10-10T13:15:34;fendre;false

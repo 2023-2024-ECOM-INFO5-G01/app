@@ -10,6 +10,10 @@
     {
       "fieldName": "action",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "verif",
+      "fieldType": "Boolean"
     }
   ],
   "name": "Rappel",

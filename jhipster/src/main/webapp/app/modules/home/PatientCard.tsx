@@ -19,17 +19,10 @@ const PatientCard = ({ patient }) => {
         <p>Ehpad : {patient.ehpad ? patient.ehpad.nom : ''}</p>
       </div>
       <div className="patient-actions">
-                  <Button tag={Link} to={`/patients/${patient.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+      <Button tag={Link} to={`/patients/${patient.id}`} color="primary" size="sm" data-cy="entityDetailsButton" className="view_data_button">
                     <FontAwesomeIcon icon="eye" />{' '}
+                    &nbsp;
                     <Translate contentKey="entity.action.view">View</Translate>
-                  </Button>
-                  <Button tag={Link} to={`/patient/${patient.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
-                    <FontAwesomeIcon icon="pencil-alt" />{' '}
-                    <Translate contentKey="entity.action.edit">Visualiser données</Translate>
-                  </Button>
-                  <Button tag={Link} to={`/note/${patient.id}`} color="primary" size="sm" data-cy="entityEditButton">
-                    <FontAwesomeIcon icon="pencil-alt" />{' '}
-                    <Translate contentKey="entity.action.note">Note</Translate>
                   </Button>
                 </div>
     </div>
