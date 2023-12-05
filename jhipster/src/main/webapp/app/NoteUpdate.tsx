@@ -49,7 +49,6 @@ export const NoteEdit = ({ modal, toggle ,patientId,idnote}: { modal: boolean; t
   useEffect(() => {
     if (updateSuccess) {
       handleClose();
-      toggle();
     }
   }, [updateSuccess]);
 
@@ -60,7 +59,7 @@ export const NoteEdit = ({ modal, toggle ,patientId,idnote}: { modal: boolean; t
     <ValidatedForm onSubmit={saveEntity}>
       <ValidatedField label={translate('ecomApp.note.titre')} id="note-titre" name="titre" data-cy="titre" type="text" />
       <ValidatedField label={translate('ecomApp.note.note')} id="note-note" name="note" data-cy="note" type="text" />
-      <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit">
+      <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" onClick={toggle}>
         <FontAwesomeIcon icon="save" />
         &nbsp;
         <Translate contentKey="entity.action.save">Save</Translate>

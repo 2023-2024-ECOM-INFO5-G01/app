@@ -16,7 +16,7 @@ import Modal from 'react-modal';
 import { NoteEdit } from './NoteUpdate';
 import { set, update } from 'lodash';
 import { deleteEntity as deleteNote } from 'app/entities/note/note.reducer';
-
+import { Button } from 'reactstrap';
 export const Notes = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ export const Notes = ({ idprops }: { idprops: string }) => {
   const [selectedDate, setSelectedDate] = useState(null); 
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
-
+  const updateSuccess = useAppSelector(state => state.note.updateSuccess);
   const [notes, setNotes] = useState([]);
 useEffect(() => {
     if (account && account.login) {
@@ -38,7 +38,7 @@ useEffect(() => {
                 console.error('Une erreur s\'est produite :', error);
             });
     }
-}, [account.login, dispatch,modal,modal2]);
+}, [account.login, dispatch,modal,modal2,updateSuccess]);
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -49,21 +49,9 @@ useEffect(() => {
   const handleDatePickerClose = () => {
     setShowDatePicker(false);
   };
-  const [creatingNote, setCreatingNote] = useState(false);
-  const toggle = () => {
-    if (modal) {
-      setCreatingNote(false);
-    }
-    setModal(!modal);
-  };
-    const toggle2 = () => {
-    if (modal2) {
-      setEditingNote(null);
-    }
-    setModal2(!modal2);
-    };
-    const [editingNote, setEditingNote] = useState(null);
-
+  const toggle = () => setModal(!modal);
+    
+    const toggle2 = () => setModal2(!modal2);
 
     const handleDeleteNote = (noteId) => {
       dispatch(deleteNote(noteId))
@@ -87,26 +75,21 @@ useEffect(() => {
             <p>{note.note}</p>
           </div>
           <div className="note-buttons">
-  {editingNote === note.id ? (
-    <NoteEdit modal={modal2} toggle={toggle2} patientId={idprops} idnote={note.id} />
-  ) : (
-    <button className="note-button" onClick={() => {setEditingNote(note.id);setModal2(true);}}>
+    <Button className="note-button" onClick={toggle2}>
       <FontAwesomeIcon icon={faPencilAlt} />
-    </button>
-  )}
+    </Button>
+    <NoteEdit modal={modal2} toggle={toggle2} patientId={idprops} idnote={note.id} />
   <button className="note-button" onClick={() => handleDeleteNote(note.id)}>
             <FontAwesomeIcon icon={faTrash} />
           </button>
 </div>
         </div>
       ))}
-     {creatingNote ? (
+<Button className="add-note-button" onClick={toggle}>
+  <FontAwesomeIcon icon={faPlus} />
+</Button>
         <NoteCreate modal={modal} toggle={toggle} patientId={idprops} />
-      ) : (
-        <button className="add-note-button" onClick={() => {setCreatingNote(true);setModal(true);}}>
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
-      )}
+      
     </div>
   );
 }
