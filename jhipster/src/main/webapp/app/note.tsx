@@ -73,7 +73,7 @@ useEffect(() => {
           <div className="note-content">
             <h3 className="note-title">Titre:{note.titre}</h3>
             <p>{note.note}</p>
-          </div>
+          </div>  
           <div className="note-buttons">
     <Button className="note-button" onClick={toggle2}>
       <FontAwesomeIcon icon={faPencilAlt} />

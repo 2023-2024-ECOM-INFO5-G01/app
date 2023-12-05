@@ -30,6 +30,9 @@ public class Rappel implements Serializable {
     @Column(name = "action")
     private String action;
 
+    @Column(name = "verif")
+    private Boolean verif;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -38,7 +41,6 @@ public class Rappel implements Serializable {
         value = { "albumine", "ehpad", "users", "poids", "ePAS", "iMCS", "repas", "rappels", "notes" },
         allowSetters = true
     )
-    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -80,6 +82,19 @@ public class Rappel implements Serializable {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public Boolean getVerif() {
+        return this.verif;
+    }
+
+    public Rappel verif(Boolean verif) {
+        this.setVerif(verif);
+        return this;
+    }
+
+    public void setVerif(Boolean verif) {
+        this.verif = verif;
     }
 
     public User getUser() {
@@ -133,9 +148,10 @@ public class Rappel implements Serializable {
         return "Rappel{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
-            ", action='" + getAction() + 
-            ", user='" + getUser() + "'" +
-            ", patient='" + getPatient() + "'" +
+            ", action='" + getAction() + "'" +
+            ", verif='" + getVerif() + "'" +
+            ", user=" + getUser() +
+            ", patient=" + getPatient() +
             "}";
     }
 }

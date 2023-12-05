@@ -45,6 +45,12 @@ export const RappelDetail = () => {
           </dt>
           <dd>{rappelEntity.action}</dd>
           <dt>
+            <span id="verif">
+              <Translate contentKey="ecomApp.rappel.verif">Verif</Translate>
+            </span>
+          </dt>
+          <dd>{rappelEntity.verif ? 'true' : 'false'}</dd>
+          <dt>
             <Translate contentKey="ecomApp.rappel.user">User</Translate>
           </dt>
           <dd>{rappelEntity.user ? rappelEntity.user.id : ''}</dd>

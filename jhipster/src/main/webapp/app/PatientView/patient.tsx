@@ -16,7 +16,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-
+import RappelPatient from 'app/rappelspatient';
 import '../../content/css/patient.css';
 import AlertePatient from '../alertespatient';
 import {GraphTab} from "app/PatientView/graph_tab";
@@ -57,7 +57,7 @@ export const Patient = () => {
       case 'note':
         return <div><Notes idprops={id}/></div>;
       case 'rappel':
-        return <div>Rappel content goes here</div>;
+        return <div><RappelPatient idprops={id}/></div>;
       case 'alerte':
         return <div><AlertePatient idprops={id}/></div>;
       default:
