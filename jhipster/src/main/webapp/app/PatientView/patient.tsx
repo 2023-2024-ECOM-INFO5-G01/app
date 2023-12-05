@@ -22,7 +22,7 @@ import AlertePatient from '../alertespatient';
 import {GraphTab} from "app/PatientView/graph_tab";
 import {PatientTabs} from "app/PatientView/patient_tabs";
 import {PatientThumbnail} from "app/PatientView/patient_thumbnail";
-
+import Notes from "app/note";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -55,7 +55,7 @@ export const Patient = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'note':
-        return <div>Notes content goes here</div>;
+        return <div><Notes idprops={id}/></div>;
       case 'rappel':
         return <div>Rappel content goes here</div>;
       case 'alerte':

@@ -37,6 +37,9 @@ class NoteResourceIT {
     private static final String DEFAULT_NOTE = "AAAAAAAAAA";
     private static final String UPDATED_NOTE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_TITRE = "AAAAAAAAAA";
+    private static final String UPDATED_TITRE = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/notes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +64,7 @@ class NoteResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Note createEntity(EntityManager em) {
-        Note note = new Note().date(DEFAULT_DATE).note(DEFAULT_NOTE);
+        Note note = new Note().date(DEFAULT_DATE).note(DEFAULT_NOTE).titre(DEFAULT_TITRE);
         return note;
     }
 
@@ -72,7 +75,7 @@ class NoteResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Note createUpdatedEntity(EntityManager em) {
-        Note note = new Note().date(UPDATED_DATE).note(UPDATED_NOTE);
+        Note note = new Note().date(UPDATED_DATE).note(UPDATED_NOTE).titre(UPDATED_TITRE);
         return note;
     }
 
@@ -96,6 +99,7 @@ class NoteResourceIT {
         Note testNote = noteList.get(noteList.size() - 1);
         assertThat(testNote.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testNote.getNote()).isEqualTo(DEFAULT_NOTE);
+        assertThat(testNote.getTitre()).isEqualTo(DEFAULT_TITRE);
     }
 
     @Test
@@ -129,7 +133,8 @@ class NoteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(note.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE)));
+            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE)))
+            .andExpect(jsonPath("$.[*].titre").value(hasItem(DEFAULT_TITRE)));
     }
 
     @Test
@@ -145,7 +150,8 @@ class NoteResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(note.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.note").value(DEFAULT_NOTE));
+            .andExpect(jsonPath("$.note").value(DEFAULT_NOTE))
+            .andExpect(jsonPath("$.titre").value(DEFAULT_TITRE));
     }
 
     @Test
@@ -167,7 +173,7 @@ class NoteResourceIT {
         Note updatedNote = noteRepository.findById(note.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedNote are not directly saved in db
         em.detach(updatedNote);
-        updatedNote.date(UPDATED_DATE).note(UPDATED_NOTE);
+        updatedNote.date(UPDATED_DATE).note(UPDATED_NOTE).titre(UPDATED_TITRE);
 
         restNoteMockMvc
             .perform(
@@ -183,6 +189,7 @@ class NoteResourceIT {
         Note testNote = noteList.get(noteList.size() - 1);
         assertThat(testNote.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testNote.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testNote.getTitre()).isEqualTo(UPDATED_TITRE);
     }
 
     @Test
@@ -253,7 +260,7 @@ class NoteResourceIT {
         Note partialUpdatedNote = new Note();
         partialUpdatedNote.setId(note.getId());
 
-        partialUpdatedNote.date(UPDATED_DATE);
+        partialUpdatedNote.titre(UPDATED_TITRE);
 
         restNoteMockMvc
             .perform(
@@ -267,8 +274,9 @@ class NoteResourceIT {
         List<Note> noteList = noteRepository.findAll();
         assertThat(noteList).hasSize(databaseSizeBeforeUpdate);
         Note testNote = noteList.get(noteList.size() - 1);
-        assertThat(testNote.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testNote.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testNote.getNote()).isEqualTo(DEFAULT_NOTE);
+        assertThat(testNote.getTitre()).isEqualTo(UPDATED_TITRE);
     }
 
     @Test
@@ -283,7 +291,7 @@ class NoteResourceIT {
         Note partialUpdatedNote = new Note();
         partialUpdatedNote.setId(note.getId());
 
-        partialUpdatedNote.date(UPDATED_DATE).note(UPDATED_NOTE);
+        partialUpdatedNote.date(UPDATED_DATE).note(UPDATED_NOTE).titre(UPDATED_TITRE);
 
         restNoteMockMvc
             .perform(
@@ -299,6 +307,7 @@ class NoteResourceIT {
         Note testNote = noteList.get(noteList.size() - 1);
         assertThat(testNote.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testNote.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testNote.getTitre()).isEqualTo(UPDATED_TITRE);
     }
 
     @Test

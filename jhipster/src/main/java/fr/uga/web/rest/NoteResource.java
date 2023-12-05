@@ -125,6 +125,9 @@ public class NoteResource {
                 if (note.getNote() != null) {
                     existingNote.setNote(note.getNote());
                 }
+                if (note.getTitre() != null) {
+                    existingNote.setTitre(note.getTitre());
+                }
 
                 return existingNote;
             })
@@ -161,20 +164,6 @@ public class NoteResource {
     }
 
     /**
-     * {@code GET  /notes/userpatient} : get all the notes of a specific user for a specific patient.
-     *
-     * @param userLogin the login of the user and patientId the id of the patient.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of notes in body.
-     */
-@GetMapping("/notes/userpatient")
-public ResponseEntity<List<Note>> getNotesByUserAndPatient(
-    @RequestParam String userLogin, @RequestParam Long patientId) {
-    log.debug("REST request to get Notes by User Login: {} and Patient ID: {}", userLogin, patientId);
-    List<Note> notes = noteRepository.findByUserLoginAndPatientId(userLogin, patientId);
-    return ResponseEntity.ok(notes);
-}
-
-    /**
      * {@code DELETE  /notes/:id} : delete the "id" note.
      *
      * @param id the id of the note to delete.
@@ -188,5 +177,20 @@ public ResponseEntity<List<Note>> getNotesByUserAndPatient(
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+ * GET  /notes/patient/{id}{login} : get all the notes of a specific patient of a specific user.
+ * @param id the id of the patient 
+ * @param login the login of the user.
+ * @return the ResponseEntity with status 200 (OK) and the list of notes in body.
+ */
+    @GetMapping("/notes/patient/{id}/{login}")
+    public ResponseEntity<List<Note>> getAllNotesByPatientAndUser(@PathVariable Long id, @PathVariable String login) {
+        log.debug("REST request to get all Notes of patient: {}", id);
+        
+        List<Note> notes = noteRepository.findByPatient_IdAndUser_LoginOrderByDateDesc(id, login);
+
+        return ResponseEntity.ok().body(notes);
     }
 }
