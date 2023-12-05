@@ -42,7 +42,6 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   useEffect(() => {
     if (updateSuccess) {
       handleClose();
-      toggle();
     }
   }, [updateSuccess]);
 
@@ -240,7 +239,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
       placeholder="YYYY-MM-DD HH:mm" />
    
 
-<Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+<Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} onClick={toggle}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

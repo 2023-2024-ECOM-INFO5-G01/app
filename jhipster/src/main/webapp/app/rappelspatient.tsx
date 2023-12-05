@@ -19,6 +19,7 @@ export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const [filter, setFilter] = useState('all'); 
   const [selectedDate, setSelectedDate] = useState(null); 
   const [modal, setModal] = useState(false);
+  const updateSuccess = useAppSelector(state => state.rappel.updateSuccess);
 
   const toggle = () => setModal(!modal);
   const [rappels, setRappels] = useState([]);
@@ -33,7 +34,7 @@ useEffect(() => {
                 console.error('Une erreur s\'est produite :', error);
             });
     }
-}, [account.login, dispatch,modal]);
+}, [account.login, dispatch,modal,updateSuccess]);
 
 const handleToggleVerif = (alertId: string | number) => { 
     dispatch(toggleVerif(alertId))
