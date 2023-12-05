@@ -55,7 +55,7 @@ export const NoteEdit = ({ modal, toggle ,patientId,idnote}: { modal: boolean; t
 
   return (
     <Modal isOpen={modal} toggle={toggle}>
-    <ModalHeader toggle={toggle}>Create Rappel</ModalHeader>
+    <ModalHeader toggle={toggle}>Edit Note</ModalHeader>
     <ModalBody>
     <ValidatedForm onSubmit={saveEntity}>
       <ValidatedField label={translate('ecomApp.note.titre')} id="note-titre" name="titre" data-cy="titre" type="text" />
