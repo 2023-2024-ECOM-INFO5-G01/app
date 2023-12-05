@@ -151,26 +151,20 @@ const getCardColorClass = (status) => {
     }
   };
 
-  const filters = ['statut', "datearrive"];
+  const filters = ['datearrive', "nom", "prenom"];
 
   const filterDisplayText = {
-    statut: 'Trier par statut',
-    datearrive: 'Trier par date d\'arrivée',
+    datearrive: 'Les patients sont triés par ordre d\'arrivée',
   };
 
-  
-  
   // État local pour stocker le filtre sélectionné
-  const [selectedFilter, setSelectedFilter] = useState('statut');
+  const [selectedFilter, setSelectedFilter] = useState('datearrive');
 
   useEffect(() => {
     if (selectedFilter) {
       sort(selectedFilter)();
     }
   }, [selectedFilter]);
-  sort(selectedFilter);
-
-
 
   return (
     <div style={{ backgroundColor: '#F5F5F5'}}>
