@@ -11,6 +11,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface EPARepository extends JpaRepository<EPA, Long> {
-        List <EPA> findByPatientIdOrderByDateDesc(Long patientId);
+        List <EPA> findByPatientIdOrderByDateAsc(Long patientId);
 
 }

@@ -13,7 +13,7 @@ import { getEntities as getAlbumines } from 'app/entities/albumine/albumine.redu
 import { IEhpad } from 'app/shared/model/ehpad.model';
 import { getEntities as getEhpads } from 'app/entities/ehpad/ehpad.reducer';
 import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
+import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
 
@@ -28,6 +28,7 @@ export const PatientUpdate = () => {
   const albumines = useAppSelector(state => state.albumine.entities);
   const ehpads = useAppSelector(state => state.ehpad.entities);
   const users = useAppSelector(state => state.userManagement.users);
+  const medecins = useAppSelector(state => state.userManagement.users.medecins)
   const patientEntity = useAppSelector(state => state.patient.entity);
   const loading = useAppSelector(state => state.patient.loading);
   const updating = useAppSelector(state => state.patient.updating);
@@ -47,6 +48,7 @@ export const PatientUpdate = () => {
     dispatch(getAlbumines({}));
     dispatch(getEhpads({}));
     dispatch(getUsers({}));
+    dispatch(getRoles());
   }, []);
 
   useEffect(() => {
@@ -114,9 +116,23 @@ export const PatientUpdate = () => {
                   validate={{ required: true }}
                 />
               ) : null}
-              <ValidatedField label={translate('ecomApp.patient.nom')} id="patient-nom" name="nom" data-cy="nom" type="text" />
-              <ValidatedField label={translate('ecomApp.patient.prenom')} id="patient-prenom" name="prenom" data-cy="prenom" type="text" />
-              <ValidatedField label={translate('ecomApp.patient.statut')} id="patient-statut" name="statut" data-cy="statut" type="text" />
+              <ValidatedField label={translate('ecomApp.patient.nom')} id="patient-nom" name="nom" data-cy="nom" type="text"  validate={{required: 'Ce champs ne peut pas être vide',}} />
+              <ValidatedField label={translate('ecomApp.patient.prenom')} id="patient-prenom" name="prenom" data-cy="prenom" type="text" validate={{required: 'Ce champs ne peut pas être vide',}} />
+              <ValidatedField 
+              label={translate('ecomApp.patient.statut')} 
+              id="patient-statut" 
+              name="statut" 
+              type='select'
+              data-cy="statut"
+              validate={{
+                required: 'Veuillez choisir une option',
+              }}
+              >
+                  <option value="">Choisir une option</option>
+                  <option value="normal">normal</option>
+                  <option value="surveillance">surveillance</option>
+                  <option value="dénutrition avérée">dénutrition avérée</option>
+              </ValidatedField>
               <ValidatedField
                 label={translate('ecomApp.patient.dateNaissance')}
                 id="patient-dateNaissance"
@@ -124,8 +140,16 @@ export const PatientUpdate = () => {
                 data-cy="dateNaissance"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
+                validate={{required: 'Ce champs ne peut pas être vide',}}
               />
-              <ValidatedField label={translate('ecomApp.patient.taille')} id="patient-taille" name="taille" data-cy="taille" type="text" />
+              <ValidatedField label={translate('ecomApp.patient.taille')} id="patient-taille" name="taille" data-cy="taille" type="text" 
+              validate={{
+                required: 'Ce champs ne peut pas être vide',
+                min: { value: 50, message: 'Choisir une taille entre 50 et 300 cm' },
+                max: { value: 300, message: 'Choisir une taille entre 50 et 300 cm' },
+                }}
+              
+              />
               <ValidatedField
                 label={translate('ecomApp.patient.datearrive')}
                 id="patient-datearrive"
@@ -133,6 +157,9 @@ export const PatientUpdate = () => {
                 data-cy="datearrive"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
+                validate={{
+                  required: 'Ce champs ne peut pas être vide',
+                }}
               />
               <ValidatedField
                 id="patient-albumine"
@@ -140,6 +167,9 @@ export const PatientUpdate = () => {
                 data-cy="albumine"
                 label={translate('ecomApp.patient.albumine')}
                 type="select"
+                validate={{
+                  required: 'Veuillez choisir une option',
+                }}
               >
                 <option value="" key="0" />
                 {albumines
@@ -150,29 +180,41 @@ export const PatientUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <ValidatedField id="patient-ehpad" name="ehpad" data-cy="ehpad" label={translate('ecomApp.patient.ehpad')} type="select">
+              <ValidatedField 
+              id="patient-ehpad" 
+              name="ehpad" 
+              data-cy="ehpad" 
+              label={translate('ecomApp.patient.ehpad')} 
+              type="select"
+              validate={{
+                required: 'Veuillez choisir une option',
+              }}
+              >
                 <option value="" key="0" />
                 {ehpads
                   ? ehpads.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
+                        {otherEntity.nom}
                       </option>
                     ))
                   : null}
               </ValidatedField>
               <ValidatedField
-                label={translate('ecomApp.patient.user')}
+                label= "Médecin"
                 id="patient-user"
                 data-cy="user"
                 type="select"
                 multiple
                 name="users"
+                validate={{
+                  required: 'Veuillez choisir un médecin',
+                }}
               >
                 <option value="" key="0" />
                 {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
+                  ? users.map((user,i) => (
+                      <option value={user.id} key={user.id}>
+                        {user.login}
                       </option>
                     ))
                   : null}

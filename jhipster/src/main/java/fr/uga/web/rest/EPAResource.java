@@ -168,7 +168,7 @@ public class EPAResource {
     @GetMapping("/epas/patient/{id}")
     public List<EPA> getAllEPASByPatientId(@PathVariable Long id) {
         log.debug("REST request to get all EPAS of patient : {}", id);
-        return ePARepository.findByPatientIdOrderByDateDesc(id);
+        return ePARepository.findByPatientIdOrderByDateAsc(id);
     }
 
     /**

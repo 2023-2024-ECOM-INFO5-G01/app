@@ -13,6 +13,7 @@ import IMC from './imc';
 import Repas from './repas';
 import Note from './note';
 import Aliment from './aliment';
+import Alerte from './alerte';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -30,6 +31,7 @@ export default () => {
         <Route path="repas/*" element={<Repas />} />
         <Route path="note/*" element={<Note />} />
         <Route path="aliment/*" element={<Aliment />} />
+        <Route path="alerte/*" element={<Alerte />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

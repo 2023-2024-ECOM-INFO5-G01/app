@@ -117,8 +117,14 @@ public class PatientResource {
      */
     @PatchMapping(value = "/patients/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Patient> partialUpdatePatient(
+<<<<<<< HEAD
             @PathVariable(value = "id", required = false) final Long id,
             @RequestBody Patient patient) throws URISyntaxException {
+=======
+        @PathVariable(value = "id", required = false) final Long id,
+        @RequestBody Patient patient
+    ) throws URISyntaxException { 
+>>>>>>> main
         log.debug("REST request to partial update Patient partially : {}, {}", id, patient);
         if (patient.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -248,5 +254,31 @@ public class PatientResource {
                 .noContent()
                 .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
                 .build();
+    }
+
+    /** 
+     * PUT /patient/updateStatut: update patient entity status.
+     * @param id the id of the patient to update status.
+     * @param status the status to change
+     * @return the ResponseEntity with status 200 (OK) and with body the updated patient,
+        or with status 404 (Not Found) if the patient is not found.
+    */
+    @PutMapping("/patients/updatestatut/{id}/{statut}")
+    public ResponseEntity<Patient> updateStatus(@PathVariable Long id, @PathVariable String statut) {
+        log.debug("REST request to update Patient : {} with statut : {}", id, statut);
+
+        Optional<Patient> patientOptional = patientRepository.findById(id);
+        if (!patientOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Patient patient = patientOptional.get();
+        patient.setStatut(statut);
+
+        Patient result = patientRepository.save(patient);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, patient.getId().toString()))
+            .body(result);
     }
 }
