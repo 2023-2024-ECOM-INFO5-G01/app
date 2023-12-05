@@ -20,6 +20,7 @@
       "id": "ID",
       "date": "Date",
       "note": "Note",
+      "titre": "Titre",
       "user": "User",
       "patient": "Patient"
     }

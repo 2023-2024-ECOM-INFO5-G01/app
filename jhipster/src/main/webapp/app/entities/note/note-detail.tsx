@@ -45,6 +45,12 @@ export const NoteDetail = () => {
           </dt>
           <dd>{noteEntity.note}</dd>
           <dt>
+            <span id="titre">
+              <Translate contentKey="ecomApp.note.titre">Titre</Translate>
+            </span>
+          </dt>
+          <dd>{noteEntity.titre}</dd>
+          <dt>
             <Translate contentKey="ecomApp.note.user">User</Translate>
           </dt>
           <dd>{noteEntity.user ? noteEntity.user.id : ''}</dd>

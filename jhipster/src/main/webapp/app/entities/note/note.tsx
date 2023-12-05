@@ -94,6 +94,9 @@ export const Note = () => {
                 <th className="hand" onClick={sort('note')}>
                   <Translate contentKey="ecomApp.note.note">Note</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('note')} />
                 </th>
+                <th className="hand" onClick={sort('titre')}>
+                  <Translate contentKey="ecomApp.note.titre">Titre</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('titre')} />
+                </th>
                 <th>
                   <Translate contentKey="ecomApp.note.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -113,6 +116,7 @@ export const Note = () => {
                   </td>
                   <td>{note.date ? <TextFormat type="date" value={note.date} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{note.note}</td>
+                  <td>{note.titre}</td>
                   <td>{note.user ? note.user.id : ''}</td>
                   <td>{note.patient ? <Link to={`/patient/${note.patient.id}`}>{note.patient.id}</Link> : ''}</td>
                   <td className="text-end">

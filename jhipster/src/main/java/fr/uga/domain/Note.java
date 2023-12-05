@@ -30,6 +30,9 @@ public class Note implements Serializable {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "titre")
+    private String titre;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -38,7 +41,6 @@ public class Note implements Serializable {
         value = { "albumine", "ehpad", "users", "poids", "ePAS", "iMCS", "repas", "rappels", "notes" },
         allowSetters = true
     )
-    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -80,6 +82,19 @@ public class Note implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getTitre() {
+        return this.titre;
+    }
+
+    public Note titre(String titre) {
+        this.setTitre(titre);
+        return this;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public User getUser() {
@@ -133,9 +148,8 @@ public class Note implements Serializable {
         return "Note{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
-            ", note='" + getNote() + 
-            ", user='" + getUser() + "'" +
-            ", patient='" + getPatient() + "'" +
+            ", note='" + getNote() + "'" +
+            ", titre='" + getTitre() + "'" +
             "}";
     }
 }
