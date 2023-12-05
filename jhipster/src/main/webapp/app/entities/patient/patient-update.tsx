@@ -16,6 +16,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
+import Select from 'react-select';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -57,6 +58,7 @@ export const PatientUpdate = () => {
     }
   }, [updateSuccess]);
 
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const saveEntity = values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
@@ -64,8 +66,8 @@ export const PatientUpdate = () => {
     const entity = {
       ...patientEntity,
       ...values,
-      users: mapIdList(values.users),
-      albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+      users: selectedUsers.map(e => ({ id: e.value })),
+   //   albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
       ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
     };
 
@@ -161,25 +163,6 @@ export const PatientUpdate = () => {
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
-              <ValidatedField
-                id="patient-albumine"
-                name="albumine"
-                data-cy="albumine"
-                label={translate('ecomApp.patient.albumine')}
-                type="select"
-                validate={{
-                  required: 'Veuillez choisir une option',
-                }}
-              >
-                <option value="" key="0" />
-                {albumines
-                  ? albumines.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <ValidatedField 
               id="patient-ehpad" 
               name="ehpad" 
@@ -199,26 +182,13 @@ export const PatientUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <ValidatedField
-                label= "Médecin"
-                id="patient-user"
-                data-cy="user"
-                type="select"
-                multiple
-                name="users"
-                validate={{
-                  required: 'Veuillez choisir un médecin',
-                }}
-              >
-                <option value="" key="0" />
-                {users
-                  ? users.map((user,i) => (
-                      <option value={user.id} key={user.id}>
-                        {user.login}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+              <label>Sélectionner les médecins et soignants de ce patient</label>
+              <Select
+  isMulti
+  name="users"
+  options={users.map(user => ({ value: user.id, label: user.login }))}
+  onChange={selectedOptions => setSelectedUsers(Array.from(selectedOptions))}
+/>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
