@@ -10,5 +10,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface PoidsRepository extends JpaRepository<Poids, Long> {
-    List <Poids> findByPatientIdOrderByDateDesc(Long patientId);
+    List <Poids> findByPatientIdOrderByDateAsc(Long patientId);
 }

@@ -24,7 +24,15 @@ import StatusFilter from './StatusFilter';
 import PatientList from './PatientList';
 import PatientHeading from './PatientHeading';
 import PatientSearchResults from './PatientSearchResults';
+import Modal from 'react-modal';
+import { getAlertesByUser } from 'app/entities/alerte/alerte.reducer';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+
 export const Home = () => {
+  
+
 
   const account = useAppSelector(state => state.authentication.account);
 
@@ -183,8 +191,45 @@ const getStatusOrder = (status) => {
   }, [selectedFilter]);
   sort(selectedFilter);
 
+  const [currentAlerte, setCurrentAlerte] = useState([]);
 
+  const [alertes, setAlertes] = useState([]);
 
+ 
+  useEffect(() => {
+    if (account && account.login) {
+      dispatch(getAlertesByUser(account.login))
+      .then(response => {
+        setAlertes((response.payload as any).data);
+        console.log(alertes);
+      })
+      .catch(error => {
+        console.error('Une erreur s\'est produite :', error);
+      });
+    }
+  }, [ account.login, dispatch]);
+
+  useEffect(() => {
+    alertes.forEach(alerte => {
+      if (!alerte.verif) {
+        setCurrentAlerte(alerte);
+        notify(alerte); 
+        console.log("alerte non verif: ", alerte);
+      }
+    });
+  }, [alertes]);
+  
+  const notify = (alerte) => {
+    toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
   return (
     <div>
         <div>
@@ -213,6 +258,9 @@ const getStatusOrder = (status) => {
             ))}
           </div>
         </div>
+        <div>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

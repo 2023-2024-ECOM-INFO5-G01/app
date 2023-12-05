@@ -169,7 +169,7 @@ public class PoidsResource {
     @GetMapping("/poids/patient/{id}")
     public List<Poids> getAllPoidsByPatient(@PathVariable Long id) {
         log.debug("REST request to get all Poids of a patient");
-        return poidsRepository.findByPatientIdOrderByDateDesc(id);
+        return poidsRepository.findByPatientIdOrderByDateAsc(id);
     }
 
     /**

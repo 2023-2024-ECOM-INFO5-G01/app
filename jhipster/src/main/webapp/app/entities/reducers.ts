@@ -8,6 +8,7 @@ import iMC from 'app/entities/imc/imc.reducer';
 import repas from 'app/entities/repas/repas.reducer';
 import note from 'app/entities/note/note.reducer';
 import aliment from 'app/entities/aliment/aliment.reducer';
+import alerte from 'app/entities/alerte/alerte.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const entitiesReducers = {
@@ -21,6 +22,7 @@ const entitiesReducers = {
   repas,
   note,
   aliment,
+  alerte,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
 };
 
