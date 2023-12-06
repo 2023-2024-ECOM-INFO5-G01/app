@@ -51,15 +51,14 @@ export const PatientUpdate = () => {
     dispatch(getUsers({}));
     dispatch(getRoles());
   }, []);
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-  useEffect(() => {
-    if (updateSuccess && selectedUser) {
+  const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);  useEffect(() => {
+    if (updateSuccess && selectedUsers.length > 0) {
       handleClose();
       const daterappel = new Date();
       daterappel.setDate(daterappel.getDate() + 1);
       const entityrappel = {
         verif: false,
-        user: selectedUser,
+        users: selectedUsers,
         patient: patientEntity,
         action: 'prise de poids',
         date: daterappel.toISOString(), // Convert date to string
@@ -67,7 +66,7 @@ export const PatientUpdate = () => {
       console.log("entity rappel : ", entityrappel);
       dispatch(createEntity1(entityrappel));
     }
-  }, [updateSuccess, selectedUser]);
+  }, [updateSuccess, selectedUsers]);
   const saveEntity = values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
@@ -200,9 +199,16 @@ export const PatientUpdate = () => {
   multiple
   name="users"
   onChange={event => {
-    const userId = event.target.value;
-    const user = users.find(user => user.id.toString() === userId);
-    setSelectedUser(user);
+    const target = event.target as unknown as HTMLSelectElement;
+    const selectedOptions = Array.from(target.options)
+      .filter(option => option.selected)
+      .map(option => option.value);
+  
+    const newSelectedUsers = selectedOptions.map(userId => 
+      users.find(user => user.id.toString() === userId)
+    ).filter(Boolean);
+  
+    setSelectedUsers(newSelectedUsers);
   }}
   validate={{
     required: 'Veuillez choisir un médecin et/ou des soignants',

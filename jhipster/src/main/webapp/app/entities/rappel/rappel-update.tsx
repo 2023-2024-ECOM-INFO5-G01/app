@@ -8,10 +8,10 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRappel } from 'app/shared/model/rappel.model';
 import { getEntity, updateEntity, createEntity, reset } from './rappel.reducer';
 
@@ -23,8 +23,8 @@ export const RappelUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const users = useAppSelector(state => state.userManagement.users);
   const patients = useAppSelector(state => state.patient.entities);
+  const users = useAppSelector(state => state.userManagement.users);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
   const loading = useAppSelector(state => state.rappel.loading);
   const updating = useAppSelector(state => state.rappel.updating);
@@ -41,8 +41,8 @@ export const RappelUpdate = () => {
       dispatch(getEntity(id));
     }
 
-    dispatch(getUsers({}));
     dispatch(getPatients({}));
+    dispatch(getUsers({}));
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export const RappelUpdate = () => {
     const entity = {
       ...rappelEntity,
       ...values,
-      user: users.find(it => it.id.toString() === values.user.toString()),
+      users: mapIdList(values.users),
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
     };
 
@@ -76,8 +76,8 @@ export const RappelUpdate = () => {
       : {
           ...rappelEntity,
           date: convertDateTimeFromServer(rappelEntity.date),
-          user: rappelEntity?.user?.id,
           patient: rappelEntity?.patient?.id,
+          users: rappelEntity?.users?.map(e => e.id.toString()),
         };
 
   return (
@@ -122,16 +122,6 @@ export const RappelUpdate = () => {
                 check
                 type="checkbox"
               />
-              <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select">
-                <option value="" key="0" />
-                {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <ValidatedField
                 id="rappel-patient"
                 name="patient"
@@ -144,6 +134,16 @@ export const RappelUpdate = () => {
                   ? patients.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <ValidatedField label={translate('ecomApp.rappel.user')} id="rappel-user" data-cy="user" type="select" multiple name="users">
+                <option value="" key="0" />
+                {users
+                  ? users.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.login}
                       </option>
                     ))
                   : null}
