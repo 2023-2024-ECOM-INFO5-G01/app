@@ -17,8 +17,8 @@ logging:
   level:
     ROOT: INFO
     tech.jhipster: INFO
-    org.hibernate.SQL: INFO
-    fr.uga: INFO
+    org.hibernate.SQL: WARN
+    fr.uga: DEBUG
 
 spring:
   devtools:
