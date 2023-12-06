@@ -16,8 +16,6 @@ import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
-import Select from 'react-select';
-
 import { createEntity1 } from '../rappel/rappel.reducer';
 
 export const PatientUpdate = () => {
@@ -53,9 +51,7 @@ export const PatientUpdate = () => {
     dispatch(getUsers({}));
     dispatch(getRoles());
   }, []);
-
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-
   useEffect(() => {
     if (updateSuccess && selectedUser) {
       handleClose();
@@ -73,7 +69,6 @@ export const PatientUpdate = () => {
       dispatch(createEntity1(entityrappel));
     }
   }, [updateSuccess, selectedUser]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
   const saveEntity = values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
@@ -81,17 +76,15 @@ export const PatientUpdate = () => {
     const entity = {
       ...patientEntity,
       ...values,
-      users: selectedUsers.map(e => ({ id: e.value })),
-   //   albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+      users: mapIdList(values.users),
+      albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
       ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
     };
 
     if (isNew) {
       dispatch(createEntity(entity));
-      navigate('/');
     } else {
       dispatch(updateEntity(entity));
-      navigate('/');
     }
   };
 
@@ -180,6 +173,25 @@ export const PatientUpdate = () => {
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
+              <ValidatedField
+                id="patient-albumine"
+                name="albumine"
+                data-cy="albumine"
+                label={translate('ecomApp.patient.albumine')}
+                type="select"
+                validate={{
+                  required: 'Veuillez choisir une option',
+                }}
+              >
+                <option value="" key="0" />
+                {albumines
+                  ? albumines.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <ValidatedField 
               id="patient-ehpad" 
               name="ehpad" 
@@ -199,17 +211,31 @@ export const PatientUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <label>Sélectionner les médecins et soignants de ce patient:</label>
-              <Select
-  isMulti
+              <ValidatedField
+  label= "Médecin"
+  id="patient-user"
+  data-cy="user"
+  type="select"
+  multiple
   name="users"
-  options={users.map(user => ({ value: user.id, label: user.login }))}
-  onChange={selectedOptions => setSelectedUsers(Array.from(selectedOptions))}
-  styles={{
-    menu: provided => ({ ...provided, maxHeight: 200, overflow: 'auto' })
+  onChange={event => {
+    const userId = event.target.value;
+    const user = users.find(user => user.id.toString() === userId);
+    setSelectedUser(user);
   }}
-/>
-<div style={{ marginTop: '20px' }}>
+  validate={{
+    required: 'Veuillez choisir un médecin',
+  }}
+>
+  <option value="" key="0" />
+  {users
+    ? users.map((user,i) => (
+        <option value={user.id} key={user.id}>
+          {user.login}
+        </option>
+      ))
+    : null}
+</ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -223,7 +249,6 @@ export const PatientUpdate = () => {
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
-              </div>
             </ValidatedForm>
           )}
         </Col>
