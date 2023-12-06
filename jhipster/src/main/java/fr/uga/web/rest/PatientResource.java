@@ -117,14 +117,9 @@ public class PatientResource {
      */
     @PatchMapping(value = "/patients/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Patient> partialUpdatePatient(
-<<<<<<< HEAD
-            @PathVariable(value = "id", required = false) final Long id,
-            @RequestBody Patient patient) throws URISyntaxException {
-=======
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Patient patient
     ) throws URISyntaxException { 
->>>>>>> main
         log.debug("REST request to partial update Patient partially : {}, {}", id, patient);
         if (patient.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
