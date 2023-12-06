@@ -85,6 +85,7 @@ const handleStatusFilterChange = (status, isChecked) => {
 
 const filterPatientsByStatus = () => {
   if (filteredStatuses.length === 0) {
+    console.log("patientList", patientList);
     return patientList;
   } else {
     return patientList.filter((patient) => filteredStatuses.includes(patient.statut));
