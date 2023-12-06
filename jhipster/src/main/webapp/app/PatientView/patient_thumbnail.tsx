@@ -2,9 +2,11 @@ import {Col} from "reactstrap";
 import React from "react";
 import {PatientInfoAdmin} from "app/PatientView/patient_info_admin";
 import {PatientInfoPerso} from "app/PatientView/patient_info_perso";
-
+import {useAppSelector} from "app/config/store";
 
 export const PatientThumbnail = (props) => {
+  const account = useAppSelector(state => state.authentication.account);
+  const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
 
   const getCardColorClass = (status) => {
     switch (status) {
@@ -32,17 +34,21 @@ export const PatientThumbnail = (props) => {
       </div>
       <PatientInfoPerso patientEntity={props.patientEntity}/>
       <div className="info_buttons">
-        <button className="bouton_modif_patient" onClick={null}>
-          <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
-          Données administratives
-        </button>
+        {userHasRequiredRole && (
+          <>
+            <button className="bouton_modif_patient" onClick={null}>
+              <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+              Données administratives
+            </button>
+            <button className="bouton_modif_patient" onClick={null}>
+              <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
+              Tâche
+            </button>
+          </>
+        )}
         <button className="bouton_modif_patient" onClick={null}>
           <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
           Données patient
-        </button>
-        <button className="bouton_modif_patient" onClick={null}>
-          <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
-          Tâche
         </button>
       </div>
     </Col>
