@@ -34,6 +34,8 @@ export const App = () => {
   const isInProduction = useAppSelector(state => state.applicationProfile.inProduction);
   const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled);
 
+  const account = useAppSelector(state => state.authentication.account);
+  console.log("account",account.authorities);
   const paddingTop = '60px';
   return (
     <BrowserRouter basename={baseHref}>
@@ -47,6 +49,7 @@ export const App = () => {
             ribbonEnv={ribbonEnv}
             isInProduction={isInProduction}
             isOpenAPIEnabled={isOpenAPIEnabled}
+            authorities={account?.authorities || []} 
           />
         </ErrorBoundary>
         <div className="container-fluid view-container" id="app-view-container">
