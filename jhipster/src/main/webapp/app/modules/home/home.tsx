@@ -85,6 +85,7 @@ const handleStatusFilterChange = (status, isChecked) => {
 
 const filterPatientsByStatus = () => {
   if (filteredStatuses.length === 0) {
+    console.log("patientList", patientList);
     return patientList;
   } else {
     return patientList.filter((patient) => filteredStatuses.includes(patient.statut));
@@ -185,7 +186,7 @@ const getCardColorClass = (status) => {
       dispatch(getAlertesByUser(account.login))
       .then(response => {
         setAlertes((response.payload as any).data);
-        console.log(alertes);
+        console.log("touteles alertes:"+ alertes);
       })
       .catch(error => {
         console.error('Une erreur s\'est produite :', error);
@@ -204,15 +205,17 @@ const getCardColorClass = (status) => {
   }, [alertes]);
   
   const notify = (alerte) => {
-    toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    if (alerte.patient) {
+      toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
   return (
     <div style={{ backgroundColor: '#F5F5F5'}}>

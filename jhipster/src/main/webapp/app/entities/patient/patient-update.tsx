@@ -58,12 +58,11 @@ export const PatientUpdate = () => {
       const daterappel = new Date();
       daterappel.setDate(daterappel.getDate() + 1);
       const entityrappel = {
-        ...rappelEntity,
         verif: false,
         user: selectedUser,
         patient: patientEntity,
-        action : 'prise de poids',
-        date: daterappel,
+        action: 'prise de poids',
+        date: daterappel.toISOString(), // Convert date to string
       };
       console.log("entity rappel : ", entityrappel);
       dispatch(createEntity1(entityrappel));
@@ -77,11 +76,12 @@ export const PatientUpdate = () => {
       ...patientEntity,
       ...values,
       users: mapIdList(values.users),
-      albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
-      ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
-    };
+    //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+    ehpad: ehpads.find(it => it.id.toString() === values.ehpad),
+  };
 
     if (isNew) {
+      console.log("patient crée:", entity);
       dispatch(createEntity(entity));
     } else {
       dispatch(updateEntity(entity));
@@ -173,25 +173,6 @@ export const PatientUpdate = () => {
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
-              <ValidatedField
-                id="patient-albumine"
-                name="albumine"
-                data-cy="albumine"
-                label={translate('ecomApp.patient.albumine')}
-                type="select"
-                validate={{
-                  required: 'Veuillez choisir une option',
-                }}
-              >
-                <option value="" key="0" />
-                {albumines
-                  ? albumines.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <ValidatedField 
               id="patient-ehpad" 
               name="ehpad" 
@@ -212,7 +193,7 @@ export const PatientUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-  label= "Médecin"
+  label= "Users attribué"
   id="patient-user"
   data-cy="user"
   type="select"
@@ -224,7 +205,7 @@ export const PatientUpdate = () => {
     setSelectedUser(user);
   }}
   validate={{
-    required: 'Veuillez choisir un médecin',
+    required: 'Veuillez choisir un médecin et/ou des soignants',
   }}
 >
   <option value="" key="0" />
