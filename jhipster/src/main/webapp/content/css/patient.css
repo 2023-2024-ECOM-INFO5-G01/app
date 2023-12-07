@@ -125,6 +125,11 @@
     color: #fff; /* Couleur du texte (blanc dans cet exemple) */
 }
 
+.bouton_menu_patient:hover {
+    border: 2px solid #fff;
+    font-weight: bold;
+}
+
 .button_clicked {
     padding: 10px;
     border: none;
@@ -171,14 +176,4 @@ li {
   
 li:last-child {
     margin-right: 0;
-}
-  
-a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-}
-  
-a:hover {
-    border-bottom: 2px solid #fff;
 }

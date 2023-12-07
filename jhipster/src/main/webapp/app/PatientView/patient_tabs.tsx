@@ -8,16 +8,16 @@ export const PatientTabs = (props) => {
       <nav>
         <ul>
           <li>
-            <button onClick={() => changeTab('graphe')}>Courbes</button>
+            <button className="bouton_menu_patient" onClick={() => changeTab('graphe')}>Courbes</button>
           </li>
           <li>
-            <button onClick={() => changeTab('note')}>Notes</button>
+            <button className="bouton_menu_patient" onClick={() => changeTab('note')}>Notes</button>
           </li>
           <li>
-            <button onClick={() => changeTab('rappel')}>Tâches</button>
+            <button className="bouton_menu_patient" onClick={() => changeTab('rappel')}>Tâches</button>
           </li>
           <li>
-            <button onClick={() => changeTab('alerte')}>Alertes</button>
+            <button className="bouton_menu_patient" onClick={() => changeTab('alerte')}>Alertes</button>
           </li>
         </ul>
       </nav>
