@@ -8,9 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-import CreationRappel from './shared/layout/menus/creationRappel';
-import Modal from 'react-modal';
-import { Button } from 'reactstrap';
+
 
 export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
@@ -18,10 +16,8 @@ export const RappelPatient = ({ idprops }: { idprops: string }) => {
   const { id } = useParams<'id'>();
   const [filter, setFilter] = useState('all'); 
   const [selectedDate, setSelectedDate] = useState(null); 
-  const [modal, setModal] = useState(false);
   const updateSuccess = useAppSelector(state => state.rappel.updateSuccess);
 
-  const toggle = () => setModal(!modal);
   const [rappels, setRappels] = useState([]);
 useEffect(() => {
     if (account && account.login) {
@@ -34,7 +30,7 @@ useEffect(() => {
                 console.error('Une erreur s\'est produite :', error);
             });
     }
-}, [account.login, dispatch,modal,updateSuccess]);
+}, [account.login, dispatch,updateSuccess]);
 
 const handleToggleVerif = (alertId: string | number) => { 
     dispatch(toggleVerif(alertId))
@@ -93,8 +89,6 @@ return (
           />
         )}    
          </div>
-         <Button color="danger" onClick={toggle}>Create Rappel</Button>
-      <CreationRappel modal={modal} toggle={toggle} idprops={idprops}/>
       {filteredRappels.map(rappel => (
         <div key={rappel.id} className="rappel">
           <div className="rappel-content">

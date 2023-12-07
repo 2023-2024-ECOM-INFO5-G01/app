@@ -73,7 +73,7 @@ export const Patient = () => {
     <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
         <PatientThumbnail togglePosition={togglePosition} isFixed={isFixed} patientEntity={patientEntity}
-                          setStatus={setStatuschange}/>
+                          setStatus={setStatuschange} idprops={id}/>
         <PatientTabs changeTab={setActiveTab}/>
       </div>
       <div className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>

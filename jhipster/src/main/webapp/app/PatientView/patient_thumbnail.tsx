@@ -1,8 +1,9 @@
-import {Col} from "reactstrap";
-import React from "react";
-import {PatientInfoAdmin} from "app/PatientView/patient_info_admin";
-import {PatientInfoPerso} from "app/PatientView/patient_info_perso";
-import {useAppSelector} from "app/config/store";
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { Col } from 'reactstrap';
+import { PatientInfoAdmin } from 'app/PatientView/patient_info_admin';
+import { PatientInfoPerso } from 'app/PatientView/patient_info_perso';
+import CreationRappel from '../shared/layout/menus/creationRappel';
 
 export const PatientThumbnail = (props) => {
   const account = useAppSelector(state => state.authentication.account);
@@ -20,6 +21,8 @@ export const PatientThumbnail = (props) => {
         return '';
     }
   };
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
   return (
     <Col className="fixed-flex-container">
@@ -40,10 +43,11 @@ export const PatientThumbnail = (props) => {
               <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
               Données administratives
             </button>
-            <button className="bouton_modif_patient" onClick={null}>
+            <button className="bouton_modif_patient" onClick={toggle}>
               <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
               Tâche
             </button>
+            <CreationRappel modal={modal} toggle={toggle} idprops={props.idprops}/>
           </>
         )}
         <button className="bouton_modif_patient" onClick={null}>

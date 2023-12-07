@@ -58,6 +58,7 @@ public class PatientResource {
             throw new BadRequestAlertException("A new patient cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Patient result = patientRepository.save(patient);
+        log.info("Patient created: {}", result);
         return ResponseEntity
                 .created(new URI("/api/patients/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
@@ -201,7 +202,7 @@ public class PatientResource {
 
         // Convertissez l'ensemble en liste avant de renvoyer la réponse
         List<Patient> uniquePatientsList = new ArrayList<>(uniquePatients);
-
+        log.info("Patients suggestions: {}", uniquePatientsList);
         return ResponseEntity.ok().body(uniquePatientsList);
     }
 
@@ -217,7 +218,7 @@ public class PatientResource {
         log.debug("REST request to get all Patients of user: {}", login);
 
         List<Patient> patients = patientRepository.findByUsers_Login(login);
-
+        log.info("Patients of user: {}", patients);
         return ResponseEntity.ok().body(patients);
     }
 
