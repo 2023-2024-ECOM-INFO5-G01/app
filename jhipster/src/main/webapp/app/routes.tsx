@@ -21,6 +21,7 @@ import Notes from './note';
 
 import AlertePatient from './alertespatient';
 import PatientUpdate from './entities/patient/patient-update';
+import PatientEdit from './PatientView/patient_edit';
 
 const loading = <div>loading ...</div>;
 
@@ -82,6 +83,8 @@ const AppRoutes = () => {
             <PatientUpdate />
           </PrivateRoute>
         } />
+
+
         <Route
           path="admin/*"
           element={

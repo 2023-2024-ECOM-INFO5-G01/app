@@ -17,14 +17,17 @@ export const PatientTabs = (props) => {
               <li>
                 <button onClick={() => changeTab('note')}>Notes</button>
               </li>
-              <li>
-                <button onClick={() => changeTab('alerte')}>Alertes</button>
-              </li>
-            </>
+              </>
           )}
           <li>
             <button onClick={() => changeTab('rappel')}>Tâches</button>
           </li>
+          {userHasRequiredRole && (
+              <li>
+                <button onClick={() => changeTab('alerte')}>Alertes</button>
+              </li>
+          )}
+          
         </ul>
       </nav>
     </div>

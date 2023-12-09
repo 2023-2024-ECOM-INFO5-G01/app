@@ -54,7 +54,7 @@ const handleToggleVerif = (alertId: string | number) => {
     const isFuture = rappelDate.getTime() > today.getTime();
   
     if (filter === 'all' && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
-    if (filter === 'verified' && rappel.verif && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
+    if (filter === 'verified' && rappel.verif && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) ) return true;
     if (filter === 'unverified' && !rappel.verif && (!selectedDate || rappelDate.toDateString() === selectedDate.toDateString()) && !isFuture) return true;
     if (filter === 'futur' && isFuture) return true; 
     return false;
