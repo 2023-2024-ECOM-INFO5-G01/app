@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
@@ -35,9 +35,7 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
-  const handleClose = () => {
-   // navigate(`/patients/${id}`);
-  };
+
 
   useEffect(() => {
 
@@ -48,11 +46,6 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
     dispatch(getRoles());
   }, []);
   const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);  
-  useEffect(() => {
-    if (!isNew) {
-      handleClose();
-    }
-  }, [updateSuccess, selectedUsers]);
   
   const saveEntity = async values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
@@ -63,7 +56,7 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
       ...values,
       users: mapIdList(values.users),
     //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
-    ehpad: ehpads.find(it => it.id.toString() === values.ehpad),
+      ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
   };
 
 
@@ -83,8 +76,8 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
           dateNaissance: convertDateTimeFromServer(patientEntity.dateNaissance),
           datearrive: convertDateTimeFromServer(patientEntity.datearrive),
           albumine: patientEntity?.albumine?.id,
-          ehpad: patientEntity?.ehpad?.id,
           users: patientEntity?.users?.map(e => e.id.toString()),
+          ehpad: patientEntity?.ehpad?.id,
         };
 
   return (
@@ -184,12 +177,22 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
       .filter(option => option.selected)
       .map(option => option.value);
   
-    const newSelectedUsers = selectedOptions.map(userId => 
+    const newSelectedUsers = selectedOptions.map(userId =>
       users.find(user => user.id.toString() === userId)
     ).filter(Boolean);
   
+    // Update the users field in the form data directly
+    // Declare formRef variable
+    const formRef = useRef<any>();
+
+    // Rest of the code...
+    const formData = formRef.current.form.getData();
+    formData.users = newSelectedUsers.map(user => user.id.toString());
+    formRef.current.form.setData(formData);
+   
     setSelectedUsers(newSelectedUsers);
   }}
+  
   validate={{
     required: 'Veuillez choisir un médecin et/ou des soignants',
   }}
