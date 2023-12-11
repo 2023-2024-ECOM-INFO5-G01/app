@@ -53,26 +53,26 @@ export const Alerte = () => {
       </select>
       </div>
       {filteredAlertes.map(alerte => (
-        <div key={alerte.id} className="alerte">
-          <div className="alerte-content">
-            <div className="alerte-icon">⚠️</div>
-            <div>
-              <h2>Alerte dénutrition</h2>
-              <p>Action: {alerte.action}</p>
-              <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
-              <p>Date: {alerte.date}</p>
-            </div>
-            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-            {alerte.verif ? '✅' : '⬜'}
-            </button>
-          </div>
-          <div className="button-container">
-          <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">
-          <FontAwesomeIcon icon={faFileAlt} />
-            Voir patient</Link>
-          </div>  
-          </div>
-      ))}
+  <div key={alerte.id} className="alerte">
+    <div className="alerte-content">
+      <div className="alerte-icon">⚠️</div>
+      <div>
+        <h2>Alerte dénutrition</h2>
+        <p>Action: {alerte.action}</p>
+        {alerte.patient && <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>}
+        <p>Date: {alerte.date}</p>
+      </div>
+      <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+      {alerte.verif ? '✅' : '⬜'}
+      </button>
+    </div>
+    <div className="button-container">
+    {alerte.patient && <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">
+    <FontAwesomeIcon icon={faFileAlt} />
+      Voir patient</Link>}
+    </div>  
+    </div>
+))}
     </div>
   );
 };

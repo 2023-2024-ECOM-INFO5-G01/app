@@ -114,6 +114,7 @@ export const NoteUpdate = () => {
                 placeholder="YYYY-MM-DD HH:mm"
               />
               <ValidatedField label={translate('ecomApp.note.note')} id="note-note" name="note" data-cy="note" type="text" />
+              <ValidatedField label={translate('ecomApp.note.titre')} id="note-titre" name="titre" data-cy="titre" type="text" />
               <ValidatedField id="note-user" name="user" data-cy="user" label={translate('ecomApp.note.user')} type="select">
                 <option value="" key="0" />
                 {users

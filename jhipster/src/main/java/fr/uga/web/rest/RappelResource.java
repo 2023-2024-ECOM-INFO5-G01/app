@@ -127,6 +127,9 @@ public class RappelResource {
                 if (rappel.getAction() != null) {
                     existingRappel.setAction(rappel.getAction());
                 }
+                if (rappel.getVerif() != null) {
+                    existingRappel.setVerif(rappel.getVerif());
+                }
 
                 return existingRappel;
             })
@@ -141,28 +144,18 @@ public class RappelResource {
     /**
      * {@code GET  /rappels} : get all the rappels.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rappels in body.
      */
     @GetMapping("/rappels")
-    public List<Rappel> getAllRappels() {
+    public List<Rappel> getAllRappels(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Rappels");
-        return rappelRepository.findAll();
+        if (eagerload) {
+            return rappelRepository.findAllWithEagerRelationships();
+        } else {
+            return rappelRepository.findAll();
+        }
     }
-
-    /**
- * GET  /rappels/user/{login} : get all the patients of a specific user.
- *
- * @param login the login of the user.
- * @return the ResponseEntity with status 200 (OK) and the list of patients in body.
- */
-@GetMapping("/rappels/user/{login}")
-public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String login) {
-    log.debug("REST request to get all Rappels of user: {}", login);
-    
-    List<Rappel> rappels = rappelRepository.findByUser_Login(login); 
-
-    return ResponseEntity.ok().body(rappels);
-}
 
     /**
      * {@code GET  /rappels/:id} : get the "id" rappel.
@@ -173,7 +166,7 @@ public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String log
     @GetMapping("/rappels/{id}")
     public ResponseEntity<Rappel> getRappel(@PathVariable Long id) {
         log.debug("REST request to get Rappel : {}", id);
-        Optional<Rappel> rappel = rappelRepository.findById(id);
+        Optional<Rappel> rappel = rappelRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(rappel);
     }
 
@@ -192,4 +185,75 @@ public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String log
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+        /**
+ * GET  /rappels/user/{login} : get all the rappels of a specific user.
+ *
+ * @param login the login of the user.
+ * @return the ResponseEntity with status 200 (OK) and the list of rappels in body.
+ */
+@GetMapping("/rappels/user/{login}")
+public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String login) {
+    log.debug("REST request to get all Rappels of user: {}", login);
+    
+    List<Rappel> rappels = rappelRepository.findByUsers_LoginOrderByDateDesc(login);
+
+    return ResponseEntity.ok().body(rappels);
+}
+
+/**
+ * GET  /rappels/patient/{id}{login} : get all the rappels of a specific patient of a specific user.
+ * @param id the id of the patient 
+ * @param login the login of the user.
+ * @return the ResponseEntity with status 200 (OK) and the list of rappels in body.
+ */
+    @GetMapping("/rappels/patient/{id}/{login}")
+    public ResponseEntity<List<Rappel>> getAllRappelsByPatientAndUser(@PathVariable Long id, @PathVariable String login) {
+        log.debug("REST request to get all Rappels of patient: {}", id);
+        
+        List<Rappel> rappels = rappelRepository.findByPatient_IdAndUsers_LoginOrderByDateDesc(id, login);
+
+        return ResponseEntity.ok().body(rappels);
+    }
+
+
+/**
+ * GET  /rappels/patient/{id} : get all the rappels of a specific patient.
+ * @param id the id of the patient 
+ * @return the ResponseEntity with status 200 (OK) and the list of rappels in body.
+ */
+@GetMapping("/rappels/patient/{id}")
+public ResponseEntity<List<Rappel>> getAllRappelsByPatient(@PathVariable Long id) {
+    log.debug("REST request to get all Rappels of patient: {}", id);
+    
+    List<Rappel> rappels = rappelRepository.findByPatient_IdOrderByDateDesc(id);
+
+    return ResponseEntity.ok().body(rappels);
+}
+/**
+     * PUT /rappels/{id}/toggle-verif : Toggle the verification status of a specific rappel.
+     *
+     * @param id the id of the rappel to toggle verification status.
+     * @return the ResponseEntity with status 200 (OK) and with body the updated rappel,
+     * or with status 404 (Not Found) if the rappel is not found.
+     */
+    @PutMapping("/rappels/{id}/toggle-verif")
+    public ResponseEntity<Rappel> toggleVerificationStatus(@PathVariable Long id) {
+        log.debug("REST request to toggle verification status of Rappel : {}", id);
+
+        Optional<Rappel> rappelOptional = rappelRepository.findById(id);
+        
+        if (!rappelOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Rappel rappel = rappelOptional.get();
+
+        rappel.setVerif(!rappel.getVerif());
+
+        Rappel result = rappelRepository.save(rappel);
+        
+        return ResponseEntity.ok().body(result);
+    }
+
 }

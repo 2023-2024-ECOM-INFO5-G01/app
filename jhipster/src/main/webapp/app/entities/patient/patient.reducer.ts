@@ -32,7 +32,6 @@ export const getPatientsByUserId = createAsyncThunk(
   },
 );
 
-
 export const getEntity = createAsyncThunk(
   'patient/fetch_entity',
   async (id: string | number) => {
@@ -43,13 +42,16 @@ export const getEntity = createAsyncThunk(
 );
 
 export const getPatientSearch = createAsyncThunk(
-  'patient/fetch_patient_search',
-  async (query: string) => {
-    const requestUrl = `${apiUrl}/suggestions/${query}`;
-    return axios.get<IPatient[]>(requestUrl);
+  'patient/suggestions',
+  async ({ query, login }: { query: string, login: string }) => {
+    const requestUrl = `${apiUrl}/suggestions/${query}/${login}`;
+    const response = await axios.get<IPatient[]>(requestUrl);
+    return response.data;
   },
   { serializeError: serializeAxiosError },
 );
+
+
 export const createEntity = createAsyncThunk(
   'patient/create_entity',
   async (entity: IPatient, thunkAPI) => {

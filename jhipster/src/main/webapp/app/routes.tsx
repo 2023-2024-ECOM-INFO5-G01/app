@@ -21,6 +21,7 @@ import Notes from './note';
 
 import AlertePatient from './alertespatient';
 import PatientUpdate from './entities/patient/patient-update';
+import PatientEdit from './PatientView/patient_edit';
 
 const loading = <div>loading ...</div>;
 
@@ -39,12 +40,12 @@ const AppRoutes = () => {
     <div className="view-routes">
       <ErrorBoundaryRoutes>
         <Route index  element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN,AUTHORITIES.SOIGNANT]}>
             <Home />
           </PrivateRoute>
         } />
         <Route path="rappels" element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN,AUTHORITIES.SOIGNANT]}>
             <Rappels />
           </PrivateRoute>
         } />
@@ -54,23 +55,18 @@ const AppRoutes = () => {
           </PrivateRoute>
         } />
         <Route path="patients/:id" element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
+          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN,AUTHORITIES.SOIGNANT]}>
             <Patient />
           </PrivateRoute>
         } />
-
-        <Route path="note/:id" element={
-          <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.ADMIN]}>
-            <Notes />
-          </PrivateRoute>
-        } />
+   
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
         <Route path="account">
           <Route
             path="*"
             element={
-              <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER, AUTHORITIES.MEDECIN]}>
+              <PrivateRoute hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER, AUTHORITIES.MEDECIN, AUTHORITIES.SOIGNANT]}>
                 <Account />
               </PrivateRoute>
             }
@@ -87,6 +83,8 @@ const AppRoutes = () => {
             <PatientUpdate />
           </PrivateRoute>
         } />
+
+
         <Route
           path="admin/*"
           element={

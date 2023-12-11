@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,16 +32,20 @@ public class Rappel implements Serializable {
     @Column(name = "action")
     private String action;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @Column(name = "verif")
+    private Boolean verif;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = { "albumine", "ehpad", "users", "poids", "ePAS", "iMCS", "repas", "rappels", "notes" },
         allowSetters = true
     )
-    @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rel_rappel__user", joinColumns = @JoinColumn(name = "rappel_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<User> users = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -82,17 +88,17 @@ public class Rappel implements Serializable {
         this.action = action;
     }
 
-    public User getUser() {
-        return this.user;
+    public Boolean getVerif() {
+        return this.verif;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Rappel user(User user) {
-        this.setUser(user);
+    public Rappel verif(Boolean verif) {
+        this.setVerif(verif);
         return this;
+    }
+
+    public void setVerif(Boolean verif) {
+        this.verif = verif;
     }
 
     public Patient getPatient() {
@@ -105,6 +111,29 @@ public class Rappel implements Serializable {
 
     public Rappel patient(Patient patient) {
         this.setPatient(patient);
+        return this;
+    }
+
+    public Set<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Rappel users(Set<User> users) {
+        this.setUsers(users);
+        return this;
+    }
+
+    public Rappel addUser(User user) {
+        this.users.add(user);
+        return this;
+    }
+
+    public Rappel removeUser(User user) {
+        this.users.remove(user);
         return this;
     }
 
@@ -133,9 +162,11 @@ public class Rappel implements Serializable {
         return "Rappel{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
-            ", action='" + getAction() + 
-            ", user='" + getUser() + "'" +
-            ", patient='" + getPatient() + "'" +
+            ", action='" + getAction() + "'" +
+            ", verif='" + getVerif() + "'" +
+            ", patient=" + getPatient() +
+            ", users=" + getUsers() +
+            
             "}";
     }
 }

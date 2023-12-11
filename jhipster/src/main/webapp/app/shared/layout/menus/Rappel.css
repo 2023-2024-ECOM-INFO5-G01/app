@@ -1,0 +1,50 @@
+.rappel {
+    border: 1px solid rgb(214, 214, 214);
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgb(208, 226, 229);
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+  }
+
+  .rappel-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Change this from flex-start to stretch */
+    flex-grow: 1;
+    height: 150px;
+  }
+  
+  .rappel-icon {
+    font-size: 150px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center; /* Add this to center the icon vertically */
+    justify-content: center; /* Add this to center the icon horizontally */
+  }
+  
+  .rappel-check {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the end */
+  }
+  
+  .rappel-button {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    padding: 5px 10px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  .button-container {
+    align-self: flex-end;
+  }
+  .rappel-check {
+    font-size: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }

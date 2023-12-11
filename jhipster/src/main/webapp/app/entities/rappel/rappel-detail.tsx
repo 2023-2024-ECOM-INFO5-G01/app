@@ -45,13 +45,28 @@ export const RappelDetail = () => {
           </dt>
           <dd>{rappelEntity.action}</dd>
           <dt>
-            <Translate contentKey="ecomApp.rappel.user">User</Translate>
+            <span id="verif">
+              <Translate contentKey="ecomApp.rappel.verif">Verif</Translate>
+            </span>
           </dt>
-          <dd>{rappelEntity.user ? rappelEntity.user.id : ''}</dd>
+          <dd>{rappelEntity.verif ? 'true' : 'false'}</dd>
           <dt>
             <Translate contentKey="ecomApp.rappel.patient">Patient</Translate>
           </dt>
           <dd>{rappelEntity.patient ? rappelEntity.patient.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ecomApp.rappel.user">User</Translate>
+          </dt>
+          <dd>
+            {rappelEntity.users
+              ? rappelEntity.users.map((val, i) => (
+                  <span key={val.id}>
+                    <a>{val.login}</a>
+                    {rappelEntity.users && i === rappelEntity.users.length - 1 ? '' : ', '}
+                  </span>
+                ))
+              : null}
+          </dd>
         </dl>
         <Button tag={Link} to="/rappel" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

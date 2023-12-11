@@ -95,11 +95,14 @@ export const Rappel = () => {
                   <Translate contentKey="ecomApp.rappel.action">Action</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('action')} />
                 </th>
-                <th>
-                  <Translate contentKey="ecomApp.rappel.user">User</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" onClick={sort('verif')}>
+                  <Translate contentKey="ecomApp.rappel.verif">Verif</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('verif')} />
                 </th>
                 <th>
                   <Translate contentKey="ecomApp.rappel.patient">Patient</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="ecomApp.rappel.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -114,8 +117,18 @@ export const Rappel = () => {
                   </td>
                   <td>{rappel.date ? <TextFormat type="date" value={rappel.date} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{rappel.action}</td>
-                  <td>{rappel.user ? rappel.user.id : ''}</td>
+                  <td>{rappel.verif ? 'true' : 'false'}</td>
                   <td>{rappel.patient ? <Link to={`/patient/${rappel.patient.id}`}>{rappel.patient.id}</Link> : ''}</td>
+                  <td>
+                    {rappel.users
+                      ? rappel.users.map((val, j) => (
+                          <span key={j}>
+                            {val.login}
+                            {j === rappel.users.length - 1 ? '' : ', '}
+                          </span>
+                        ))
+                      : null}
+                  </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/rappel/${rappel.id}`} color="info" size="sm" data-cy="entityDetailsButton">
