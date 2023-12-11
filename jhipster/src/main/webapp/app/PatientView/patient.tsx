@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useParams} from 'react-router-dom';
-import {Button, Row, Col} from 'reactstrap';
-import {Translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useAppDispatch, useAppSelector} from 'app/config/store';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { Button, Row, Col } from 'reactstrap';
+import { Translate } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import {getEntity} from '../entities/patient/patient.reducer';
+import { getEntity } from '../entities/patient/patient.reducer';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,15 +14,17 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
-
+import RappelPatient from 'app/rappelspatient';
 import '../../content/css/patient.css';
 import AlertePatient from '../alertespatient';
-import {GraphTab} from "app/PatientView/graph_tab";
-import {PatientTabs} from "app/PatientView/patient_tabs";
-import {PatientThumbnail} from "app/PatientView/patient_thumbnail";
-import {IPatient} from "app/shared/model/patient.model";
+import { GraphTab } from 'app/PatientView/graph_tab';
+import { PatientTabs } from 'app/PatientView/patient_tabs';
+import { PatientThumbnail } from 'app/PatientView/patient_thumbnail';
+import { IPatient } from 'app/shared/model/patient.model';
+
+import Notes from 'app/note';
 
 ChartJS.register(
   CategoryScale,
@@ -36,7 +38,7 @@ ChartJS.register(
 export const Patient = () => {
   const dispatch = useAppDispatch();
 
-  const {id} = useParams<'id'>();
+  const { id } = useParams<'id'>();
   const [statuschange, setStatuschange] = useState(false);
   const [background, setbackground] = useState(null);
 
@@ -51,45 +53,47 @@ export const Patient = () => {
   const togglePosition = () => {
     setIsFixed((prevIsFixed) => !prevIsFixed);
   };
+  const account = useAppSelector(state => state.authentication.account);
+  const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
 
-  const [activeTab, setActiveTab] = useState('accueil');
+  const [activeTab, setActiveTab] = useState(userHasRequiredRole ? 'accueil' : 'rappel');
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'note':
-        return <div>Notes content goes here</div>;
+        return userHasRequiredRole && <div><Notes idprops={id} /></div>;
       case 'rappel':
-        return <div>Rappel content goes here</div>;
+        return <div><RappelPatient idprops={id} /></div>;
       case 'alerte':
-        return <div><AlertePatient idprops={id}/></div>;
+        return userHasRequiredRole && <div><AlertePatient idprops={id} /></div>;
       default:
-        return <GraphTab isFixed={isFixed}/>;
+        return userHasRequiredRole && <GraphTab isFixed={isFixed} />;
     }
   };
 
-  const patientEntity : IPatient = useAppSelector(state => state.patient.entity);
+  const patientEntity: IPatient = useAppSelector(state => state.patient.entity);
 
   return (
     <div>
       <Row className="container-fluid">
         <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
           <PatientThumbnail togglePosition={togglePosition} isFixed={isFixed} patientEntity={patientEntity}
-                            setStatus={setStatuschange} setbackground={setbackground}/>
-          <PatientTabs changeTab={setActiveTab}/>
+                            setStatus={setStatuschange} idprops={id} setbackground={setbackground} />
+          <PatientTabs changeTab={setActiveTab} />
         </div>
         <div className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
           {renderTabContent()}
         </div>
         <Col md="9">
           <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
-            <FontAwesomeIcon icon="arrow-left"/>{' '}
+            <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
              <Translate contentKey="entity.action.back">Back</Translate>
            </span>
           </Button>
         </Col>
       </Row>
-      {background && <div className='background' onClick={() => setbackground(null)}>{background}</div>}
+      {background && <div className="background" onClick={() => {setbackground(null); window.location.reload()}}>{background}</div>}
     </div>
   );
 };

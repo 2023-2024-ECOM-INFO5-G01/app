@@ -5,6 +5,7 @@ export interface INote {
   id?: number;
   date?: string | null;
   note?: string | null;
+  titre?: string | null;
   user?: IUser | null;
   patient?: IPatient | null;
 }

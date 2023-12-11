@@ -20,8 +20,9 @@
       "id": "ID",
       "date": "Date",
       "action": "Action",
-      "user": "User",
-      "patient": "Patient"
+      "verif": "Verif",
+      "patient": "Patient",
+      "user": "User"
     }
   }
 }

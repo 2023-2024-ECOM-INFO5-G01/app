@@ -34,13 +34,12 @@ export const PatientInfoPerso = (props) => {
 
 // Inside your Alerte component
   const {register, handleSubmit, reset} = useForm();
-
-
+//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
+// <button onClick={() => handlecreateAlerte(account.id, props.patientEntity.id)}>Créer une alerte</button>
   return (
     <div className="info_patient_perso">
       <div>
         <div>
-          <button onClick={() => handlecreateAlerte(account.id, props.patientEntity.id)}>Créer une alerte</button>
           <span id="taille">
           <Translate contentKey="ecomApp.patient.taille"></Translate>{props.patientEntity.taille} cm
         </span>

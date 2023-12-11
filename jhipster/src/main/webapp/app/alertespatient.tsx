@@ -72,6 +72,7 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
             selected={selectedDate}
             onChange={date => setSelectedDate(date)}
             placeholderText='Sélectionnez une date'
+            isClearable
           />
         )}      </div>
       {filteredAlertes.map(alerte => (
