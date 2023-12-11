@@ -31,9 +31,10 @@ export const PatientInfoPerso = (props) => {
     const entity = createAlarmEntity(userid, patientid);
     dispatch(createEntity(entity));
   }
+
 // Inside your Alerte component
   const {register, handleSubmit, reset} = useForm();
-//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
+
 
   return (
     <div className="info_patient_perso">

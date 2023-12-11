@@ -2,6 +2,7 @@ import {Col} from "reactstrap";
 import React from "react";
 import {PatientInfoAdmin} from "app/PatientView/patient_info_admin";
 import {PatientInfoPerso} from "app/PatientView/patient_info_perso";
+import {AddDataPopup} from "app/PatientView/add_data_popup";
 
 
 export const PatientThumbnail = (props) => {
@@ -19,6 +20,18 @@ export const PatientThumbnail = (props) => {
     }
   };
 
+  const handleAddAdministrativeInfo = () => {
+    //place holder
+  }
+
+  const handleAddData = () => {
+    props.setbackground(<AddDataPopup/>);
+  }
+
+  const handleAddTask = () => {
+    //place holder
+  }
+
   return (
     <Col className="fixed-flex-container">
       <div className={`patient-card ${getCardColorClass(props.patientEntity.statut)}`}>
@@ -32,15 +45,15 @@ export const PatientThumbnail = (props) => {
       </div>
       <PatientInfoPerso patientEntity={props.patientEntity}/>
       <div className="info_buttons">
-        <button className="bouton_modif_patient" onClick={null}>
+        <button className="bouton_modif_patient" onClick={handleAddAdministrativeInfo}>
           <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
           Données administratives
         </button>
-        <button className="bouton_modif_patient" onClick={null}>
+        <button className="bouton_modif_patient" onClick={handleAddData}>
           <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
           Données patient
         </button>
-        <button className="bouton_modif_patient" onClick={null}>
+        <button className="bouton_modif_patient" onClick={handleAddTask}>
           <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
           Tâche
         </button>
