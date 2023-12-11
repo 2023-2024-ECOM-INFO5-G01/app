@@ -69,6 +69,7 @@ public class CacheConfiguration {
             createCache(cm, fr.uga.domain.Note.class.getName());
             createCache(cm, fr.uga.domain.Aliment.class.getName());
             createCache(cm, fr.uga.domain.Alerte.class.getName());
+            createCache(cm, fr.uga.domain.Rappel.class.getName() + ".users");
             // jhipster-needle-ehcache-add-entry
         };
     }

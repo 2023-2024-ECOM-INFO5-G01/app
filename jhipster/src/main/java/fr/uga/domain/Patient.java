@@ -84,7 +84,7 @@ public class Patient implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "user", "patient" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "patient", "users" }, allowSetters = true)
     private Set<Rappel> rappels = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
@@ -425,7 +425,7 @@ public class Patient implements Serializable {
         return this;
     }
 
-    public Set<Alerte> getAlertes() {
+ public Set<Alerte> getAlertes() {
         return this.alertes;
     }
 
@@ -455,9 +455,6 @@ public class Patient implements Serializable {
         alerte.setPatient(null);
         return this;
     }
-
-    
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -490,6 +487,7 @@ public class Patient implements Serializable {
             ", datearrive='" + getDatearrive() + "'" +
             ", albumine='" + getAlbumine() + "'" +
             ", ehpad='" + getEhpad() + "'" +
+            ", users='" + getUsers() + "'" +
             "}";
     }
 }

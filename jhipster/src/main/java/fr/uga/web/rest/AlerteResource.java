@@ -197,7 +197,7 @@ public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String log
     log.debug("REST request to get all Alertes of user: {}", login);
     
     List<Alerte> alertes = alerteRepository.findByUser_LoginOrderByDateDesc(login);
-
+    log.info("Alertes: {}", alertes);
     return ResponseEntity.ok().body(alertes);
 }
 

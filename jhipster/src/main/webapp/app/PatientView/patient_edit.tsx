@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, Row, Col, FormText } from 'reactstrap';
+import { Button, Row, Col, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -15,16 +15,16 @@ import { getEntities as getEhpads } from 'app/entities/ehpad/ehpad.reducer';
 import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
-import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
-import { createEntity1 } from '../rappel/rappel.reducer';
+import { getEntity, updateEntity, createEntity, reset } from '../entities/patient/patient.reducer';
 
-export const PatientUpdate = () => {
+
+export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: () => void; idprops: string }) => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
-  const { id } = useParams<'id'>();
-  const isNew = id === undefined;
+ // const { id } = useParams<'id'>();
+  const isNew = idprops === undefined;
 
   const albumines = useAppSelector(state => state.albumine.entities);
   const ehpads = useAppSelector(state => state.ehpad.entities);
@@ -35,40 +35,19 @@ export const PatientUpdate = () => {
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
-  const handleClose = () => {
-    navigate('/');
-  };
+
 
   useEffect(() => {
-    if (isNew) {
-      dispatch(reset());
-    } else {
-      dispatch(getEntity(id));
-    }
 
+      dispatch(getEntity(idprops));
     dispatch(getAlbumines({}));
     dispatch(getEhpads({}));
     dispatch(getUsers({}));
     dispatch(getRoles());
   }, []);
   const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);  
-  useEffect(() => {
-    if (updateSuccess && selectedUsers.length > 0) {
-      handleClose();
-      const daterappel = new Date();
-      daterappel.setDate(daterappel.getDate() + 1);
-      const entityrappel = {
-        verif: false,
-        users: selectedUsers,
-        patient: patientEntity,
-        action: 'prise de poids',
-        date: daterappel.toISOString(), // Convert date to string
-      };
-      console.log("entity rappel : ", entityrappel);
-      dispatch(createEntity1(entityrappel));
-    }
-  }, [updateSuccess, selectedUsers]);
-  const saveEntity = values => {
+  
+  const saveEntity = async values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
 
@@ -77,15 +56,12 @@ export const PatientUpdate = () => {
       ...values,
       users: mapIdList(values.users),
     //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
-    ehpad: ehpads.find(it => it.id.toString() === values.ehpad),
+      ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
   };
 
-    if (isNew) {
-      console.log("patient crée:", entity);
-      dispatch(createEntity(entity));
-    } else {
-      dispatch(updateEntity(entity));
-    }
+
+     await dispatch(updateEntity(entity));
+     toggle();
   };
 
   const defaultValues = () =>
@@ -93,25 +69,21 @@ export const PatientUpdate = () => {
       ? {
           dateNaissance: displayDefaultDateTime(),
           datearrive: displayDefaultDateTime(),
+          ehpad: ehpads[0]?.id,
         }
       : {
           ...patientEntity,
           dateNaissance: convertDateTimeFromServer(patientEntity.dateNaissance),
           datearrive: convertDateTimeFromServer(patientEntity.datearrive),
           albumine: patientEntity?.albumine?.id,
-          ehpad: patientEntity?.ehpad?.id,
           users: patientEntity?.users?.map(e => e.id.toString()),
+          ehpad: patientEntity?.ehpad?.id,
         };
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2 id="ecomApp.patient.home.createOrEditLabel" data-cy="PatientCreateUpdateHeading">
-            <Translate contentKey="ecomApp.patient.home.createOrEditLabel">Create or edit a Patient</Translate>
-          </h2>
-        </Col>
-      </Row>
+    <Modal isOpen={modal} toggle={toggle}>
+    <ModalHeader toggle={toggle}>Edit Patient</ModalHeader>
+    <ModalBody>      
       <Row className="justify-content-center">
         <Col md="8">
           {loading ? (
@@ -205,12 +177,22 @@ export const PatientUpdate = () => {
       .filter(option => option.selected)
       .map(option => option.value);
   
-    const newSelectedUsers = selectedOptions.map(userId => 
+    const newSelectedUsers = selectedOptions.map(userId =>
       users.find(user => user.id.toString() === userId)
     ).filter(Boolean);
   
+    // Update the users field in the form data directly
+    // Declare formRef variable
+    const formRef = useRef<any>();
+
+    // Rest of the code...
+    const formData = formRef.current.form.getData();
+    formData.users = newSelectedUsers.map(user => user.id.toString());
+    formRef.current.form.setData(formData);
+   
     setSelectedUsers(newSelectedUsers);
   }}
+  
   validate={{
     required: 'Veuillez choisir un médecin et/ou des soignants',
   }}
@@ -224,15 +206,8 @@ export const PatientUpdate = () => {
       ))
     : null}
 </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
-              </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} >
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
@@ -241,8 +216,12 @@ export const PatientUpdate = () => {
           )}
         </Col>
       </Row>
-    </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" onClick={toggle}>Cancel</Button>
+      </ModalFooter>
+    </Modal>
   );
 };
 
-export default PatientUpdate;
+export default PatientEdit;

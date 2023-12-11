@@ -8,18 +8,25 @@
     -->
     <changeSet id="20231010132653-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="rappel"
-                                 constraintName="fk_rappel__user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="patient_id"
                                  baseTableName="rappel"
                                  constraintName="fk_rappel__patient_id"
                                  referencedColumnNames="id"
                                  referencedTableName="patient"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="rappel_id"
+                                 baseTableName="rel_rappel__user"
+                                 constraintName="fk_rel_rappel__user__rappel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="rappel"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="rel_rappel__user"
+                                 constraintName="fk_rel_rappel__user__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"
                                  />
     </changeSet>
 </databaseChangeLog>

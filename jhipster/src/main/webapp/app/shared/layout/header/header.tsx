@@ -18,6 +18,8 @@ export interface IHeaderProps {
   isInProduction: boolean;
   isOpenAPIEnabled: boolean;
   currentLocale: string;
+  authorities: string[];
+
 }
 
 const Header = (props: IHeaderProps) => {
@@ -54,21 +56,23 @@ const Header = (props: IHeaderProps) => {
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ms-auto" navbar>
             <Home />
-            {props.isAuthenticated && (
+            {props.isAuthenticated &&  (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')|| props.authorities.includes('ROLE_SOIGNANT')) && (
               <Link to="/rappels" className="nav-link" data-cy="rappelsLink">
                 Tâches
               </Link>
-            )}   
-            {props.isAuthenticated && (
+            )}  
+            {props.isAuthenticated && (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')) && (
               <Link to="/alertes" className="nav-link" data-cy="rappelsLink">
                 Alerte
               </Link>
-            )}                
-            {props.isAuthenticated && <EntitiesMenu />}
+            )}           
+            {props.isAuthenticated && props.authorities.includes('ROLE_ADMIN') && ( <EntitiesMenu />)}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showOpenAPI={props.isOpenAPIEnabled} showDatabase={!props.isInProduction} />
             )}
+            {props.isAuthenticated && props.isAdmin && (
             <LocaleMenu currentLocale={props.currentLocale} onClick={handleLocaleChange} />
+            )}
             <AccountMenu isAuthenticated={props.isAuthenticated} />
           </Nav>
         </Collapse>

@@ -19,19 +19,20 @@
   "name": "Rappel",
   "relationships": [
     {
-      "otherEntityName": "user",
-      "otherEntityRelationshipName": "rappel",
-      "relationshipName": "user",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one",
-      "relationshipWithBuiltInEntity": true
-    },
-    {
       "otherEntityName": "patient",
       "otherEntityRelationshipName": "rappel",
       "relationshipName": "patient",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "rappel",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no"
