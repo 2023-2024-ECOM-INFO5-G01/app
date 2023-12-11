@@ -51,7 +51,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     const entity = {
       ...values,
       verif: false,
-      user: users.find(it => it.id.toString() === values.user.toString()),
+      users: [users.find(it => it.id.toString() === values.user.toString())],
       patient: patients.find(it => it.id.toString() === idprops),
     };
   

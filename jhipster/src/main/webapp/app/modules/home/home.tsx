@@ -85,7 +85,6 @@ const handleStatusFilterChange = (status, isChecked) => {
 
 const filterPatientsByStatus = () => {
   if (filteredStatuses.length === 0) {
-    console.log("patientList", patientList);
     return patientList;
   } else {
     return patientList.filter((patient) => filteredStatuses.includes(patient.statut));
@@ -186,7 +185,6 @@ const getCardColorClass = (status) => {
       dispatch(getAlertesByUser(account.login))
       .then(response => {
         setAlertes((response.payload as any).data);
-        console.log("touteles alertes:"+ alertes);
       })
       .catch(error => {
         console.error('Une erreur s\'est produite :', error);

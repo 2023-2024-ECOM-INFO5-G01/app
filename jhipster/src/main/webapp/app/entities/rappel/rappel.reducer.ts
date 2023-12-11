@@ -22,9 +22,6 @@ export const getEntities = createAsyncThunk('rappel/fetch_entity_list', async ({
   const requestUrl = `${apiUrl}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
   return axios.get<IRappel[]>(requestUrl);
 });
-
-
-
 export const getRappelsByUser = createAsyncThunk(
   'rappel/fetch_rappels_by_user',
   async (login: string) => {
@@ -78,7 +75,6 @@ export const createEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
-
 export const createEntity1 = createAsyncThunk(
   'rappel/create_entity',
   async (entity: IRappel, thunkAPI) => {
@@ -88,7 +84,6 @@ export const createEntity1 = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
-
 export const updateEntity = createAsyncThunk(
   'rappel/update_entity',
   async (entity: IRappel, thunkAPI) => {

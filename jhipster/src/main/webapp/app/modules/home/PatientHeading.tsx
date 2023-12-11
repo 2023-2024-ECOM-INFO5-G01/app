@@ -4,22 +4,27 @@ import { Translate } from 'react-jhipster';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-
+import { useAppSelector } from 'app/config/store';
 const PatientHeading = ({ loading, handleSyncList }) => {
+  const account = useAppSelector(state => state.authentication.account);
+  const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
+
   return (
-<div className="d-flex justify-content-end">
-  <Link
-    to="/patient/new"
-    className="btn jh-create-entity custom-create-button"
-    id="jh-create-entity"
-    data-cy="entityCreateButton"
-    color='primary'
-  >
-    <FontAwesomeIcon icon="plus" />
-    &nbsp;
-    <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
-  </Link>
-</div>
+    <div className="d-flex justify-content-end">
+      {userHasRequiredRole && (
+        <Link
+          to="/patient/new"
+          className="btn jh-create-entity custom-create-button"
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+          color='primary'
+        >
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
+        </Link>
+      )}
+    </div>
   );
 };
 

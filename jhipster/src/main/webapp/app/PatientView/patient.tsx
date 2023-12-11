@@ -49,19 +49,21 @@ export const Patient = () => {
   const togglePosition = () => {
     setIsFixed((prevIsFixed) => !prevIsFixed);
   };
+  const account = useAppSelector(state => state.authentication.account);
+  const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
 
-  const [activeTab, setActiveTab] = useState('accueil');
-
+  const [activeTab, setActiveTab] = useState(userHasRequiredRole ? 'accueil' : 'rappel');
+  
   const renderTabContent = () => {
     switch (activeTab) {
       case 'note':
-        return <div><Notes idprops={id}/></div>;
+        return userHasRequiredRole && <div><Notes idprops={id}/></div>;
       case 'rappel':
         return <div><RappelPatient idprops={id}/></div>;
       case 'alerte':
-        return <div><AlertePatient idprops={id}/></div>;
+        return userHasRequiredRole && <div><AlertePatient idprops={id}/></div>;
       default:
-        return <GraphTab isFixed={isFixed}/>;
+        return userHasRequiredRole && <GraphTab isFixed={isFixed}/>;
     }
   };
 
@@ -71,7 +73,7 @@ export const Patient = () => {
     <Row className="container-fluid">
       <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
         <PatientThumbnail togglePosition={togglePosition} isFixed={isFixed} patientEntity={patientEntity}
-                          setStatus={setStatuschange}/>
+                          setStatus={setStatuschange} idprops={id}/>
         <PatientTabs changeTab={setActiveTab}/>
       </div>
       <div className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>

@@ -144,12 +144,17 @@ public class RappelResource {
     /**
      * {@code GET  /rappels} : get all the rappels.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rappels in body.
      */
     @GetMapping("/rappels")
-    public List<Rappel> getAllRappels() {
+    public List<Rappel> getAllRappels(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Rappels");
-        return rappelRepository.findAll();
+        if (eagerload) {
+            return rappelRepository.findAllWithEagerRelationships();
+        } else {
+            return rappelRepository.findAll();
+        }
     }
 
     /**
@@ -161,7 +166,7 @@ public class RappelResource {
     @GetMapping("/rappels/{id}")
     public ResponseEntity<Rappel> getRappel(@PathVariable Long id) {
         log.debug("REST request to get Rappel : {}", id);
-        Optional<Rappel> rappel = rappelRepository.findById(id);
+        Optional<Rappel> rappel = rappelRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(rappel);
     }
 
@@ -181,8 +186,7 @@ public class RappelResource {
             .build();
     }
 
-
-    /**
+        /**
  * GET  /rappels/user/{login} : get all the rappels of a specific user.
  *
  * @param login the login of the user.
@@ -192,7 +196,7 @@ public class RappelResource {
 public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String login) {
     log.debug("REST request to get all Rappels of user: {}", login);
     
-    List<Rappel> rappels = rappelRepository.findByUser_LoginOrderByDateDesc(login);
+    List<Rappel> rappels = rappelRepository.findByUsers_LoginOrderByDateDesc(login);
 
     return ResponseEntity.ok().body(rappels);
 }
@@ -207,7 +211,7 @@ public ResponseEntity<List<Rappel>> getAllRappelsByUser(@PathVariable String log
     public ResponseEntity<List<Rappel>> getAllRappelsByPatientAndUser(@PathVariable Long id, @PathVariable String login) {
         log.debug("REST request to get all Rappels of patient: {}", id);
         
-        List<Rappel> rappels = rappelRepository.findByPatient_IdAndUser_LoginOrderByDateDesc(id, login);
+        List<Rappel> rappels = rappelRepository.findByPatient_IdAndUsers_LoginOrderByDateDesc(id, login);
 
         return ResponseEntity.ok().body(rappels);
     }
@@ -226,8 +230,7 @@ public ResponseEntity<List<Rappel>> getAllRappelsByPatient(@PathVariable Long id
 
     return ResponseEntity.ok().body(rappels);
 }
-
-    /**
+/**
      * PUT /rappels/{id}/toggle-verif : Toggle the verification status of a specific rappel.
      *
      * @param id the id of the rappel to toggle verification status.
