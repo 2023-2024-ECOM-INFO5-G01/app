@@ -1,45 +1,44 @@
-
-import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getAlertesByPatientAndUser ,toggleVerif} from 'app/entities/alerte/alerte.reducer';
-import { useParams } from 'react-router-dom';
-import './shared/layout/menus/Alerte.css'; // Import your CSS file
+import React, {useState, useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from 'app/config/store';
+import {getAlertesByPatientAndUser, toggleVerif} from 'app/entities/alerte/alerte.reducer';
+import {useParams} from 'react-router-dom';
+import './shared/layout/menus/Alerte.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCalendar} from '@fortawesome/free-solid-svg-icons';
 
-export const AlertePatient = ({ idprops }: { idprops: string }) => {
+export const AlertePatient = ({idprops}: { idprops: string }) => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
-  const { id } = useParams<'id'>();
-  const [filter, setFilter] = useState('all'); 
-  const [selectedDate, setSelectedDate] = useState(null); 
+  const {id} = useParams<'id'>();
+  const [filter, setFilter] = useState('all');
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [alertes, setAlertes] = useState([]);
-useEffect(() => {
+  useEffect(() => {
     if (account && account.login) {
-        dispatch(getAlertesByPatientAndUser({ id: idprops, login: account.login }))
-            .then(response => {
-                setAlertes((response.payload as any).data);
-                console.log(alertes);
-            })
-            .catch(error => {
-                console.error('Une erreur s\'est produite :', error);
-            });
-    }
-}, [account.login, dispatch]);
-
-const handleToggleVerif = (alertId: string | number) => { 
-    dispatch(toggleVerif(alertId))
-    .then(() => {
-      if (account && account.login) {
-        dispatch(getAlertesByPatientAndUser({ id: idprops, login: account.login })) 
+      dispatch(getAlertesByPatientAndUser({id: idprops, login: account.login}))
         .then(response => {
           setAlertes((response.payload as any).data);
+          console.log(alertes);
+        })
+        .catch(error => {
+          console.error('Une erreur s\'est produite :', error);
         });
-      }
-    });
+    }
+  }, [account.login, dispatch]);
+
+  const handleToggleVerif = (alertId: string | number) => {
+    dispatch(toggleVerif(alertId))
+      .then(() => {
+        if (account && account.login) {
+          dispatch(getAlertesByPatientAndUser({id: idprops, login: account.login}))
+            .then(response => {
+              setAlertes((response.payload as any).data);
+            });
+        }
+      });
   };
 
   const filteredAlertes = alertes.filter(alerte => {
@@ -58,16 +57,16 @@ const handleToggleVerif = (alertId: string | number) => {
   const handleDatePickerClose = () => {
     setShowDatePicker(false);
   };
-  
-return (
+
+  return (
     <div>
       <div>
-      <select onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">Toutes les alertes</option>
-        <option value="verified">Alertes vérifiées</option>
-        <option value="unverified">Alertes non vérifiées</option>
-      </select>
-      <FontAwesomeIcon icon={faCalendar} onClick={handleCalendarIconClick} />
+        <select onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">Toutes les alertes</option>
+          <option value="verified">Alertes vérifiées</option>
+          <option value="unverified">Alertes non vérifiées</option>
+        </select>
+        <FontAwesomeIcon icon={faCalendar} onClick={handleCalendarIconClick}/>
         {showDatePicker && (
           <DatePicker
             selected={selectedDate}
@@ -86,7 +85,7 @@ return (
               <p>Date: {alerte.date}</p>
             </div>
             <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-            {alerte.verif ? '✅' : '⬜'}
+              {alerte.verif ? '✅' : '⬜'}
             </button>
           </div>
         </div>

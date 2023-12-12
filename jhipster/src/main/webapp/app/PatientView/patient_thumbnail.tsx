@@ -6,6 +6,7 @@ import { PatientInfoPerso } from 'app/PatientView/patient_info_perso';
 import CreationRappel from '../shared/layout/menus/creationRappel';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import PatientEdit from './patient_edit';
+import {AddDataPopup} from "app/PatientView/add_data_popup";
 export const PatientThumbnail = (props) => {
   const account = useAppSelector(state => state.authentication.account);
   const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
@@ -33,6 +34,10 @@ export const PatientThumbnail = (props) => {
     navigate(`/patient/edit/${props.idprops}`);
   }
 
+  const handleAddData = () => {
+    props.setbackground(<AddDataPopup/>);
+  }
+
   return (
     <Col className="fixed-flex-container">
       <div className={`patient-card ${getCardColorClass(props.patientEntity.statut)}`}>
@@ -55,7 +60,7 @@ export const PatientThumbnail = (props) => {
             <PatientEdit modal={modal2} toggle={toggle2} idprops={props.idprops}/>
             </>
         )}
-        <button className="bouton_modif_patient" onClick={null}>
+        <button className="bouton_modif_patient" onClick={handleAddData}>
           <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
           Données patient
         </button>
@@ -68,7 +73,7 @@ export const PatientThumbnail = (props) => {
             <CreationRappel modal={modal} toggle={toggle} idprops={props.idprops}/>
             </>
         )}
-        
+
       </div>
     </Col>
   )

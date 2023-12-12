@@ -14,7 +14,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
 import RappelPatient from 'app/rappelspatient';
 import '../../content/css/patient.css';
@@ -23,6 +23,9 @@ import {GraphTab} from "app/PatientView/graph_tab";
 import {PatientTabs} from "app/PatientView/patient_tabs";
 import {PatientThumbnail} from "app/PatientView/patient_thumbnail";
 import Notes from "app/note";
+import {IPatient} from "app/shared/model/patient.model";
+
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -37,6 +40,7 @@ export const Patient = () => {
 
   const {id} = useParams<'id'>();
   const [statuschange, setStatuschange] = useState(false);
+  const [background, setbackground] = useState(null);
 
   useEffect(() => {
     dispatch(getEntity(id));
@@ -53,7 +57,7 @@ export const Patient = () => {
   const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
 
   const [activeTab, setActiveTab] = useState(userHasRequiredRole ? 'accueil' : 'rappel');
-  
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'note':
@@ -67,34 +71,30 @@ export const Patient = () => {
     }
   };
 
-  const patientEntity = useAppSelector(state => state.patient.entity);
+  const patientEntity : IPatient = useAppSelector(state => state.patient.entity);
 
   return (
-    <Row className="container-fluid">
-      <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
-        <PatientThumbnail togglePosition={togglePosition} isFixed={isFixed} patientEntity={patientEntity}
-                          setStatus={setStatuschange} idprops={id}/>
-        <PatientTabs changeTab={setActiveTab}/>
-      </div>
-      <div className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
-        {renderTabContent()}
-      </div>
-      <Col md="9">
-        <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left"/>{' '}
-          <span className="d-none d-md-inline">
+    <div>
+      <Row className="container-fluid">
+        <div className={`sticky-div ${isFixed ? 'fixed' : 'relative'}`}>
+          <PatientThumbnail togglePosition={togglePosition} isFixed={isFixed} patientEntity={patientEntity}
+                            setStatus={setStatuschange} idprops={id} setbackground={setbackground} />
+          <PatientTabs changeTab={setActiveTab} />
+        </div>
+        <div className={`graphs ${isFixed ? 'fixed' : 'relative'}`}>
+          {renderTabContent()}
+        </div>
+        <Col md="9">
+          <Button tag={Link} to="/" replace color="info" data-cy="entityDetailsBackButton">
+            <FontAwesomeIcon icon="arrow-left"/>{' '}
+            <span className="d-none d-md-inline">
              <Translate contentKey="entity.action.back">Back</Translate>
            </span>
-        </Button>
-        &nbsp;
-        <Button tag={Link} to={`/patient/${patientEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt"/>{' '}
-          <span className="d-none d-md-inline">
-             <Translate contentKey="entity.action.edit">Visualiser données</Translate>
-           </span>
-        </Button>
-      </Col>
-    </Row>
+          </Button>
+        </Col>
+      </Row>
+      {background && <div className='background' onClick={() => setbackground(null)}>{background}</div>}
+    </div>
   );
 };
 
