@@ -34,6 +34,9 @@ import fr.uga.repository.AlerteRepository;
 import fr.uga.domain.User;
 import fr.uga.repository.EPARepository;
 import fr.uga.domain.EPA;
+import fr.uga.repository.RappelRepository;
+import fr.uga.domain.Rappel;
+import java.time.Duration;
 /**
  * REST controller for managing {@link fr.uga.domain.Patient}.
  */
@@ -61,13 +64,16 @@ public class PatientResource {
 
     private final EPARepository epaRepository;
 
-    public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository, EPARepository epaRepository) {
+    private final RappelRepository rappelRepository;
+
+    public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository, EPARepository epaRepository, RappelRepository rappelRepository) {
         this.patientRepository = patientRepository;
         this.imcRepository = imcRepository;
         this.albumineRepository = albumineRepository;
         this.poidsRepository = poidsRepository;
         this.alerteRepository = alerteRepository;
         this.epaRepository = epaRepository;
+        this.rappelRepository = rappelRepository;
     }
 
     /**
@@ -316,6 +322,32 @@ private void createAlerte(String action, Patient patient) {
 
     alerteRepository.save(newAlerte);
 }
+    @GetMapping("/patients/taches/retard")
+    public String evaluerRetard() throws URISyntaxException {
+ log.debug("REST request to evaluate retard");
+  log.info("REST request to evaluate retard");
+
+
+        List <Rappel> toutrappel = rappelRepository.findAll();
+
+       Instant now = Instant.now(); // current date-time
+Instant oneDayAgo = now.minus(Duration.ofDays(1)); // date-time one day ago
+for (Rappel rappel : toutrappel) {
+    if (!rappel.getVerif()) {
+        Instant rappelDate = rappel.getDate();
+        if (rappelDate.isBefore(oneDayAgo) && rappel.getAction().equals("prise de poids")) {
+            String action = "Taches non faites pour ce patient " + rappel.getPatient().getNom() + "  pour cette action :" + rappel.getAction();
+            createAlerte(action, rappel.getPatient());
+            log.debug("nouveau rappel");
+            log.info("nouveau rappel");
+            return action;
+        }
+    }
+}
+return "aucun rappel n'a été oublié";
+}
+
+
 
 @GetMapping("/patients/epa/malnutrition/{id}")
 public String evaluerEPA(@PathVariable Long id) throws URISyntaxException {
