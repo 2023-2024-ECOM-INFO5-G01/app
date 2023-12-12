@@ -37,7 +37,7 @@ export const AddDataPopup = () => {
         const imc : IIMC = {
           date: new Date().toISOString(),
           patient: { id: patient.id },
-          imc: poids.poids / (patient.taille * patient.taille)
+          imc: 10000 * poids.poids / (patient.taille * patient.taille)
         };
         dispatch(createIMC(imc));
         break;
@@ -85,7 +85,7 @@ export const AddDataPopup = () => {
     return entity;
   };
 
-  const alerteEntity = useAppSelector(state => state.alerte.entity);
+  const alerteEntity = useAppSelector(s => s.alerte.entity);
 
   const handlecreateAlerte = (userid, patientid) => {
     const entity = createAlarmEntity(userid, patientid);
