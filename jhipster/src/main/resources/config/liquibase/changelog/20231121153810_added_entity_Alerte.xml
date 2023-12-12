@@ -23,15 +23,26 @@
             <column name="verif" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="user_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="patient_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="alerte" columnName="date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20231121153810-1-relations" author="jhipster">
+
+        <createTable tableName="rel_alerte__user">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="alerte_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="alerte_id, user_id" tableName="rel_alerte__user"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

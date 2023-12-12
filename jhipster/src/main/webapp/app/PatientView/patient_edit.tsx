@@ -16,7 +16,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from '../entities/patient/patient.reducer';
-
+import { denutrition_cases } from '../entities/patient/patient.reducer';
 
 export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: () => void; idprops: string }) => {
   const dispatch = useAppDispatch();
@@ -36,6 +36,12 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
 
+const [initialAlbumine, setInitialAlbumine] = useState<string | null>(null);
+useEffect(() => {
+  if (patientEntity && patientEntity.albumine) {
+    setInitialAlbumine(patientEntity.albumine.id);
+  }
+}, [patientEntity]);
 
   useEffect(() => {
 
@@ -61,9 +67,11 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
 
 
      await dispatch(updateEntity(entity));
+     if (initialAlbumine !== values.albumine) {
+      dispatch(denutrition_cases(entity.id));
+    }
      toggle();
   };
-
   const defaultValues = () =>
     isNew
       ? {
@@ -159,7 +167,7 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
                 {albumines
                   ? albumines.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
+                        {otherEntity.albu}
                       </option>
                     ))
                   : null}

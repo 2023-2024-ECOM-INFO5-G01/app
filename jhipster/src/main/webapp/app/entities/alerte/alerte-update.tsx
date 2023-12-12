@@ -8,10 +8,10 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntities as getPatients } from 'app/entities/patient/patient.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IAlerte } from 'app/shared/model/alerte.model';
 import { getEntity, updateEntity, createEntity, reset } from './alerte.reducer';
 
@@ -23,8 +23,8 @@ export const AlerteUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const users = useAppSelector(state => state.userManagement.users);
   const patients = useAppSelector(state => state.patient.entities);
+  const users = useAppSelector(state => state.userManagement.users);
   const alerteEntity = useAppSelector(state => state.alerte.entity);
   const loading = useAppSelector(state => state.alerte.loading);
   const updating = useAppSelector(state => state.alerte.updating);
@@ -41,8 +41,8 @@ export const AlerteUpdate = () => {
       dispatch(getEntity(id));
     }
 
-    dispatch(getUsers({}));
     dispatch(getPatients({}));
+    dispatch(getUsers({}));
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export const AlerteUpdate = () => {
     const entity = {
       ...alerteEntity,
       ...values,
-      user: users.find(it => it.id.toString() === values.user.toString()),
+      users: mapIdList(values.users),
       patient: patients.find(it => it.id.toString() === values.patient.toString()),
     };
 
@@ -76,8 +76,8 @@ export const AlerteUpdate = () => {
       : {
           ...alerteEntity,
           date: convertDateTimeFromServer(alerteEntity.date),
-          user: alerteEntity?.user?.id,
           patient: alerteEntity?.patient?.id,
+          users: alerteEntity?.users?.map(e => e.id.toString()),
         };
 
   return (
@@ -122,16 +122,6 @@ export const AlerteUpdate = () => {
                 check
                 type="checkbox"
               />
-              <ValidatedField id="alerte-user" name="user" data-cy="user" label={translate('ecomApp.alerte.user')} type="select">
-                <option value="" key="0" />
-                {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.login}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <ValidatedField
                 id="alerte-patient"
                 name="patient"
@@ -143,7 +133,17 @@ export const AlerteUpdate = () => {
                 {patients
                   ? patients.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.nom} {otherEntity.prenom}
+                        {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <ValidatedField label={translate('ecomApp.alerte.user')} id="alerte-user" data-cy="user" type="select" multiple name="users">
+                <option value="" key="0" />
+                {users
+                  ? users.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.login}
                       </option>
                     ))
                   : null}

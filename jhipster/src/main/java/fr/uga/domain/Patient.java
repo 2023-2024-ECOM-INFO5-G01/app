@@ -220,10 +220,6 @@ public class Patient implements Serializable {
         return this.users;
     }
 
-    public getUser() {
-        return this.user;
-    }
-
     public void setUsers(Set<User> users) {
         this.users = users;
     }

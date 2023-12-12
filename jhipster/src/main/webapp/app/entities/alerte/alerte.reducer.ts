@@ -49,7 +49,6 @@ export const getAlertesByPatientAndUser = createAsyncThunk(
   { serializeError: serializeAxiosError },
 );
 
-
 export const getEntity = createAsyncThunk(
   'alerte/fetch_entity',
   async (id: string | number) => {

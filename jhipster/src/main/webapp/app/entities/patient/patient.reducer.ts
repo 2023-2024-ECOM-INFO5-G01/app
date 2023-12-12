@@ -23,13 +23,21 @@ export const getEntities = createAsyncThunk('patient/fetch_entity_list', async (
   const requestUrl = `${apiUrl}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
   return axios.get<IPatient[]>(requestUrl);
 });
-//je veux que getPatientsByUserId puissent faire la même chose que getEntities avec les sorts
 export const getPatientsByUserId = createAsyncThunk(
   'patient/fetch_entity_list',
   async ({ sort, login }: { sort?: string; login?: string }) => { 
     const requestUrl = `${apiUrl}/user/${login}?${sort ? `sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
     return axios.get<IPatient[]>(requestUrl);
   },
+);
+
+export const denutrition_cases = createAsyncThunk(
+  'patient/denutrition_cases',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/malnutrition/${id}`;
+    return axios.get<IPatient>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
 );
 
 export const getEntity = createAsyncThunk(

@@ -188,4 +188,6 @@ public class AlbumineResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    
 }

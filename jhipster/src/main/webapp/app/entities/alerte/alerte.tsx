@@ -8,13 +8,8 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, SORT } from 'app/shared/util/pagination.constants';
 import { overrideSortStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { IAlerte } from 'app/shared/model/alerte.model';
-import { getEntity, updateEntity, createEntity, reset } from './alerte.reducer';
+
 import { getEntities } from './alerte.reducer';
-import { IPatient } from 'app/shared/model/patient.model';
-import { IUser } from 'app/shared/model/user.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { useForm } from 'react-hook-form';
 
 export const Alerte = () => {
   const dispatch = useAppDispatch();
@@ -69,33 +64,6 @@ export const Alerte = () => {
     }
   };
 
-  const createAlarmEntity = (userId, patientId) => {
-    const currentDate = new Date(); 
-    const entity: IAlerte = {
-      date: currentDate.toISOString(), 
-      user: { id: userId }, 
-      patient: { id: patientId }, 
-      verif: false, 
-      action: 'epa<7', 
-    };
-  
-    return entity;
-  };
-  
-  const alerteEntity = useAppSelector(state => state.alerte.entity);
-
-
- const handlecreateAlerte = (userid, patientid) => {
-    const entity = createAlarmEntity(userid, patientid);
-    dispatch(createEntity(entity));
-  }
-// Inside your Alerte component
-const { register, handleSubmit, reset } = useForm();
-
-const onSubmit = data => {
-  handlecreateAlerte(data.userid, data.patientid);
-  reset();
-};
   return (
     <div>
       <h2 id="alerte-heading" data-cy="AlerteHeading">
@@ -112,11 +80,6 @@ const onSubmit = data => {
           </Link>
         </div>
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-  <input {...register('userid')} placeholder="User ID" />
-  <input {...register('patientid')} placeholder="Patient ID" />
-  <button type="submit">Create Alerte</button>
-</form>
       <div className="table-responsive">
         {alerteList && alerteList.length > 0 ? (
           <Table responsive>
@@ -136,10 +99,10 @@ const onSubmit = data => {
                   <Translate contentKey="ecomApp.alerte.verif">Verif</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('verif')} />
                 </th>
                 <th>
-                  <Translate contentKey="ecomApp.alerte.user">User</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ecomApp.alerte.patient">Patient</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="ecomApp.alerte.patient">Patient</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ecomApp.alerte.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -155,8 +118,17 @@ const onSubmit = data => {
                   <td>{alerte.date ? <TextFormat type="date" value={alerte.date} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{alerte.action}</td>
                   <td>{alerte.verif ? 'true' : 'false'}</td>
-                  <td>{alerte.user ? alerte.user.login : ''}</td>
                   <td>{alerte.patient ? <Link to={`/patient/${alerte.patient.id}`}>{alerte.patient.id}</Link> : ''}</td>
+                  <td>
+                    {alerte.users
+                      ? alerte.users.map((val, j) => (
+                          <span key={j}>
+                            {val.login}
+                            {j === alerte.users.length - 1 ? '' : ', '}
+                          </span>
+                        ))
+                      : null}
+                  </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/alerte/${alerte.id}`} color="info" size="sm" data-cy="entityDetailsButton">
