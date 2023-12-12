@@ -55,7 +55,7 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
       ...patientEntity,
       ...values,
       users: mapIdList(values.users),
-    //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+      albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
       ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
   };
 
@@ -145,6 +145,25 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
+               <ValidatedField
+                id="patient-albumine"
+                name="albumine"
+                data-cy="albumine"
+                label={translate('ecomApp.patient.albumine')}
+                type="select"
+                validate={{
+                  required: 'Veuillez choisir une option',
+                }}
+              >
+                <option value="" key="0" />
+                {albumines
+                  ? albumines.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <ValidatedField 
               id="patient-ehpad" 
               name="ehpad" 
