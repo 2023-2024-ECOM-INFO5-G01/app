@@ -32,6 +32,8 @@ import fr.uga.domain.Alerte;
 import java.time.Instant;
 import fr.uga.repository.AlerteRepository;
 import fr.uga.domain.User;
+import fr.uga.repository.EPARepository;
+import fr.uga.domain.EPA;
 /**
  * REST controller for managing {@link fr.uga.domain.Patient}.
  */
@@ -57,12 +59,15 @@ public class PatientResource {
 
     private final AlerteRepository alerteRepository;
 
-    public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository) {
+    private final EPARepository epaRepository;
+
+    public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository, EPARepository epaRepository) {
         this.patientRepository = patientRepository;
         this.imcRepository = imcRepository;
         this.albumineRepository = albumineRepository;
         this.poidsRepository = poidsRepository;
         this.alerteRepository = alerteRepository;
+        this.epaRepository = epaRepository;
     }
 
     /**
@@ -311,6 +316,36 @@ private void createAlerte(String action, Patient patient) {
 
     alerteRepository.save(newAlerte);
 }
+
+@GetMapping("/patients/epa/malnutrition/{id}")
+public String evaluerEPA(@PathVariable Long id) throws URISyntaxException {
+    Optional<Patient> patientOptional = patientRepository.findById(id);
+        if (!patientOptional.isPresent()) {
+            return "Patient not found";
+        }
+
+        Patient patient = patientOptional.get();
+        EPA latestepa = null;
+
+        Optional <EPA> latestepa1 = epaRepository.findFirstByPatientIdOrderByDateDesc(id);
+        if (!latestepa1.isPresent()) {
+            return "Pas de données EPA pour ce patient";
+
+        }
+        else {
+             latestepa = latestepa1.get();
+        }
+
+    if (latestepa.getEpa() < 7) {
+        String action = "EPA < 7 : " + "epa : " + latestepa.getEpa();
+        createAlerte(action, patient);
+        return action;
+    }
+    else {
+        return "pas d'EPA";
+    }
+}
+
     
     @GetMapping("/patients/malnutrition/{id}")
 public String evaluerMalnutrition(@PathVariable Long id) throws URISyntaxException {
@@ -372,17 +407,17 @@ else {
         }
 
  if (latestimc.getImc() <= 17) {
-    String action = "dénutrition sévère car IMC est inférieur ou égal à 17 : " + "latestimc : " + latestimc.getImc();
+    String action = "dénutrition sévère car IMC est inférieur ou égal à 17 : " + "imc : " + latestimc.getImc();
     createAlerte(action, patient);
     return action;
 }
 else if (latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.9) {
-    String action = "dénutrition sévère car le poids a diminué de plus de 10% en un mois : " + "latestPoids : " + latestPoids.getPoids() + " poidsOneMonthago : " + poidsOneMonthago.getPoids();
+    String action = "dénutrition sévère car le poids a diminué de plus de 10% en un mois : " + "poids : " + latestPoids.getPoids() + " poids 1 mois avant : " + poidsOneMonthago.getPoids();
     createAlerte(action, patient);
     return action;
 }
 else if (latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.85) {
-    String action = "dénutrition sévère car le poids a diminué de plus de 15% en six mois : " + "latestPoids : " + latestPoids.getPoids() + " poidsSixMonthago : " + poidsSixMonthago.getPoids();
+    String action = "dénutrition sévère car le poids a diminué de plus de 15% en six mois : " + "poids : " + latestPoids.getPoids() + " poids 6 mois avant : " + poidsSixMonthago.getPoids();
     createAlerte(action, patient);
     return action;
 }
@@ -392,17 +427,17 @@ else if (albumine.getAlbu() <= 30) {
     return action;
 }
     else if (latestimc.getImc() < 18.5 && latestimc.getImc() > 17) {
-    String action = "dénutrition modérée car IMC est entre 17 et 18.5 : " + "latestimc : " + latestimc.getImc();
+    String action = "dénutrition modérée car IMC est entre 17 et 18.5 : " + "imc : " + latestimc.getImc();
     createAlerte(action, patient);
     return action;
 }
 else if (latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.95) {
-    String action = "dénutrition modérée car le poids a diminué de plus de 5% en un mois : " + "latestPoids : " + latestPoids.getPoids() + " poidsOneMonthago : " + poidsOneMonthago.getPoids();
+    String action = "dénutrition modérée car le poids a diminué de plus de 5% en un mois : " + "poids : " + latestPoids.getPoids() + " poids 1 mois avant : " + poidsOneMonthago.getPoids();
     createAlerte(action, patient);
     return action;
 }
 else if (latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.9) {
-    String action = "dénutrition modérée car le poids a diminué de plus de 10% en six mois : " + "latestPoids : " + latestPoids.getPoids() + " poidsSixMonthago : " + poidsSixMonthago.getPoids();
+    String action = "dénutrition modérée car le poids a diminué de plus de 10% en six mois : " + "poids : " + latestPoids.getPoids() + " poids 6 mois avant : " + poidsSixMonthago.getPoids();
     createAlerte(action, patient);
     return action;
 }

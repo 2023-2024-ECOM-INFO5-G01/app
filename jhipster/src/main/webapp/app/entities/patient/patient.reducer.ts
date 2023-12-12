@@ -31,6 +31,15 @@ export const getPatientsByUserId = createAsyncThunk(
   },
 );
 
+export const alerte_epas = createAsyncThunk(
+  'patient/alerte_epas',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/epa/malnutrition/${id}`;
+    return axios.get<IPatient>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
+
 export const denutrition_cases = createAsyncThunk(
   'patient/denutrition_cases',
   async (id: string | number) => {
