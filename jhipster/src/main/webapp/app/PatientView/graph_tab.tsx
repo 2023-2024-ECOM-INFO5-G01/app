@@ -46,11 +46,23 @@ export const GraphTab = (props) => {
   const [epaDates, setEpaDates] = useState<string[]>([]); // Tableau de dates (chaînes)
   const [epaValues, setEpaValues] = useState<number[]>([]); // Tableau de valeurs d'IMC (numériques)
 
+  const formatDate = (date : string) => {
+    const [y, m, j] = date.slice(0, 10).split('-');
+
+    const monthNames = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    const formattedMonth = monthNames[parseInt(m, 10) - 1];
+
+    return j + " " + formattedMonth + " " + y
+  }
+
   useEffect(() => {
     dispatch(getPoids(id)).then((response: PayloadAction<any>) => {
       if (response.payload && response.payload.data) {
         const poidsData = response.payload.data as IPoids[];
-        const dates = poidsData.map((poids: IPoids) => poids.date);
+        const dates = poidsData.map((poids: IPoids) => formatDate(poids.date));
         const values = poidsData.map((poids: IPoids) => poids.poids);
         setPoidsDates(dates);
         setPoidsValues(values);
@@ -59,7 +71,7 @@ export const GraphTab = (props) => {
     dispatch(getEpas(id)).then((response: PayloadAction<AxiosResponse, any, any>) => {
         if (response.payload && response.payload.data) {
           const epaData = response.payload.data as IEPA[];
-          const dates = epaData.map((epa: IEPA) => epa.date);
+          const dates = epaData.map((epa: IEPA) => formatDate(epa.date));
           const values = epaData.map((epa: IEPA) => epa.epa);
           setEpaDates(dates);
           setEpaValues(values);
@@ -82,7 +94,7 @@ export const GraphTab = (props) => {
     };
   };
 
-  const createOption = (type: string): ChartOptions<'line'> => {
+  const createOption = (type: string) : any => {
     return {
       responsive: true,
       plugins: {
@@ -93,7 +105,7 @@ export const GraphTab = (props) => {
           display: true,
           text: 'Courbe ' + type + ' du patient'
         }
-      }
+      },
     };
   };
 
