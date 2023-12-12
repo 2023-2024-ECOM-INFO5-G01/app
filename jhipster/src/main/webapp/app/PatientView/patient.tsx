@@ -93,7 +93,7 @@ export const Patient = () => {
           </Button>
         </Col>
       </Row>
-      {background && <div className='background' onClick={() => setbackground(null)}>{background}</div>}
+      {background && <div className='background' onClick={() => {setbackground(null); window.location.reload()}}>{background}</div>}
     </div>
   );
 };

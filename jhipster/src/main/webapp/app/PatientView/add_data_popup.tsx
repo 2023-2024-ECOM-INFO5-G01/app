@@ -5,9 +5,13 @@ import { IPoids } from 'app/shared/model/poids.model';
 import { createEntity as createPoids } from 'app/entities/poids/poids.reducer';
 import { createEntity as createEPA } from 'app/entities/epa/epa.reducer';
 import { createEntity as createAlbumine } from 'app/entities/albumine/albumine.reducer';
+import { createEntity as createIMC } from 'app/entities/imc/imc.reducer';
 import { IEPA } from 'app/shared/model/epa.model';
 import { IAlbumine } from 'app/shared/model/albumine.model';
-
+import { IIMC } from 'app/shared/model/imc.model';
+import {IAlerte} from "app/shared/model/alerte.model";
+import {createEntity} from "app/entities/alerte/alerte.reducer";
+import {useForm} from "react-hook-form";
 export const AddDataPopup = () => {
 
   const dispatch = useAppDispatch();
@@ -30,6 +34,12 @@ export const AddDataPopup = () => {
           poids: value
         };
         dispatch(createPoids(poids));
+        const imc : IIMC = {
+          date: new Date().toISOString(),
+          patient: { id: patient.id },
+          imc: 10000 * poids.poids / (patient.taille * patient.taille)
+        };
+        dispatch(createIMC(imc));
         break;
       }
       case 'albumin': {
@@ -62,6 +72,30 @@ export const AddDataPopup = () => {
     </div>;
   };
 
+  const createAlarmEntity = (userId, patientId) => {
+    const currentDate = new Date();
+    const entity: IAlerte = {
+      date: currentDate.toISOString(),
+      user: {id: userId},
+      patient: {id: patientId},
+      verif: false,
+      action: 'epa<7',
+    };
+
+    return entity;
+  };
+
+  const alerteEntity = useAppSelector(s => s.alerte.entity);
+
+  const handlecreateAlerte = (userid, patientid) => {
+    const entity = createAlarmEntity(userid, patientid);
+    dispatch(createEntity(entity));
+  }
+
+// Inside your Alerte component
+  const {register, handleSubmit, reset} = useForm();
+//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
+// <button onClick={() => handlecreateAlerte(account.id, props.patientEntity.id)}>Créer une alerte</button>
   return (
     <div className="datapopup" onClick={(e) => e.stopPropagation()}>
       <h1>Nouvelle Mesure</h1>

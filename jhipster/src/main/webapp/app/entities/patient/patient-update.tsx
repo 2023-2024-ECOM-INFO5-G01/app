@@ -54,12 +54,11 @@ export const PatientUpdate = () => {
     dispatch(getUsers({}));
     dispatch(getRoles());
   }, []);
-  const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);  
-  
+  const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);
+
   const saveEntity = values => {
     values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
     values.datearrive = convertDateTimeToServer(values.datearrive);
-    console.log("date arrive", values.datearrive);
     const entity = {
       ...patientEntity,
       ...values,
@@ -70,9 +69,7 @@ export const PatientUpdate = () => {
   const dateArrive = new Date(values.datearrive);
   dateArrive.setDate(dateArrive.getDate() + 1);
   setDaterappel(dateArrive);
-console.log("date rappel", daterappel);
     if (isNew) {
-      console.log("patient crée:", entity);
       dispatch(createEntity(entity));
     } else {
       dispatch(updateEntity(entity));
@@ -81,7 +78,6 @@ console.log("date rappel", daterappel);
   useEffect(() => {
     if (updateSuccess && selectedUsers.length > 0) {
       handleClose();
-      console.log("date rappel2", daterappel);
       const entityrappel = {
         verif: false,
         users: selectedUsers,
@@ -89,7 +85,6 @@ console.log("date rappel", daterappel);
         action: 'prise de poids',
         date: daterappel.toISOString(), // Convert date to string
       };
-      console.log("entity rappel : ", entityrappel);
       dispatch(createEntity1(entityrappel));
     }
   }, [updateSuccess, selectedUsers]);
@@ -135,10 +130,10 @@ console.log("date rappel", daterappel);
               ) : null}
               <ValidatedField label={translate('ecomApp.patient.nom')} id="patient-nom" name="nom" data-cy="nom" type="text"  validate={{required: 'Ce champs ne peut pas être vide',}} />
               <ValidatedField label={translate('ecomApp.patient.prenom')} id="patient-prenom" name="prenom" data-cy="prenom" type="text" validate={{required: 'Ce champs ne peut pas être vide',}} />
-              <ValidatedField 
-              label={translate('ecomApp.patient.statut')} 
-              id="patient-statut" 
-              name="statut" 
+              <ValidatedField
+              label={translate('ecomApp.patient.statut')}
+              id="patient-statut"
+              name="statut"
               type='select'
               data-cy="statut"
               validate={{
@@ -159,13 +154,13 @@ console.log("date rappel", daterappel);
                 placeholder="YYYY-MM-DD HH:mm"
                 validate={{required: 'Ce champs ne peut pas être vide',}}
               />
-              <ValidatedField label={translate('ecomApp.patient.taille')} id="patient-taille" name="taille" data-cy="taille" type="text" 
+              <ValidatedField label={translate('ecomApp.patient.taille')} id="patient-taille" name="taille" data-cy="taille" type="text"
               validate={{
                 required: 'Ce champs ne peut pas être vide',
                 min: { value: 50, message: 'Choisir une taille entre 50 et 300 cm' },
                 max: { value: 300, message: 'Choisir une taille entre 50 et 300 cm' },
                 }}
-              
+
               />
               <ValidatedField
                 label={translate('ecomApp.patient.datearrive')}
@@ -178,11 +173,11 @@ console.log("date rappel", daterappel);
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
-              <ValidatedField 
-              id="patient-ehpad" 
-              name="ehpad" 
-              data-cy="ehpad" 
-              label={translate('ecomApp.patient.ehpad')} 
+              <ValidatedField
+              id="patient-ehpad"
+              name="ehpad"
+              data-cy="ehpad"
+              label={translate('ecomApp.patient.ehpad')}
               type="select"
               validate={{
                 required: 'Veuillez choisir une option',
@@ -209,11 +204,11 @@ console.log("date rappel", daterappel);
     const selectedOptions = Array.from(target.options)
       .filter(option => option.selected)
       .map(option => option.value);
-  
-    const newSelectedUsers = selectedOptions.map(userId => 
+
+    const newSelectedUsers = selectedOptions.map(userId =>
       users.find(user => user.id.toString() === userId)
     ).filter(Boolean);
-  
+
     setSelectedUsers(newSelectedUsers);
   }}
   validate={{
