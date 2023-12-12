@@ -8,8 +8,8 @@ const StatusFilter = ({ handleStatusFilterChange }) => {
   };
 
   const statusOptions = [
-    { value: 'dénutrition avérée', label: 'Dénutrition avérée' },
-    { value: 'surveillance', label: 'Surveillance' },
+    { value: 'surveillance prioritaire', label: 'Surveillance prioritaire' },
+    { value: 'surveillance particulière', label: 'Surveillance particulière' },
     { value: 'normal', label: 'Normal' },
   ];
 

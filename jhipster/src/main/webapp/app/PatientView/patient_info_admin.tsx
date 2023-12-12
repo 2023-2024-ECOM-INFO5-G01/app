@@ -12,7 +12,7 @@ export const PatientInfoAdmin = (props) => {
   const {id} = useParams<'id'>();
 
   // Options de statut disponibles
-  const optionsStatut = ['normal', 'surveillance', 'dénutrition avérée'];
+  const optionsStatut = ['normal', 'surveillance particulière', 'surveillance prioritaire'];
 
   // Gestionnaire d'événements pour la modification du statut
   const handleStatutChange = (event) => {

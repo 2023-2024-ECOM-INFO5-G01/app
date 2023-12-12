@@ -89,9 +89,9 @@ const filterPatientsByStatus = () => {
 
 const getCardColorClass = (status) => {
   switch (status) {
-    case 'dénutrition avérée':
+    case 'surveillance prioritaire':
       return 'card-red';
-    case 'surveillance':
+    case 'surveillance particulière':
       return 'card-orange';
     case 'normal':
       return 'card-blue';
