@@ -141,9 +141,9 @@ export const PatientUpdate = () => {
               }}
               >
                   <option value="">Choisir une option</option>
-                  <option value="normal">normal</option>
-                  <option value="surveillance">surveillance</option>
-                  <option value="dénutrition avérée">dénutrition avérée</option>
+                  <option value="normal">Normal</option>
+                  <option value="surveillance particulière">Surveillance particulière</option>
+                  <option value="surveillance prioritaire">Surveillance prioritaire</option>
               </ValidatedField>
               <ValidatedField
                 label={translate('ecomApp.patient.dateNaissance')}
