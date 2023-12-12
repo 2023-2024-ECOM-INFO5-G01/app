@@ -17,6 +17,7 @@ import { getRoles, getUsers } from 'app/modules/administration/user-management/u
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from './patient.reducer';
 import { createEntity1 } from '../rappel/rappel.reducer';
+import { set } from 'lodash';
 
 export const PatientUpdate = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,8 @@ export const PatientUpdate = () => {
   const updating = useAppSelector(state => state.patient.updating);
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
+  const [daterappel, setDaterappel] = useState(new Date());
+
   const handleClose = () => {
     navigate('/');
   };
@@ -52,11 +55,33 @@ export const PatientUpdate = () => {
     dispatch(getRoles());
   }, []);
   const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);  
+  
+  const saveEntity = values => {
+    values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
+    values.datearrive = convertDateTimeToServer(values.datearrive);
+    console.log("date arrive", values.datearrive);
+    const entity = {
+      ...patientEntity,
+      ...values,
+      users: mapIdList(values.users),
+    //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+    ehpad: ehpads.find(it => it.id.toString() === values.ehpad),
+  };
+  const dateArrive = new Date(values.datearrive);
+  dateArrive.setDate(dateArrive.getDate() + 1);
+  setDaterappel(dateArrive);
+console.log("date rappel", daterappel);
+    if (isNew) {
+      console.log("patient crée:", entity);
+      dispatch(createEntity(entity));
+    } else {
+      dispatch(updateEntity(entity));
+    }
+  };
   useEffect(() => {
     if (updateSuccess && selectedUsers.length > 0) {
       handleClose();
-      const daterappel = new Date();
-      daterappel.setDate(daterappel.getDate() + 1);
+      console.log("date rappel2", daterappel);
       const entityrappel = {
         verif: false,
         users: selectedUsers,
@@ -68,31 +93,11 @@ export const PatientUpdate = () => {
       dispatch(createEntity1(entityrappel));
     }
   }, [updateSuccess, selectedUsers]);
-  const saveEntity = values => {
-    values.dateNaissance = convertDateTimeToServer(values.dateNaissance);
-    values.datearrive = convertDateTimeToServer(values.datearrive);
-
-    const entity = {
-      ...patientEntity,
-      ...values,
-      users: mapIdList(values.users),
-    //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
-    ehpad: ehpads.find(it => it.id.toString() === values.ehpad),
-  };
-
-    if (isNew) {
-      console.log("patient crée:", entity);
-      dispatch(createEntity(entity));
-    } else {
-      dispatch(updateEntity(entity));
-    }
-  };
-
   const defaultValues = () =>
     isNew
       ? {
-          dateNaissance: displayDefaultDateTime(),
-          datearrive: displayDefaultDateTime(),
+         /* dateNaissance: displayDefaultDateTime(),
+          datearrive: displayDefaultDateTime(),*/
         }
       : {
           ...patientEntity,
