@@ -26,9 +26,6 @@ import PatientHeading from './PatientHeading';
 import PatientSearchResults from './PatientSearchResults';
 import Modal from 'react-modal';
 import { getAlertesByUser } from 'app/entities/alerte/alerte.reducer';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
-import { ToastContainer } from 'react-toastify';
 import { alerte_taches } from 'app/entities/patient/patient.reducer';
 export const Home = () => {
   
@@ -194,35 +191,18 @@ const getCardColorClass = (status) => {
   }, [ account.login, dispatch]);
 
   useEffect(() => {
-    alertes.forEach(alerte => {
-      if (!alerte.verif) {
-        setCurrentAlerte(alerte);
-        notify(alerte); 
-        console.log("alerte non verif: ", alerte);
-      }
-    });
+    const nonVerifiedAlerts = alertes.filter(alerte => !alerte.verif);
+    setCurrentAlerte(nonVerifiedAlerts);
   }, [alertes]);
   
-  const notify = (alerte) => {
-    if (alerte.patient) {
-      toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  }
+  
   return (
     <div style={{ backgroundColor: '#F5F5F5'}}>
 <div>
   <PatientHeading loading={loading} handleSyncList={handleSyncList} />
 
   <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-  <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
+  <PatientSearchResults patients={patientsuggestion} alertes={currentAlerte} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
 
   <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '6px' }}>
   <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
@@ -245,13 +225,12 @@ const getCardColorClass = (status) => {
     key={`entity-${i}`}
     className={`patient-card ${getCardColorClass(patient.statut)}`} // Apply the card color class
   >
-    <PatientCard patient={patient} />
+    <PatientCard patient={patient} alertes={currentAlerte} />
               </div>
             ))}
           </div>
         </div>
         <div>
-        <ToastContainer />
       </div>
     </div>
   );
