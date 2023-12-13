@@ -26,7 +26,6 @@ import PatientHeading from './PatientHeading';
 import PatientSearchResults from './PatientSearchResults';
 import Modal from 'react-modal';
 import { getAlertesByUser } from 'app/entities/alerte/alerte.reducer';
-import { alerte_taches } from 'app/entities/patient/patient.reducer';
 export const Home = () => {
   
 
@@ -179,7 +178,6 @@ const getCardColorClass = (status) => {
  
   useEffect(() => {
     if (account && account.login) {
-      dispatch(alerte_taches());
       dispatch(getAlertesByUser(account.login))
       .then(response => {
         setAlertes((response.payload as any).data);

@@ -31,15 +31,6 @@ export const getPatientsByUserId = createAsyncThunk(
   },
 );
 
-export const alerte_taches = createAsyncThunk(
-  'patient/alerte_taches',
-  async () => {
-    const requestUrl = `${apiUrl}/taches/retard`;
-    return axios.get<IPatient>(requestUrl);
-  },
-  { serializeError: serializeAxiosError },
-);
-
 
 export const alerte_epas = createAsyncThunk(
   'patient/alerte_epas',
