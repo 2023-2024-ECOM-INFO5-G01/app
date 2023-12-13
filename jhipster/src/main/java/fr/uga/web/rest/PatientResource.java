@@ -38,6 +38,9 @@ import fr.uga.repository.RappelRepository;
 import fr.uga.domain.Rappel;
 import java.time.Duration;
 import org.springframework.scheduling.annotation.Scheduled;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 
 /**
  * REST controller for managing {@link fr.uga.domain.Patient}.
@@ -342,11 +345,11 @@ private void createAlerte(String action, Patient patient) {
 		List <Rappel> toutrappel = rappelRepository.findAll();
 
 	   Instant now = Instant.now(); // current date-time
-Instant oneDayAgo = now.minus(Duration.ofDays(1)); // date-time one day ago
+Instant TwoDayAgo = now.minus(Duration.ofDays(2)); // date-time two day ago
 for (Rappel rappel : toutrappel) {
 	if (!rappel.getVerif()) {
 		Instant rappelDate = rappel.getDate();
-		if (rappelDate.isBefore(oneDayAgo) && (rappel.getAction().equals("prise de poids") || rappel.getAction().equals("prise de epa") || rappel.getAction().equals("prise de albumine") || rappel.getAction().equals("Surveiller la prise daliments") )){
+		if (rappelDate.isBefore(TwoDayAgo) && (rappel.getAction().equals("prise de poids") || rappel.getAction().equals("prise de epa") || rappel.getAction().equals("prise de albumine") || rappel.getAction().equals("Surveiller la prise daliments") )){
 			String action = "Taches non faites pour ce patient " + rappel.getPatient().getNom() + "  pour cette action :" + rappel.getAction();
 			createAlerte(action, rappel.getPatient());
 			log.debug("nouveau rappel");
@@ -400,6 +403,15 @@ public String evaluerMalnutrition(@PathVariable Long id) throws URISyntaxExcepti
 		}
 
 		Patient patient = patientOptional.get();
+		LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+		ZonedDateTime zdt = startOfDay.atZone(ZoneId.systemDefault());
+		Instant startOfDayInstant = zdt.toInstant();
+
+		List<Alerte> alertes = alerteRepository.findByPatientIdAndDateAfter(id, startOfDayInstant);
+		if (!alertes.isEmpty()) {
+    		return "Une alerte a déjà été créée pour ce patient aujourd'hui";
+		}
+
 IMC latestimc = null;
 	Albumine albumine = null;
 	Poids poidsOneMonthago = null;

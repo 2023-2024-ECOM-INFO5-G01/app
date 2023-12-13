@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+import java.time.Instant;
 
 /**
  * Spring Data JPA repository for the Alerte entity.
@@ -30,4 +31,7 @@ public interface AlerteRepository extends AlerteRepositoryWithBagRelationships, 
     List<Alerte> findByUsers_LoginOrderByDateDesc(String login);
 
     List<Alerte> findByPatient_IdAndUsers_LoginOrderByDateDesc(Long id, String login);
+    
+    List <Alerte> findByPatientIdAndDateAfter(Long id, Instant date);
+
 }

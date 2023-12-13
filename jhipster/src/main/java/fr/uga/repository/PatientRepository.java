@@ -35,4 +35,5 @@ public interface PatientRepository extends PatientRepositoryWithBagRelationships
 
     List<Patient> findByUsers_Login(String login);
 
+
 }
