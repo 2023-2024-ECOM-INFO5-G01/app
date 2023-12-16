@@ -1,28 +1,9 @@
 import {TextFormat, Translate} from "react-jhipster";
 import {APP_DATE_FORMAT} from "app/config/constants";
-import {updateStatus} from "app/entities/patient/patient.reducer";
 import React from "react";
-import {useAppDispatch} from "app/config/store";
-import {useParams} from "react-router-dom";
 
 
 export const PatientInfoAdmin = (props) => {
-
-  const dispatch = useAppDispatch();
-  const {id} = useParams<'id'>();
-
-  // Options de statut disponibles
-  const optionsStatut = ['normal', 'surveillance particulière', 'surveillance prioritaire'];
-
-  // Gestionnaire d'événements pour la modification du statut
-  const handleStatutChange = (event) => {
-    const nouveauStatutSelectionne = event.target.value;
-    // changement de statut avec le nouveau statut
-    dispatch(updateStatus({id: id, statut: nouveauStatutSelectionne}));
-    props.setStatus(true);
-    // Actualiser la page
-    window.location.reload();
-  };
 
   return <div className="info_patient_administratives">
     <div>
@@ -51,14 +32,7 @@ export const PatientInfoAdmin = (props) => {
         </span>
       </div>
       <div>
-        <label>Statut : </label>
-        <select value={props.patientEntity.statut} onChange={handleStatutChange}>
-          {optionsStatut.map((optionStatut) => (
-            <option key={optionStatut} value={optionStatut}>
-              {optionStatut}
-            </option>
-          ))}
-        </select>
+        <label>Statut : {props.patientEntity.statut}</label>
       </div>
     </div>
   </div>

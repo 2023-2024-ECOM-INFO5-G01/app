@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const StatusFilter = ({ handleStatusFilterChange }) => {
-  const [showStatusMenu, setShowStatusMenu] = useState(false);
-
-  const toggleStatusMenu = () => {
-    setShowStatusMenu(!showStatusMenu);
-  };
 
   const statusOptions = [
     { value: 'surveillance prioritaire', label: 'Surveillance prioritaire' },
@@ -15,12 +10,6 @@ const StatusFilter = ({ handleStatusFilterChange }) => {
 
   return (
     <div className="status-filter-container">
-      <button className="custom-search-button" type="button" onClick={toggleStatusMenu}>
-        Choix des statuts
-      </button>
-
-      {showStatusMenu && (
-        <div className="status-menu">
           {statusOptions.map((option) => (
             <div key={option.value}>
               <input
@@ -28,6 +17,7 @@ const StatusFilter = ({ handleStatusFilterChange }) => {
                 id={`status-${option.value}`}
                 name={`status-${option.value}`}
                 value={option.value}
+                // ajouter le fait que les cases soient cochées de base puis qu'elles puissent être décochées checked={}
                 onChange={(e) => handleStatusFilterChange(option.value, e.target.checked)}
               />
               <label htmlFor={`status-${option.value}`} className="checkbox-label">
@@ -35,8 +25,6 @@ const StatusFilter = ({ handleStatusFilterChange }) => {
               </label>
             </div>
           ))}
-        </div>
-      )}
     </div>
   );
 };
