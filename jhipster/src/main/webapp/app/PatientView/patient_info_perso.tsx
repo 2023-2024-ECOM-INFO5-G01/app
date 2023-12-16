@@ -40,21 +40,21 @@ export const PatientInfoPerso = (props) => {
     if (props.patientEntity.id) {
       dispatch(getIMC(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
-          const lastImc = response.payload.data[response.payload.data.length - 1];
+         setLastImc(response.payload.data[response.payload.data.length - 1]);
           setLastImc(lastImc);
         }
       });
-  
+
       dispatch(getPoids(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
-          const lastPoids = response.payload.data[response.payload.data.length - 1];
+          setLastPoids(response.payload.data[response.payload.data.length - 1]);
           setLastPoids(lastPoids);
         }
       });
-  
+
       dispatch(getEpas(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
-          const lastEpa = response.payload.data[response.payload.data.length - 1];
+          setLastEpa(response.payload.data[response.payload.data.length - 1]);
           setLastEpa(lastEpa);
         }
       });
@@ -66,10 +66,8 @@ export const PatientInfoPerso = (props) => {
     dispatch(createEntity(entity));
   }
 
-// Inside your Alerte component
   const {register, handleSubmit, reset} = useForm();
-//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
-// <button onClick={() => handlecreateAlerte(account.id, props.patientEntity.id)}>Créer une alerte</button>
+
   return (
     <div className="info_patient_perso">
       <div>
