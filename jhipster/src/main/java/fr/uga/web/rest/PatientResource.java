@@ -419,86 +419,66 @@ IMC latestimc = null;
 	Poids latestPoids = null;
 
 		Optional<IMC> latestimc1 = imcRepository.findFirstByPatientIdOrderByDateDesc(id);
-		if (!latestimc1.isPresent()) {
-			return "Pas de données IMC pour ce patient";
-
-		}
-		else {
+		if (latestimc1.isPresent()) {
 			 latestimc = latestimc1.get();
 		}
 		Optional <Albumine> albumine1 = albumineRepository.findFirstByPatientIdOrderByDateDesc(id);
-		if (!albumine1.isPresent()) {
-			return "Pas de données albumine pour ce patient";
-
-		}
-		else {
+		if (albumine1.isPresent()) {
 			 albumine = albumine1.get();
 		}
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 
 List<Poids> poidsList = poidsRepository.findByPatientIdAndDateBeforeOrderByDateDesc(id, LocalDate.now().minusMonths(1).atStartOfDay(defaultZoneId).toInstant());
-if (poidsList.isEmpty()) {
-	return "Pas de données poids il ya au moins 1 mois pour ce patient";
-
-}
-else {
+if (!poidsList.isEmpty()) {
 	poidsOneMonthago = poidsList.get(0);
 }
 List <Poids> poidsSixMonthago1 = poidsRepository.findByPatientIdAndDateBeforeOrderByDateDesc(id, LocalDate.now().minusMonths(6).atStartOfDay(defaultZoneId).toInstant());
-if (poidsSixMonthago1.isEmpty()) {
-	return "Pas de données poids il ya au moins 6 mois pour ce patient";
-
-}
-else {
+if (!poidsSixMonthago1.isEmpty()) {
 	poidsSixMonthago = poidsSixMonthago1.get(0);
 }
 
 
 	   Optional <Poids> latestPoids1 = poidsRepository.findFirstByPatientIdOrderByDateDesc(id);
-		if (!latestPoids1.isPresent()) {
-			return "Pas de données poids pour ce patient";
-
-		}
-		else {
+		if (latestPoids1.isPresent()) {
 			 latestPoids = latestPoids1.get();
 		}
 
- if (latestimc.getImc() <= 17) {
+ if (latestimc != null && latestimc.getImc() <= 17 ) {
 	String action = "dénutrition sévère car IMC est inférieur ou égal à 17 : " + "imc : " + latestimc.getImc();
 	createAlerte(action, patient);
 	return action;
 }
-else if (latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.9) {
+else if (latestPoids != null && poidsOneMonthago != null && latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.9 ) {
 	String action = "dénutrition sévère car le poids a diminué de plus de 10% en un mois : " + "poids : " + latestPoids.getPoids() + " poids 1 mois avant : " + poidsOneMonthago.getPoids();
 	createAlerte(action, patient);
 	return action;
 }
-else if (latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.85) {
+else if (latestPoids != null && poidsSixMonthago != null && latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.85 ) {
 	String action = "dénutrition sévère car le poids a diminué de plus de 15% en six mois : " + "poids : " + latestPoids.getPoids() + " poids 6 mois avant : " + poidsSixMonthago.getPoids();
 	createAlerte(action, patient);
 	return action;
 }
-else if (albumine.getAlbu() <= 30) {
+else if (albumine != null && albumine.getAlbu() <= 30 ) {
 	String action = "dénutrition sévère car le niveau d'albumine est inférieur ou égal à 30 : " + "albumine : " + albumine.getAlbu();
 	createAlerte(action, patient);
 	return action;
 }
-	else if (latestimc.getImc() < 18.5 && latestimc.getImc() > 17) {
+	else if (latestimc != null && latestimc.getImc() < 18.5 && latestimc.getImc() > 17 ) {
 	String action = "dénutrition modérée car IMC est entre 17 et 18.5 : " + "imc : " + latestimc.getImc();
 	createAlerte(action, patient);
 	return action;
 }
-else if (latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.95) {
+else if (latestPoids != null && poidsOneMonthago != null && latestPoids.getPoids() < poidsOneMonthago.getPoids() * 0.95 ) {
 	String action = "dénutrition modérée car le poids a diminué de plus de 5% en un mois : " + "poids : " + latestPoids.getPoids() + " poids 1 mois avant : " + poidsOneMonthago.getPoids();
 	createAlerte(action, patient);
 	return action;
 }
-else if (latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.9) {
+else if (latestPoids != null && poidsSixMonthago != null && latestPoids.getPoids() < poidsSixMonthago.getPoids() * 0.9 ) {
 	String action = "dénutrition modérée car le poids a diminué de plus de 10% en six mois : " + "poids : " + latestPoids.getPoids() + " poids 6 mois avant : " + poidsSixMonthago.getPoids();
 	createAlerte(action, patient);
 	return action;
 }
-else if (albumine.getAlbu() > 30 && albumine.getAlbu() < 35) {
+else if (albumine != null && albumine.getAlbu() > 30 && albumine.getAlbu() < 35 ) {
 	String action = "dénutrition modérée car le niveau d'albumine est entre 30 et 35 : " + "albumine : " + albumine.getAlbu();
 	createAlerte(action, patient);
 	return action;
