@@ -3,7 +3,7 @@ import PatientList from './PatientList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const PatientSearchResults = ({ patients, getCardColorClass, onClose, onClearSearch }) => {
+const PatientSearchResults = ({ patients,alertes, getCardColorClass, onClose, onClearSearch }) => {
   return (
     patients.length > 0 && (
       <div>
@@ -13,7 +13,7 @@ const PatientSearchResults = ({ patients, getCardColorClass, onClose, onClearSea
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
-        <PatientList patients={patients} getCardColorClass={getCardColorClass} />
+        <PatientList patients={patients} alertes={alertes} getCardColorClass={getCardColorClass} />
       </div>
     )
   );

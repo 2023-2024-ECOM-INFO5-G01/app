@@ -185,8 +185,7 @@ public class AlerteResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-
-    /**
+       /**
  * GET  /alertes/user/{login} : get all the alertes of a specific user.
  *
  * @param login the login of the user.
@@ -196,7 +195,7 @@ public class AlerteResource {
 public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String login) {
     log.debug("REST request to get all Alertes of user: {}", login);
     
-    List<Alerte> alertes = alerteRepository.findByUser_LoginOrderByDateDesc(login);
+    List<Alerte> alertes = alerteRepository.findByUsers_LoginOrderByDateDesc(login);
     log.info("Alertes: {}", alertes);
     return ResponseEntity.ok().body(alertes);
 }
@@ -211,7 +210,7 @@ public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String log
     public ResponseEntity<List<Alerte>> getAllAlertesByPatientAndUser(@PathVariable Long id, @PathVariable String login) {
         log.debug("REST request to get all Alertes of patient: {}", id);
         
-        List<Alerte> alertes = alerteRepository.findByPatient_IdAndUser_LoginOrderByDateDesc(id, login);
+        List<Alerte> alertes = alerteRepository.findByPatient_IdAndUsers_LoginOrderByDateDesc(id, login);
 
         return ResponseEntity.ok().body(alertes);
     }
@@ -243,5 +242,4 @@ public ResponseEntity<List<Alerte>> getAllAlertesByUser(@PathVariable String log
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, alerte.getId().toString()))
             .body(result);
     }
-
 }

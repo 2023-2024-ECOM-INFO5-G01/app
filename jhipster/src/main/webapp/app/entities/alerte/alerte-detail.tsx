@@ -51,13 +51,22 @@ export const AlerteDetail = () => {
           </dt>
           <dd>{alerteEntity.verif ? 'true' : 'false'}</dd>
           <dt>
-            <Translate contentKey="ecomApp.alerte.user">User</Translate>
-          </dt>
-          <dd>{alerteEntity.user ? alerteEntity.user.login : ''}</dd>
-          <dt>
             <Translate contentKey="ecomApp.alerte.patient">Patient</Translate>
           </dt>
           <dd>{alerteEntity.patient ? alerteEntity.patient.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ecomApp.alerte.user">User</Translate>
+          </dt>
+          <dd>
+            {alerteEntity.users
+              ? alerteEntity.users.map((val, i) => (
+                  <span key={val.id}>
+                    <a>{val.login}</a>
+                    {alerteEntity.users && i === alerteEntity.users.length - 1 ? '' : ', '}
+                  </span>
+                ))
+              : null}
+          </dd>
         </dl>
         <Button tag={Link} to="/alerte" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

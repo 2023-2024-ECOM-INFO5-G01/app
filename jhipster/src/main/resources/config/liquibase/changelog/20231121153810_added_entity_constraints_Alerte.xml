@@ -8,18 +8,25 @@
     -->
     <changeSet id="20231121153810-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="alerte"
-                                 constraintName="fk_alerte__user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="patient_id"
                                  baseTableName="alerte"
                                  constraintName="fk_alerte__patient_id"
                                  referencedColumnNames="id"
                                  referencedTableName="patient"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="alerte_id"
+                                 baseTableName="rel_alerte__user"
+                                 constraintName="fk_rel_alerte__user__alerte_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="alerte"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="rel_alerte__user"
+                                 constraintName="fk_rel_alerte__user__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"
                                  />
     </changeSet>
 </databaseChangeLog>

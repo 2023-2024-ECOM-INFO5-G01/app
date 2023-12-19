@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,14 +36,16 @@ public class Alerte implements Serializable {
     private Boolean verif;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = { "albumine", "ehpad", "users", "poids", "ePAS", "iMCS", "repas", "rappels", "notes" },
         allowSetters = true
     )
     private Patient patient;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rel_alerte__user", joinColumns = @JoinColumn(name = "alerte_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<User> users = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -97,19 +101,6 @@ public class Alerte implements Serializable {
         this.verif = verif;
     }
 
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Alerte user(User user) {
-        this.setUser(user);
-        return this;
-    }
-
     public Patient getPatient() {
         return this.patient;
     }
@@ -120,6 +111,29 @@ public class Alerte implements Serializable {
 
     public Alerte patient(Patient patient) {
         this.setPatient(patient);
+        return this;
+    }
+
+    public Set<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Alerte users(Set<User> users) {
+        this.setUsers(users);
+        return this;
+    }
+
+    public Alerte addUser(User user) {
+        this.users.add(user);
+        return this;
+    }
+
+    public Alerte removeUser(User user) {
+        this.users.remove(user);
         return this;
     }
 
@@ -150,8 +164,8 @@ public class Alerte implements Serializable {
             ", date='" + getDate() + "'" +
             ", action='" + getAction() + "'" +
             ", verif='" + getVerif() + "'" +
-            ", user=" + getUser() +
             ", patient=" + getPatient() +
+            ", users=" + getUsers() +
             "}";
     }
 }

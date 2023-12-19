@@ -21,7 +21,6 @@
       "date": "Date",
       "action": "Action",
       "verif": "Verif",
-      "user": "User",
       "patient": "Patient"
     }
   }

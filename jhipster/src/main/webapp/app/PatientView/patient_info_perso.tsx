@@ -17,19 +17,6 @@ export const PatientInfoPerso = (props) => {
 
   const account = useAppSelector(state => state.authentication.account);
 
-  const createAlarmEntity = (userId, patientId) => {
-    const currentDate = new Date();
-    const entity: IAlerte = {
-      date: currentDate.toISOString(),
-      user: {id: userId},
-      patient: {id: patientId},
-      verif: false,
-      action: 'epa<7',
-    };
-
-    return entity;
-  };
-
   const alerteEntity = useAppSelector(state => state.alerte.entity);
 
   const [lastImc, setLastImc] = useState<IIMC | null>(null);
@@ -41,32 +28,25 @@ export const PatientInfoPerso = (props) => {
       dispatch(getIMC(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
          setLastImc(response.payload.data[response.payload.data.length - 1]);
-          setLastImc(lastImc);
+         // setLastImc(lastImc);
         }
       });
 
       dispatch(getPoids(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
           setLastPoids(response.payload.data[response.payload.data.length - 1]);
-          setLastPoids(lastPoids);
+          //setLastPoids(lastPoids);
         }
       });
 
       dispatch(getEpas(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
           setLastEpa(response.payload.data[response.payload.data.length - 1]);
-          setLastEpa(lastEpa);
+         // setLastEpa(lastEpa);
         }
       });
     }
   }, [dispatch, props.patientEntity.id]);
-
-  const handlecreateAlerte = (userid, patientid) => {
-    const entity = createAlarmEntity(userid, patientid);
-    dispatch(createEntity(entity));
-  }
-
-  const {register, handleSubmit, reset} = useForm();
 
   return (
     <div className="info_patient_perso">
@@ -94,7 +74,7 @@ export const PatientInfoPerso = (props) => {
         <div>
         <span id="albumine">
           <Translate
-            contentKey="ecomApp.patient.albumine"></Translate>{props.patientEntity.albumine ? props.patientEntity.albumine.id : ''}
+            contentKey="ecomApp.patient.albumine"></Translate>{props.patientEntity.albumine ? props.patientEntity.albumine.albu : ''}
         </span>
         </div>
       </div>

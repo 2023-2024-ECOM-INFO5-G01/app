@@ -16,7 +16,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getRoles, getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IPatient } from 'app/shared/model/patient.model';
 import { getEntity, updateEntity, createEntity, reset } from '../entities/patient/patient.reducer';
-
+import { denutrition_cases } from '../entities/patient/patient.reducer';
 
 export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: () => void; idprops: string }) => {
   const dispatch = useAppDispatch();
@@ -36,6 +36,12 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
   const updateSuccess = useAppSelector(state => state.patient.updateSuccess);
   const rappelEntity = useAppSelector(state => state.rappel.entity);
 
+const [initialAlbumine, setInitialAlbumine] = useState<string | null>(null);
+useEffect(() => {
+  if (patientEntity && patientEntity.albumine) {
+    setInitialAlbumine(patientEntity.albumine.id);
+  }
+}, [patientEntity]);
 
   useEffect(() => {
 
@@ -55,15 +61,17 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
       ...patientEntity,
       ...values,
       users: mapIdList(values.users),
-    //  albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
+      albumine: albumines.find(it => it.id.toString() === values.albumine.toString()),
       ehpad: ehpads.find(it => it.id.toString() === values.ehpad.toString()),
   };
 
 
      await dispatch(updateEntity(entity));
+     if (initialAlbumine !== values.albumine) {
+      dispatch(denutrition_cases(entity.id));
+    }
      toggle();
   };
-
   const defaultValues = () =>
     isNew
       ? {
@@ -145,6 +153,25 @@ export const PatientEdit= ({ modal, toggle ,idprops}: { modal: boolean; toggle: 
                   required: 'Ce champs ne peut pas être vide',
                 }}
               />
+               <ValidatedField
+                id="patient-albumine"
+                name="albumine"
+                data-cy="albumine"
+                label={translate('ecomApp.patient.albumine')}
+                type="select"
+                validate={{
+                  required: 'Veuillez choisir une option',
+                }}
+              >
+                <option value="" key="0" />
+                {albumines
+                  ? albumines.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.albu}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <ValidatedField 
               id="patient-ehpad" 
               name="ehpad" 
