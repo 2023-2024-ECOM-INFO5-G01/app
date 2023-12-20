@@ -93,11 +93,15 @@ export const Rappels = () => {
     <div className="rappel-icon">
         {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
       </div>
-      <div>
-        <p>Tâche: {rappel.action}</p>
-        {rappel.patient && <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>}
-        <p>Date: {rappel.date}</p>
-      </div>
+      <div className="rappel-details"> 
+      <p>Tâche: {rappel.action}</p>
+      {rappel.patient && (
+        <p>
+          Patient: {rappel.patient.nom} {rappel.patient.prenom}
+        </p>
+      )}
+      <p>Date: {rappel.date}</p>
+    </div>
       <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
       {rappel.verif ? '✅' : '⬜'}
       </button>

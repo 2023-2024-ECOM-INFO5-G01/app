@@ -11,9 +11,17 @@
   .rappel-content {
     display: flex;
     justify-content: space-between;
-    align-items: stretch; /* Change this from flex-start to stretch */
+    align-items: center; /* Ajusté pour aligner verticalement les éléments */
     flex-grow: 1;
     height: 150px;
+  }
+  
+  .rappel-details {
+    flex-grow: 1; /* Ajustement pour occuper l'espace restant */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Aligner les éléments verticalement */
+    margin-right: 10px; /* Espacement entre l'icône et les détails */
   }
   
   .rappel-icon {
