@@ -89,30 +89,27 @@ export const Rappels = () => {
       </div>
       {filteredRappels.map(rappel => (
   <div key={rappel.id} className="rappel">
-    <div className="rappel-content">
     <div className="rappel-icon">
-        {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
-      </div>
-      <div className="rappel-details"> 
-      <p>Tâche: {rappel.action}</p>
-      {rappel.patient && (
-        <p>
-          Patient: {rappel.patient.nom} {rappel.patient.prenom}
-        </p>
-      )}
-      <p>Date: {rappel.date}</p>
+      {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
     </div>
-      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+    <div className="rappel-content">
+      <div className="rappel-text1">
+        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
+      </div>
+      <div className="rappel-text2">
+        <p>Tâches: {rappel.action}</p>
+      </div>
+      <div className="rappel-text3">
+        <p>Date: {rappel.date}</p>
+      </div>
+    </div>
+    {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
+      <FontAwesomeIcon icon={faFileAlt} />
+      Voir patient
+    </Link>}
+    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
       {rappel.verif ? '✅' : '⬜'}
-      </button>
-    </div>
-    {rappel.patient && 
-      <div className="button-container">
-        <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
-        <FontAwesomeIcon icon={faFileAlt} />
-          Voir patient</Link>
-      </div>
-    }  
+    </button>
   </div>
 ))}
     </div>

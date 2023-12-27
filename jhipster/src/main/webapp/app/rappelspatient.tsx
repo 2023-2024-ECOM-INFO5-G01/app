@@ -89,22 +89,27 @@ return (
           />
         )}    
          </div>
-      {filteredRappels.map(rappel => (
-        <div key={rappel.id} className="rappel">
-          <div className="rappel-content">
-          <div className="rappel-icon">
-        {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+         {filteredRappels.map(rappel => (
+  <div key={rappel.id} className="rappel">
+    <div className="rappel-icon">
+      {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+    </div>
+    <div className="rappel-content">
+      <div className="rappel-text1">
+        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
       </div>
-            <div>
-              <p>Tâche: {rappel.action}</p>
-              <p>Date: {rappel.date}</p>
-            </div>
-            <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
-            {rappel.verif ? '✅' : '⬜'}
-            </button>
-          </div>
-        </div>
-      ))}
+      <div className="rappel-text2">
+        <p>Tâches: {rappel.action}</p>
+      </div>
+      <div className="rappel-text3">
+        <p>Date: {rappel.date}</p>
+      </div>
+    </div>
+    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+      {rappel.verif ? '✅' : '⬜'}
+    </button>
+  </div>
+))}
     </div>
   );
 };

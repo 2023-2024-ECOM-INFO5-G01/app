@@ -74,20 +74,25 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
             placeholderText='Sélectionnez une date'
             isClearable
           />
-        )}      </div>
+        )}
+      </div>
       {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
+          <div className="alerte-icon">⚠️</div>
           <div className="alerte-content">
-            <div className="alerte-icon">⚠️</div>
-            <div>
-              <h2>Alerte dénutrition</h2>
+            <div className="alerte-text1">
+              <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
+            </div>
+            <div className="alerte-text2">
               <p>Action: {alerte.action}</p>
+            </div>
+            <div className="alerte-text3">
               <p>Date: {alerte.date}</p>
             </div>
-            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-              {alerte.verif ? '✅' : '⬜'}
-            </button>
           </div>
+          <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+            {alerte.verif ? '✅' : '⬜'}
+          </button>
         </div>
       ))}
     </div>

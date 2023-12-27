@@ -34,8 +34,7 @@
   border: none;
   background: none;
   cursor: pointer;
-  position: absolute; /* Add this to fix the position of the check button */
-  right: 5px; /* Add this to position the check button on the right */
+  right: 25px; /* Add this to position the check button on the right */
 }
 
 .alerte-button {
