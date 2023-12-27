@@ -102,7 +102,7 @@ return (
         <p>Tâches: {rappel.action}</p>
       </div>
       <div className="rappel-text3">
-        <p>Date: {rappel.date}</p>
+      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
       </div>
     </div>
     <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>

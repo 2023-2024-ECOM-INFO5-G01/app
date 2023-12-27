@@ -100,7 +100,7 @@ export const Rappels = () => {
         <p>Tâches: {rappel.action}</p>
       </div>
       <div className="rappel-text3">
-        <p>Date: {rappel.date}</p>
+      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
       </div>
     </div>
     {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">

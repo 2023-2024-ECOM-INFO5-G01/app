@@ -63,7 +63,7 @@ export const Alerte = () => {
           <p>Action: {alerte.action}</p>
           </div>
       <div className="alerte-text3">
-          <p>Date: {alerte.date}</p>
+      <p>Date: {new Date(alerte.date).toLocaleDateString()}</p>
       </div>
     </div>
     {alerte.patient && <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">

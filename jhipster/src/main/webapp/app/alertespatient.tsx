@@ -87,7 +87,7 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
               <p>Action: {alerte.action}</p>
             </div>
             <div className="alerte-text3">
-              <p>Date: {alerte.date}</p>
+            <p>Date: {new Date(alerte.date).toLocaleDateString()}</p>
             </div>
           </div>
           <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
