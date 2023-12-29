@@ -21,18 +21,15 @@ export const NoteEdit = ({ modal, toggle ,patientId,idnote}: { modal: boolean; t
   const updating = useAppSelector(state => state.note.updating);
 
   const saveEntity = values => {
-    console.log("users", users);
-    console.log("account", account.id);
     const date = new Date();
     const entity = {
       ...noteEntity,
       ...values,
       user: users.find(it => it.id.toString() === account.id.toString()),
       patient: patients.find(it => it.id.toString() === patientId),
-      date: date,
+      date,
 
     };
-    console.log(entity);
     dispatch(updateEntity(entity));
     };
   const handleClose = () => {

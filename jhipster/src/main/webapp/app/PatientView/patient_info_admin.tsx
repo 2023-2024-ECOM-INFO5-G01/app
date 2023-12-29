@@ -18,7 +18,7 @@ export const PatientInfoAdmin = (props) => {
   const handleStatutChange = (event) => {
     const nouveauStatutSelectionne = event.target.value;
     // changement de statut avec le nouveau statut
-    dispatch(updateStatus({id: id, statut: nouveauStatutSelectionne}));
+    dispatch(updateStatus({id, statut: nouveauStatutSelectionne}));
     props.setStatus(true);
     // Actualiser la page
     window.location.reload();

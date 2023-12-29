@@ -5,7 +5,6 @@ import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Translate, TextFormat, getSortState } from 'react-jhipster';
 import { Row, Col, Alert, Button, Table } from 'reactstrap';
-import TestButton from './TestButton';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown, faStarAndCrescent } from '@fortawesome/free-solid-svg-icons';
@@ -106,7 +105,6 @@ const getCardColorClass = (status) => {
   const handleRunPatient = () => {
     if (patientsearch !== '') {
       dispatch(getPatientSearch({ query: patientsearch, login: account.login })).then((response) => {
-        console.log("response", response);
         if (response.payload) {
           setpatientsuggestion(response.payload as any[]);
         }

@@ -18,7 +18,6 @@ export const Rappels = () => {
       dispatch(getRappelsByUser(account.login))
       .then(response => {
         setRappels((response.payload as any).data);
-        console.log(rappels);
       })
       .catch(error => {
         console.error('Une erreur s\'est produite :', error);

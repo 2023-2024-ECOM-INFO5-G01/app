@@ -16,7 +16,6 @@ export const Alerte = () => {
       dispatch(getAlertesByUser(account.login))
       .then(response => {
         setAlertes((response.payload as any).data);
-        console.log(alertes);
       })
       .catch(error => {
         console.error('Une erreur s\'est produite :', error);

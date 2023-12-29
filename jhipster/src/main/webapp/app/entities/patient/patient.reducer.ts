@@ -4,7 +4,6 @@ import { ASC } from 'app/shared/util/pagination.constants';
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IPatient, defaultValue } from 'app/shared/model/patient.model';
-import { login } from 'app/shared/reducers/authentication';
 
 const initialState: EntityState<IPatient> = {
   loading: false,

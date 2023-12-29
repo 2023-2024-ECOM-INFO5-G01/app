@@ -28,21 +28,18 @@ export const PatientInfoPerso = (props) => {
       dispatch(getIMC(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
          setLastImc(response.payload.data[response.payload.data.length - 1]);
-         // setLastImc(lastImc);
         }
       });
 
       dispatch(getPoids(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
           setLastPoids(response.payload.data[response.payload.data.length - 1]);
-          //setLastPoids(lastPoids);
         }
       });
 
       dispatch(getEpas(props.patientEntity.id)).then((response: PayloadAction<any>) => {
         if (response.payload && response.payload.data && response.payload.data.length > 0) {
           setLastEpa(response.payload.data[response.payload.data.length - 1]);
-         // setLastEpa(lastEpa);
         }
       });
     }

@@ -35,7 +35,6 @@ export const App = () => {
   const isOpenAPIEnabled = useAppSelector(state => state.applicationProfile.isOpenAPIEnabled);
 
   const account = useAppSelector(state => state.authentication.account);
-  console.log("account",account.authorities);
   const paddingTop = '60px';
   return (
     <BrowserRouter basename={baseHref}>
