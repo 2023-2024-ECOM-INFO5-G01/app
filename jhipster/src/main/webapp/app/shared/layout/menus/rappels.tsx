@@ -72,7 +72,7 @@ export const Rappels = () => {
     <div>
       <div>
       <select onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">Toutes les rappels</option>
+        <option value="all">Tout les rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
         <option value="futur">Rappels futurs</option>
@@ -90,7 +90,7 @@ export const Rappels = () => {
       {filteredRappels.map(rappel => (
   <div key={rappel.id} className="rappel">
     <div className="rappel-icon">
-      {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+    ⚠️
     </div>
     <div className="rappel-content">
       <div className="rappel-text1">

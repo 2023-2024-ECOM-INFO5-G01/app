@@ -92,7 +92,7 @@ return (
          {filteredRappels.map(rappel => (
   <div key={rappel.id} className="rappel">
     <div className="rappel-icon">
-      {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
+    ⚠️
     </div>
     <div className="rappel-content">
       <div className="rappel-text1">
