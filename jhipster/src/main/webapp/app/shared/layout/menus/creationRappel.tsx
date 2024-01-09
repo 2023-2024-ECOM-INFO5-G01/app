@@ -58,26 +58,22 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
     if (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') {
       const startDate = new Date();
       const endDate =values.endDate ? convertDateTimeToServer(values.endDate) : null;
-      console.log("date : " + startDate+ ""+ "endDate:" + endDate + "period:" + values.period + "frequence:" + values.frequency );
       if (!startDate || !endDate || startDate >= endDate) {
         alert("La date de fin doit être postérieure à la date de début");
         return;
       }
       if (startDate.getTime() < endDate.getTime()) {
-        console.log('entity:', entity, 'currentDate:', startDate);
         const dates = addPeriod(startDate, values.period, values.frequency, endDate);
-        console.log('dates:', dates);
-        for (let date of dates) {
+        for (const date of dates) {
           const newEntity = {
             ...entity,
-            date: date,
+            date,
           };
           dispatch(createEntity(newEntity));
         }
       }
     } else {
       values.date = convertDateTimeToServer(values.date);
-      console.log('values.date:', values.date);
       const newEntity = {
         ...entity,
         date: values.date,
@@ -89,13 +85,12 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   
   
   function addPeriod(date, period, frequency, endDate) {
-    let newDate = new Date(date);
+    const newDate = new Date(date);
     const datetab = [] ;
     switch (period) {
-      case 'day':
-        let interval = Math.round(24 / frequency); // Divide the day into equal intervals
-        let reminderDate = new Date(newDate);
-        //ajouter un jour à reminderDate
+      case 'day':{
+        const interval = Math.round(24 / frequency); // Divide the day into equal intervals
+        const reminderDate = new Date(newDate);
         reminderDate.setDate(reminderDate.getDate() + 1);
         reminderDate.setHours(0); // Set the hour to the first hour of the day
 
@@ -107,23 +102,21 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
           // Check if the reminder date is still within the same day
             if ( reminderDate.getTime() < endDate.getTime()) {
               datetab.push(new Date(reminderDate));
-              console.log("date add : " + reminderDate);
-              console.log("datetab add : " + datetab);
           }
           }
           reminderDate.setHours(0); // Reset the hours to zero
           reminderDate.setDate(reminderDate.getDate() + 1);
-          console.log("ajoute un jour:" + "reminderdate" + reminderDate + "endDate" + endDate);
 
         }
         break;
-        case 'month':
-  let reminderDate2 = new Date(newDate);
-        let monthInterval = Math.round(30 / frequency); // Divide the month into equal intervals
+      }
+        case 'month':{
+        const reminderDate2 = new Date(newDate);
+        const monthInterval = Math.round(30 / frequency); // Divide the month into equal intervals
   while (reminderDate2.getTime() < endDate.getTime()) {
     for (let i = 0; i < frequency; i++) {
       // Save the current month
-      let currentMonth = reminderDate2.getMonth();
+      const currentMonth = reminderDate2.getMonth();
       // Set the day of the month to i + 1
       reminderDate2.setDate(i * monthInterval + 1);
 
@@ -145,10 +138,11 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
 
   }
   break;
+}
         
-      case 'year':
-        let yearInterval = Math.round(12 / frequency); // Divide the year into equal intervals
-        let reminderDate3 = new Date(newDate);
+      case 'year':{
+        const yearInterval = Math.round(12 / frequency); // Divide the year into equal intervals
+        const reminderDate3 = new Date(newDate);
       while (reminderDate3.getTime() < endDate.getTime()) {
         for (let i = 0; i < frequency; i++) {
           // Create a new date object with the same date but different time
@@ -162,6 +156,9 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
         reminderDate3.setMonth(1); // Reset the month to the first month of the year
         reminderDate3.setFullYear(reminderDate3.getFullYear() + 1);
       }
+        break;
+      }
+      default:
         break;
     }
     return datetab;
@@ -186,7 +183,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
   <option value="prise de poids">Prise de poids</option>
   <option value="prise de epa">Prise de epa</option>
   <option value="prise de albumine">Prise de albumine</option>
-  <option value="Surveiller la prise daliments">Surveiller la prise d'aliments</option>
+  <option value="Surveiller la prise daliments">Surveiller la prise d&apos;aliments</option>
   </ValidatedField>
 
   <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select" >

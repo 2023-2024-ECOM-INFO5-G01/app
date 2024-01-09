@@ -21,7 +21,8 @@ export const AddDataPopup = () => {
 
   const patient: IPatient = useAppSelector(s => s.patient.entity);
 
-  const handleButtonClick = async (e) => {
+  const handleButtonClick =  (e) => {
+    (async () => {
     const value = state[e];
     switch (e) {
       case 'height': {
@@ -65,7 +66,7 @@ export const AddDataPopup = () => {
       }
       default:
         break;
-    }
+    }}) ();
   };
 
   const handleInputChange = (e) => {

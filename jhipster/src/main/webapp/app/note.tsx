@@ -32,7 +32,6 @@ useEffect(() => {
         dispatch(getNotesByPatientAndUser({ id: idprops, login: account.login }))
             .then(response => {
                 setNotes((response.payload as any).data);
-                console.log(notes);
             })
             .catch(error => {
                 console.error('Une erreur s\'est produite :', error);

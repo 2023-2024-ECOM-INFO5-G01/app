@@ -47,7 +47,6 @@ export const Patient = () => {
     setStatuschange(false);
   }, [statuschange]);
 
-  //code pour le bouton toogle fixed
   const [isFixed, setIsFixed] = useState(false);
 
   const togglePosition = () => {

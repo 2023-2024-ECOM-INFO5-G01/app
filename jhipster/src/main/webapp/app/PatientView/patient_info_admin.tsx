@@ -1,9 +1,29 @@
 import {TextFormat, Translate} from "react-jhipster";
 import {APP_DATE_FORMAT} from "app/config/constants";
 import React from "react";
+import { useAppDispatch } from "app/config/store";
+import { useParams } from "react-router-dom";
+import { updateStatus } from "app/entities/patient/patient.reducer";
+
 
 
 export const PatientInfoAdmin = (props) => {
+
+  const dispatch = useAppDispatch();
+  const {id} = useParams<'id'>();
+
+  // Options de statut disponibles
+  const optionsStatut = ['normal', 'surveillance', 'dénutrition avérée'];
+
+  // Gestionnaire d'événements pour la modification du statut
+  const handleStatutChange = (event) => {
+    const nouveauStatutSelectionne = event.target.value;
+    // changement de statut avec le nouveau statut
+    dispatch(updateStatus({id, statut: nouveauStatutSelectionne}));
+    props.setStatus(true);
+    // Actualiser la page
+    window.location.reload();
+  };
 
   return <div className="info_patient_administratives">
     <div>
