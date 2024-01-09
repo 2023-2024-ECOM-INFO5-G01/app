@@ -21,13 +21,28 @@ export const RegisterPage = () => {
 
   const currentLocale = useAppSelector(state => state.locale.currentLocale);
 
+  const [acceptConsent, setAcceptConsent] = useState(false);
+  const [acceptPolicy, setAcceptPolicy] = useState(false);
+
   const handleValidSubmit = ({ username, email, firstPassword }) => {
-    dispatch(handleRegister({ login: username, email, password: firstPassword, langKey: currentLocale }));
+    if (!acceptPolicy || !acceptConsent) {
+      toast.error("Veuillez accepter la politique et fournir votre signature.");
+      return;
+    } else {dispatch(handleRegister({ 
+        login: username, 
+        email, 
+        password: firstPassword, 
+        langKey: currentLocale
+      }));
+    }
   };
 
   const updatePassword = event => setPassword(event.target.value);
 
   const successMessage = useAppSelector(state => state.register.successMessage);
+
+
+
 
   useEffect(() => {
     if (successMessage) {
@@ -102,6 +117,30 @@ export const RegisterPage = () => {
               }}
               data-cy="secondPassword"
             />
+            <div>
+              <input
+                type="checkbox"
+                id="acceptPolicy"
+                name="acceptPolicy"
+                checked={acceptPolicy}
+                onChange={() => setAcceptPolicy(!acceptPolicy)}
+              />
+              <label htmlFor="acceptPolicy">
+                J'accepte la <Link to="/lien-vers-votre-politique-de-confidentialite" target="_blank">Politique de Confidentialité</Link>.
+              </label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="acceptConsent"
+                name="acceptConsent"
+                checked={acceptConsent}
+                onChange={() => setAcceptConsent(!acceptConsent)}
+              />
+              <label htmlFor="acceptPolicy">
+                J'accepte la <Link to="/lien-vers-votre-politique-de-confidentialite" target="_blank">Politique de Confidentialité</Link>.
+              </label>
+            </div>
             <Button id="register-submit" color="primary" type="submit" data-cy="submit">
               <Translate contentKey="register.form.button">Register</Translate>
             </Button>
