@@ -43,6 +43,12 @@ export const AddDataPopup = () => {
         break;
       }
       case 'albumin': {
+        const albu: IAlbumine = {
+          date: new Date().toISOString(),
+          patient: { id: patient.id },
+          albu: value
+        };
+        dispatch(createAlbumine(albu));
         break;
       }
       case 'epa': {
@@ -101,7 +107,7 @@ export const AddDataPopup = () => {
       <h1>Nouvelle Mesure</h1>
       {/* {inputField('Taille', 'height')} */}
       {inputField('Poids', 'weight')}
-      {/* {inputField('Albumine', 'albumin')} */}
+      {inputField('Albumine', 'albumin')}
       {inputField('EPA', 'epa')}
 
     </div>
