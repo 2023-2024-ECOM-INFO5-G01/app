@@ -1,9 +1,10 @@
 import {TextFormat, Translate} from "react-jhipster";
 import {APP_DATE_FORMAT} from "app/config/constants";
-import {updateStatus} from "app/entities/patient/patient.reducer";
 import React from "react";
-import {useAppDispatch} from "app/config/store";
-import {useParams} from "react-router-dom";
+import { useAppDispatch } from "app/config/store";
+import { useParams } from "react-router-dom";
+import { updateStatus } from "app/entities/patient/patient.reducer";
+
 
 
 export const PatientInfoAdmin = (props) => {
@@ -51,14 +52,7 @@ export const PatientInfoAdmin = (props) => {
         </span>
       </div>
       <div>
-        <label>Statut : </label>
-        <select value={props.patientEntity.statut} onChange={handleStatutChange}>
-          {optionsStatut.map((optionStatut) => (
-            <option key={optionStatut} value={optionStatut}>
-              {optionStatut}
-            </option>
-          ))}
-        </select>
+        <label>Statut : {props.patientEntity.statut}</label>
       </div>
     </div>
   </div>

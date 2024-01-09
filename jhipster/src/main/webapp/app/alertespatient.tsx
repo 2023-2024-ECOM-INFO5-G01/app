@@ -73,20 +73,25 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
             placeholderText='Sélectionnez une date'
             isClearable
           />
-        )}      </div>
+        )}
+      </div>
       {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
+          <div className="alerte-icon">⚠️</div>
           <div className="alerte-content">
-            <div className="alerte-icon">⚠️</div>
-            <div>
-              <h2>Alerte dénutrition</h2>
-              <p>Action: {alerte.action}</p>
-              <p>Date: {alerte.date}</p>
+            <div className="alerte-text1">
+              <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
             </div>
-            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-              {alerte.verif ? '✅' : '⬜'}
-            </button>
+            <div className="alerte-text2">
+              <p>Action: {alerte.action}</p>
+            </div>
+            <div className="alerte-text3">
+            <p>Date: {new Date(alerte.date).toLocaleDateString()}</p>
+            </div>
           </div>
+          <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+            {alerte.verif ? '✅' : '⬜'}
+          </button>
         </div>
       ))}
     </div>

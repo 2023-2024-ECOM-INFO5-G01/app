@@ -53,24 +53,26 @@ export const Alerte = () => {
       </div>
       {filteredAlertes.map(alerte => (
   <div key={alerte.id} className="alerte">
+    <div className="alerte-icon">⚠️</div>
     <div className="alerte-content">
-      <div className="alerte-icon">⚠️</div>
-      <div>
-        <h2>Alerte dénutrition</h2>
-        <p>Action: {alerte.action}</p>
-        {alerte.patient && <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>}
-        <p>Date: {alerte.date}</p>
+      <div className="alerte-text1">
+          <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
+          </div>
+      <div className="alerte-text2">
+          <p>Action: {alerte.action}</p>
+          </div>
+      <div className="alerte-text3">
+      <p>Date: {new Date(alerte.date).toLocaleDateString()}</p>
       </div>
-      <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-      {alerte.verif ? '✅' : '⬜'}
-      </button>
     </div>
-    <div className="button-container">
     {alerte.patient && <Link to={`/patients/${alerte.patient.id}`} className="alerte-button">
-    <FontAwesomeIcon icon={faFileAlt} />
-      Voir patient</Link>}
-    </div>  
-    </div>
+        <FontAwesomeIcon icon={faFileAlt} />
+        Voir patient
+      </Link>}
+    <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+      {alerte.verif ? '✅' : '⬜'}
+    </button>
+  </div>
 ))}
     </div>
   );
