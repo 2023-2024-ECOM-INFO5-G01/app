@@ -71,13 +71,54 @@ const clearSearch = () => {
 
 const [filteredStatuses, setFilteredStatuses] = useState([]);
 
+const [patientsFiltres, setPatientsFiltres] = useState([]);
+
+const statusOptions = [
+  { value: 'surveillance prioritaire', label: 'Surveillance prioritaire' },
+  { value: 'surveillance particulière', label: 'Surveillance particulière' },
+  { value: 'normal', label: 'Normal' },
+];
+
 const handleStatusFilterChange = (status, isChecked) => {
-  if (isChecked) {
-    setFilteredStatuses(prevStatuses => [...prevStatuses, status]);
-  } else {
-    setFilteredStatuses(prevStatuses => prevStatuses.filter(s => s !== status));
-  }
+  setFilteredStatuses((prevStatuses) => {
+    if (prevStatuses.length === 0 && !isChecked) {
+      const firstTime = statusOptions.map((option) => {
+        if (option.value !== status) {
+          return option.value;
+        }
+        return null;
+      }).filter((value) => value !== null);
+      const updatedStatuses = firstTime
+
+      const filteredPatients = patientList.filter((patient) =>
+        updatedStatuses.includes(patient.status)
+      );
+
+      setPatientsFiltres(filteredPatients);
+
+      return updatedStatuses;
+    } else {
+      const updatedStatuses = isChecked
+      ? [...prevStatuses, status]
+      : prevStatuses.filter((s) => s !== status);
+
+      // Si toutes les cases sont décochées
+      if (updatedStatuses.length === 0) {
+        setPatientsFiltres([]); // Afficher aucun patient
+        return updatedStatuses;
+      }
+
+      const filteredPatients = patientList.filter((patient) =>
+        updatedStatuses.includes(patient.status)
+      );
+
+      setPatientsFiltres(filteredPatients);
+
+      return updatedStatuses;
+    }
+  });
 };
+
 
 const filterPatientsByStatus = () => {
   if (filteredStatuses.length === 0) {
@@ -89,9 +130,9 @@ const filterPatientsByStatus = () => {
 
 const getCardColorClass = (status) => {
   switch (status) {
-    case 'dénutrition avérée':
+    case 'surveillance prioritaire':
       return 'card-red';
-    case 'surveillance':
+    case 'surveillance particulière':
       return 'card-orange';
     case 'normal':
       return 'card-blue';
@@ -155,10 +196,19 @@ const getCardColorClass = (status) => {
     }
   };
 
-  const filters = ['datearrive'];
+  const getSortFieldName = (fieldName) => {
+    if (sortState.order == 'desc') {
+      return filterDisplayText.datearrive;
+    } else {
+      return filterDisplayText.datearrivelate;
+    }
+  }
+
+  const filters = ['datearrive', 'datearrivelate'];
 
   const filterDisplayText = {
-    datearrive: 'Les patients sont triés par ordre d\'arrivée',
+    datearrive: 'Plus récent',
+    datearrivelate: 'Plus ancien'
   };
 
   // État local pour stocker le filtre sélectionné
@@ -204,8 +254,8 @@ const getCardColorClass = (status) => {
 
   <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '6px' }}>
   <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
- 
-    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
+
+    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={getSortFieldName(selectedFilter)} />
 
  
   <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />

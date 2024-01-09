@@ -15,9 +15,9 @@ export const PatientThumbnail = (props) => {
   const dispatch = useAppDispatch();
   const getCardColorClass = (status) => {
     switch (status) {
-      case 'dénutrition avérée':
+      case 'surveillance prioritaire':
         return 'info-card red';
-      case 'surveillance':
+      case 'surveillance particulière':
         return 'info-card orange';
       case 'normal':
         return 'info-card blue';
