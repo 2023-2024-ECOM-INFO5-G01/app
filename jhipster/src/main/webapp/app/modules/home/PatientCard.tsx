@@ -13,13 +13,12 @@ const PatientCard = ({ patient,alertes }) => {
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div className="patient-info">
         <p>
-          <strong>Nom : {patient.nom}</strong>
+          <strong> Patient  </strong> : {patient.nom} {patient.prenom}
+          <strong> EPA </strong> : {patient.ePA}
+        <Button tag={Link} to={`/patients/${patient.id}`} color="primary" size="sm" data-cy="entityDetailsButton" className="view_data_button">
+            <FontAwesomeIcon icon="eye" />
+        </Button>
         </p>
-        <p>
-          <strong>Prénom : {patient.prenom}</strong>
-        </p>
-        <p>Ehpad : {patient.ehpad ? patient.ehpad.nom : ''}</p>
-        
         {patientAlertes.length > 0 && (
                       <FontAwesomeIcon icon={faBell} className="blinking-icon" />
 )}
@@ -28,13 +27,6 @@ const PatientCard = ({ patient,alertes }) => {
             <p>Alertes : {alerte.action}</p>
           </div>
         ))}
-      </div>
-      <div className="patient-actions">
-        <Button tag={Link} to={`/patients/${patient.id}`} color="primary" size="sm" data-cy="entityDetailsButton" className="view_data_button">
-          <FontAwesomeIcon icon="eye" />{' '}
-          &nbsp;
-          <Translate contentKey="entity.action.view">View</Translate>
-        </Button>
       </div>
     </div>
   );
