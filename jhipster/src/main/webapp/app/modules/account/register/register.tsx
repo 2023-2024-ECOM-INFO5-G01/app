@@ -83,11 +83,11 @@ export const RegisterPage = () => {
               onChange={updatePassword}
               validate={{
                 required: { value: true, message: translate('global.messages.validate.newpassword.required') },
-                minLength: { value: 10, message: translate('Votre mot de passe doit comporter au moins 10 caractères.') },
-                maxLength: { value: 32, message: translate('Votre mot de passe doit comporter au maximum 32 caractères.') },
+                minLength: { value: 10, message: translate('global.messages.validate.newpassword.minlength') },
+                maxLength: { value: 32, message: translate('global.messages.validate.newpassword.maxlength') },
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
-                  message: translate('Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole'),
+                  message: translate('global.messages.validate.newpassword.pattern'),
                 },
               }}
               data-cy="firstPassword"
@@ -100,12 +100,12 @@ export const RegisterPage = () => {
               type="password"
               validate={{
                 required: { value: true, message: translate('global.messages.validate.confirmpassword.required') },
-                minLength: { value: 10, message: translate('Votre mot de passe doit comporter au moins 10 caractères.') },
-                maxLength: { value: 32, message: translate('Votre mot de passe doit comporter au maximum 32 caractères.') },
+                minLength: { value: 10, message: translate('global.messages.validate.confirmpassword.minlength') },
+                maxLength: { value: 32, message: translate('global.messages.validate.confirmpassword.maxlength') },
                 validate: v => v === password || translate('global.messages.error.dontmatch'),
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
-                  message: translate('Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole'),
+                  message: translate('global.messages.validate.confirmpassword.pattern'),
                 },
               }}
               data-cy="secondPassword"
