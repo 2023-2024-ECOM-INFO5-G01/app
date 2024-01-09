@@ -317,9 +317,16 @@ public class PatientResource {
 			.body(result);
 	}
 
-	/**
-	 * méthode pour créer une alerte pour un patient
-	 **/
+/**
+ * Crée une nouvelle alerte pour un patient spécifique.
+ *
+ * Cette méthode crée une nouvelle instance d'Alerte, définit ses propriétés et la sauvegarde dans la base de données.
+ * L'action et le patient sont passés en paramètres. La date de l'alerte est définie sur l'heure actuelle, 
+ * et la vérification de l'alerte est définie sur false. Les utilisateurs associés à l'alerte sont ceux associés au patient.
+ *
+ * @param action L'action à associer à l'alerte.
+ * @param patient Le patient à associer à l'alerte.
+ */
 private void createAlerte(String action, Patient patient) {
 	Alerte newAlerte = new Alerte();
 	newAlerte.setAction(action);
@@ -332,11 +339,21 @@ private void createAlerte(String action, Patient patient) {
 	alerteRepository.save(newAlerte);
 }
 
-/*
-* methode qui vérifie si un rappel n'a pas été fait 1 jour après la date prévue et qui crée une alerte si c'est le cas.
-* Cela est fait tous les jours à 1h du matin
-*/
-	@Scheduled(cron = "0 0 1 * * ?")
+/**
+ * Évalue les rappels en retard pour des actions spécifiques.
+ *
+ * Cette méthode est programmée pour s'exécuter à 1h00 tous les jours.
+ * Elle récupère tous les rappels de la base de données et vérifie chaque rappel non vérifié.
+ * Si la date du rappel est antérieure à celle d'il y a deux jours et que l'action du rappel est l'une des suivantes : 
+ * "prise de poids", "Regarder le dossier", "prise de epa", "prise de albumine", ou "Surveiller la prise daliments", 
+ * une alerte est créée avec un message spécifique et liée au patient concerné.
+ *
+ * @return Une chaîne de caractères indiquant le résultat de l'évaluation. 
+ *         Si un rappel correspond aux critères, retourne "Taches non faites pour ce patient [nom du patient] pour cette action : [action du rappel]".
+ *         Si aucun rappel ne correspond aux critères, retourne "aucun rappel n'a été oublié".
+ * @throws URISyntaxException Si une erreur de syntaxe URI se produit.
+ */
+@Scheduled(cron = "0 0 1 * * ?")
 	public String evaluerRetard() throws URISyntaxException {
  log.debug("REST request to evaluate retard");
   log.info("REST request to evaluate retard");
@@ -349,7 +366,7 @@ Instant TwoDayAgo = now.minus(Duration.ofDays(2)); // date-time two day ago
 for (Rappel rappel : toutrappel) {
 	if (!rappel.getVerif()) {
 		Instant rappelDate = rappel.getDate();
-		if (rappelDate.isBefore(TwoDayAgo) && (rappel.getAction().equals("prise de poids") || rappel.getAction().equals("prise de epa") || rappel.getAction().equals("prise de albumine") || rappel.getAction().equals("Surveiller la prise daliments") )){
+		if (rappelDate.isBefore(TwoDayAgo) && (rappel.getAction().equals("prise de poids") || rappel.getAction().equals("Regarder le dossier") || rappel.getAction().equals("prise de epa") || rappel.getAction().equals("prise de albumine") || rappel.getAction().equals("Surveiller la prise daliments") )){
 			String action = "Taches non faites pour ce patient " + rappel.getPatient().getNom() + "  pour cette action :" + rappel.getAction();
 			createAlerte(action, rappel.getPatient());
 			log.debug("nouveau rappel");
@@ -362,9 +379,17 @@ return "aucun rappel n'a été oublié";
 }
 
 
-/*
-* 
-*/
+/**
+ * Évalue l'EPA (Échelle de Précarité des Aliments) d'un patient spécifique.
+ *
+ * @param id L'identifiant du patient à évaluer.
+ * @return Une chaîne de caractères indiquant le résultat de l'évaluation. 
+ *         Si le patient n'est pas trouvé, retourne "Patient not found".
+ *         Si aucune donnée EPA n'est trouvée pour le patient, retourne "Pas de données EPA pour ce patient".
+ *         Si l'EPA est inférieur à 7, une alerte est créée et la méthode retourne "EPA < 7 : epa : [valeur de l'EPA]".
+ *         Si l'EPA est supérieur ou égal à 7, retourne "pas d'EPA".
+ * @throws URISyntaxException Si une erreur de syntaxe URI se produit.
+ */
 @GetMapping("/patients/epa/malnutrition/{id}")
 public String evaluerEPA(@PathVariable Long id) throws URISyntaxException {
 	Optional<Patient> patientOptional = patientRepository.findById(id);
@@ -394,7 +419,23 @@ public String evaluerEPA(@PathVariable Long id) throws URISyntaxException {
 	}
 }
 
-	
+	/**
+ * Évalue la malnutrition d'un patient spécifique.
+ *
+ * Cette méthode récupère le patient par son ID et vérifie si une alerte a déjà été créée pour ce patient aujourd'hui.
+ * Si c'est le cas, elle retourne un message indiquant qu'une alerte a déjà été créée.
+ * Sinon, elle récupère les dernières valeurs de IMC, Albumine et Poids du patient et évalue la malnutrition en fonction de ces valeurs.
+ * Si une condition de malnutrition est remplie, une alerte est créée et le message d'alerte est retourné.
+ * Si aucune condition de malnutrition n'est remplie, elle retourne "pas de dénutrition".
+ *
+ * @param id L'identifiant du patient à évaluer.
+ * @return Une chaîne de caractères indiquant le résultat de l'évaluation. 
+ *         Si le patient n'est pas trouvé, retourne "Patient not found".
+ *         Si une alerte a déjà été créée pour ce patient aujourd'hui, retourne "Une alerte a déjà été créée pour ce patient aujourd'hui".
+ *         Si une condition de malnutrition est remplie, retourne le message d'alerte.
+ *         Si aucune condition de malnutrition n'est remplie, retourne "pas de dénutrition".
+ * @throws URISyntaxException Si une erreur de syntaxe URI se produit.
+ */
 	@GetMapping("/patients/malnutrition/{id}")
 public String evaluerMalnutrition(@PathVariable Long id) throws URISyntaxException {
 	Optional<Patient> patientOptional = patientRepository.findById(id);

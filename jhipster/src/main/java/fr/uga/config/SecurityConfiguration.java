@@ -63,10 +63,10 @@ public class SecurityConfiguration {
                     )
             )
             // Autoriser les requêtes GET sans authentification
-            .authorizeHttpRequests(authz ->
+        /*    .authorizeHttpRequests(authz ->
                 authz
                     .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/**")).permitAll()
-            )
+            )*/
             .authorizeHttpRequests(authz ->
                 // prettier-ignore
                 authz
