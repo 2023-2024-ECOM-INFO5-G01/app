@@ -71,6 +71,10 @@
         "dontmatch": "The password and its confirmation do not match!"
       },
       "validate": {
+        "actualpassword":{
+          "required": "Your password is required.",
+          "valid": "Your password is invalid."
+        },
         "newpassword": {
           "required": "Your password is required.",
           "minlength": "Your password is required to be at least 10 characters.",

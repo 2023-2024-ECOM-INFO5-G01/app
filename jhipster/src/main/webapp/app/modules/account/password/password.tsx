@@ -55,7 +55,13 @@ export const PasswordPage = () => {
               placeholder={translate('global.form.currentpassword.placeholder')}
               type="password"
               validate={{
-                required: { value: true, message: translate('global.messages.validate.newpassword.required') },
+                required: { value: true, message: translate('global.messages.validate.actualpassword.required') },
+                minLength: { value: 10, message: translate('global.messages.validate.actualpassword.valid') },
+                maxLength: { value: 32, message: translate('global.messages.validate.actualpassword.valid') },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+                  message: translate('global.messages.validate.actualpassword.valid'),
+                },
               }}
               data-cy="currentPassword"
             />
