@@ -37,8 +37,12 @@ export const PasswordResetFinishPage = () => {
           type="password"
           validate={{
             required: { value: true, message: translate('global.messages.validate.newpassword.required') },
-            minLength: { value: 4, message: translate('global.messages.validate.newpassword.minlength') },
-            maxLength: { value: 50, message: translate('global.messages.validate.newpassword.maxlength') },
+            minLength: { value: 10, message: translate('global.messages.validate.newpassword.minlength') },
+            maxLength: { value: 32, message: translate('global.messages.validate.newpassword.maxlength') },
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+              message: translate('global.messages.validate.newpassword.pattern'),
+            },
           }}
           onChange={updatePassword}
           data-cy="resetPassword"
@@ -51,9 +55,13 @@ export const PasswordResetFinishPage = () => {
           type="password"
           validate={{
             required: { value: true, message: translate('global.messages.validate.confirmpassword.required') },
-            minLength: { value: 4, message: translate('global.messages.validate.confirmpassword.minlength') },
-            maxLength: { value: 50, message: translate('global.messages.validate.confirmpassword.maxlength') },
+            minLength: { value: 10, message: translate('global.messages.validate.confirmpassword.minlength') },
+            maxLength: { value: 32, message: translate('global.messages.validate.confirmpassword.maxlength') },
             validate: v => v === password || translate('global.messages.error.dontmatch'),
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+              message: translate('global.messages.validate.confirmpassword.pattern'),
+            },
           }}
           data-cy="confirmResetPassword"
         />

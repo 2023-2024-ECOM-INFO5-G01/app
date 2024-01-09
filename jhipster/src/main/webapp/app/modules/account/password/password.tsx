@@ -55,7 +55,13 @@ export const PasswordPage = () => {
               placeholder={translate('global.form.currentpassword.placeholder')}
               type="password"
               validate={{
-                required: { value: true, message: translate('global.messages.validate.newpassword.required') },
+                required: { value: true, message: translate('global.messages.validate.actualpassword.required') },
+                minLength: { value: 10, message: translate('global.messages.validate.actualpassword.valid') },
+                maxLength: { value: 32, message: translate('global.messages.validate.actualpassword.valid') },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+                  message: translate('global.messages.validate.actualpassword.valid'),
+                },
               }}
               data-cy="currentPassword"
             />
@@ -66,8 +72,12 @@ export const PasswordPage = () => {
               type="password"
               validate={{
                 required: { value: true, message: translate('global.messages.validate.newpassword.required') },
-                minLength: { value: 4, message: translate('global.messages.validate.newpassword.minlength') },
-                maxLength: { value: 50, message: translate('global.messages.validate.newpassword.maxlength') },
+                minLength: { value: 10, message: translate('global.messages.validate.newpassword.minlength') },
+                maxLength: { value: 32, message: translate('global.messages.validate.newpassword.maxlength') },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+                  message: translate('global.messages.validate.newpassword.pattern'),
+                },
               }}
               onChange={updatePassword}
               data-cy="newPassword"
@@ -80,9 +90,13 @@ export const PasswordPage = () => {
               type="password"
               validate={{
                 required: { value: true, message: translate('global.messages.validate.confirmpassword.required') },
-                minLength: { value: 4, message: translate('global.messages.validate.confirmpassword.minlength') },
-                maxLength: { value: 50, message: translate('global.messages.validate.confirmpassword.maxlength') },
+                minLength: { value: 10, message: translate('global.messages.validate.confirmpassword.minlength') },
+                maxLength: { value: 32, message: translate('global.messages.validate.confirmpassword.maxlength') },
                 validate: v => v === password || translate('global.messages.error.dontmatch'),
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$&*+=?^_`{|}~.-])[A-Za-z\d!$&*+=?^_`{|}~.-]+$/,
+                  message: translate('global.messages.validate.confirmpassword.pattern'),
+                },
               }}
               data-cy="confirmPassword"
             />
