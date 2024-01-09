@@ -72,7 +72,7 @@ export const Rappels = () => {
     <div>
       <div>
       <select onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">Toutes les rappels</option>
+        <option value="all">Tout les rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
         <option value="futur">Rappels futurs</option>
@@ -89,26 +89,27 @@ export const Rappels = () => {
       </div>
       {filteredRappels.map(rappel => (
   <div key={rappel.id} className="rappel">
-    <div className="rappel-content">
     <div className="rappel-icon">
-        {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
-      </div>
-      <div>
-        <p>Tâche: {rappel.action}</p>
-        {rappel.patient && <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>}
-        <p>Date: {rappel.date}</p>
-      </div>
-      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
-      {rappel.verif ? '✅' : '⬜'}
-      </button>
+    ⚠️
     </div>
-    {rappel.patient && 
-      <div className="button-container">
-        <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
-        <FontAwesomeIcon icon={faFileAlt} />
-          Voir patient</Link>
+    <div className="rappel-content">
+      <div className="rappel-text1">
+        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
       </div>
-    }  
+      <div className="rappel-text2">
+        <p>Tâches: {rappel.action}</p>
+      </div>
+      <div className="rappel-text3">
+      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
+      </div>
+    </div>
+    {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
+      <FontAwesomeIcon icon={faFileAlt} />
+      Voir patient
+    </Link>}
+    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+      {rappel.verif ? '✅' : '⬜'}
+    </button>
   </div>
 ))}
     </div>
