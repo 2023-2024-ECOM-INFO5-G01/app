@@ -20,16 +20,13 @@ export const NoteCreate = ({ modal, toggle ,patientId}: { modal: boolean; toggle
   const users = useAppSelector(state => state.userManagement.users);
 
   const saveEntity = values => {
-    console.log("users", users);
-    console.log("account", account.id);
     const date = new Date();
     const entity = {
       ...values,
       user: users.find(it => it.id.toString() === account.id.toString()),
       patient: patients.find(it => it.id.toString() === patientId),
-      date: date,
+      date,
     };
-    console.log(entity);
     dispatch(createEntity(entity));
   };
   const handleClose = () => {

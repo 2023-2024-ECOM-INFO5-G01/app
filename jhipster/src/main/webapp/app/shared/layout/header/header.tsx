@@ -56,18 +56,18 @@ const Header = (props: IHeaderProps) => {
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ms-auto" navbar>
             <Home />
-            {props.isAuthenticated &&  (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')|| props.authorities.includes('ROLE_SOIGNANT')) && (
-              <Link to="/rappels" className="nav-link" data-cy="rappelsLink">
-                Tâches
-              </Link>
-            )}  
-            {props.isAuthenticated && (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')) && (
-              <Link to="/alertes" className="nav-link" data-cy="rappelsLink">
-                Alerte
-              </Link>
+            {props.isAuthenticated && props.authorities && (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')|| props.authorities.includes('ROLE_SOIGNANT')) && (
+            <Link to="/rappels" className="nav-link" data-cy="rappelsLink">
+            Tâches
+             </Link>
+            )}   
+            {props.isAuthenticated && props.authorities && (props.authorities.includes('ROLE_MEDECIN')  || props.authorities.includes('ROLE_ADMIN')) && (
+            <Link to="/alertes" className="nav-link" data-cy="rappelsLink">
+            Alerte
+            </Link>
             )}           
-            {props.isAuthenticated && props.authorities.includes('ROLE_ADMIN') && ( <EntitiesMenu />)}
-            {props.isAuthenticated && props.isAdmin && (
+{props.isAuthenticated && props.isAdmin  && ( <EntitiesMenu />)}            
+{props.isAuthenticated && props.isAdmin && (
               <AdminMenu showOpenAPI={props.isOpenAPIEnabled} showDatabase={!props.isInProduction} />
             )}
             {props.isAuthenticated && props.isAdmin && (
