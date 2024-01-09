@@ -6,6 +6,7 @@ import { createEntity as createPoids } from 'app/entities/poids/poids.reducer';
 import { createEntity as createEPA } from 'app/entities/epa/epa.reducer';
 import { createEntity as createAlbumine } from 'app/entities/albumine/albumine.reducer';
 import { createEntity as createIMC } from 'app/entities/imc/imc.reducer';
+import { denutrition_cases,alerte_epas } from 'app/entities/patient/patient.reducer';
 import { IEPA } from 'app/shared/model/epa.model';
 import { IAlbumine } from 'app/shared/model/albumine.model';
 import { IIMC } from 'app/shared/model/imc.model';
@@ -20,7 +21,7 @@ export const AddDataPopup = () => {
 
   const patient: IPatient = useAppSelector(s => s.patient.entity);
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = async (e) => {
     const value = state[e];
     switch (e) {
       case 'height': {
@@ -33,13 +34,14 @@ export const AddDataPopup = () => {
           patient: { id: patient.id },
           poids: value
         };
-        dispatch(createPoids(poids));
+        await dispatch(createPoids(poids));
         const imc : IIMC = {
           date: new Date().toISOString(),
           patient: { id: patient.id },
           imc: 10000 * poids.poids / (patient.taille * patient.taille)
         };
-        dispatch(createIMC(imc));
+       await dispatch(createIMC(imc));
+        dispatch(denutrition_cases(patient.id));
         break;
       }
       case 'albumin': {
@@ -57,7 +59,8 @@ export const AddDataPopup = () => {
           patient: { id: patient.id },
           epa: value
         };
-        dispatch(createEPA(poids));
+     await dispatch(createEPA(poids));
+        dispatch(alerte_epas(patient.id));
         break;
       }
       default:
@@ -78,30 +81,6 @@ export const AddDataPopup = () => {
     </div>;
   };
 
-  const createAlarmEntity = (userId, patientId) => {
-    const currentDate = new Date();
-    const entity: IAlerte = {
-      date: currentDate.toISOString(),
-      user: {id: userId},
-      patient: {id: patientId},
-      verif: false,
-      action: 'epa<7',
-    };
-
-    return entity;
-  };
-
-  const alerteEntity = useAppSelector(s => s.alerte.entity);
-
-  const handlecreateAlerte = (userid, patientid) => {
-    const entity = createAlarmEntity(userid, patientid);
-    dispatch(createEntity(entity));
-  }
-
-// Inside your Alerte component
-  const {register, handleSubmit, reset} = useForm();
-//              <button onClick={() => handlecreateAlerte(account.id, patientEntity.id)}>Créer une alerte</button>
-// <button onClick={() => handlecreateAlerte(account.id, props.patientEntity.id)}>Créer une alerte</button>
   return (
     <div className="datapopup" onClick={(e) => e.stopPropagation()}>
       <h1>Nouvelle Mesure</h1>

@@ -55,7 +55,7 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
       patient: patients.find(it => it.id.toString() === idprops),
     };
   
-    if (selectedAction === 'prise de poids') {
+    if (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') {
       const startDate = new Date();
       const endDate =values.endDate ? convertDateTimeToServer(values.endDate) : null;
       console.log("date : " + startDate+ ""+ "endDate:" + endDate + "period:" + values.period + "frequence:" + values.frequency );
@@ -184,6 +184,9 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
 >
   <option value="Regarder le dossier">Regarder le dossier</option>
   <option value="prise de poids">Prise de poids</option>
+  <option value="prise de epa">Prise de epa</option>
+  <option value="prise de albumine">Prise de albumine</option>
+  <option value="Surveiller la prise daliments">Surveiller la prise d'aliments</option>
   </ValidatedField>
 
   <ValidatedField id="rappel-user" name="user" data-cy="user" label={translate('ecomApp.rappel.user')} type="select" >
@@ -206,37 +209,39 @@ export const CreationRappel = ({ modal, toggle ,idprops}: { modal: boolean; togg
                         validate={{
                         required: selectedAction === 'Regarder le dossier' ? 'Ce champ est obligatoire' : false}}
                         placeholder="YYYY-MM-DD HH:mm" />
-    <ValidatedField
-      id="rappel-frequency"
-      name="frequency"
-      data-cy="frequency"
-      label="Fréquence"
-      type="number"
-      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
-      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
-    />
-    <ValidatedField
-      id="rappel-period"
-      name="period"
-      data-cy="period"
-      label="Période"
-      type="select"
-      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
-      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
-    >
-      <option value="day">Jour</option>
-      <option value="month">Mois</option>
-      <option value="year">Année</option>
-    </ValidatedField>
-    <ValidatedField
-      id="rappel-endDate"
-      name="endDate"
-      data-cy="endDate"
-      label="Date de fin"
-      type="datetime-local"
-      style={{ display: selectedAction === 'prise de poids' ? 'block' : 'none' }}
-      validate={{ required: selectedAction === 'prise de poids' ? 'Ce champ est obligatoire' : false }}
-      placeholder="YYYY-MM-DD HH:mm" />
+   <ValidatedField
+  id="rappel-frequency"
+  name="frequency"
+  data-cy="frequency"
+  label="Fréquence"
+  type="number"
+  style={{ display: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'block' : 'none' }}
+  validate={{ required: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'Ce champ est obligatoire' : false }}
+/>
+
+<ValidatedField
+  id="rappel-period"
+  name="period"
+  data-cy="period"
+  label="Période"
+  type="select"
+  style={{ display: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'block' : 'none' }}
+  validate={{ required: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'Ce champ est obligatoire' : false }}
+>
+  <option value="day">Jour</option>
+  <option value="month">Mois</option>
+  <option value="year">Année</option>
+</ValidatedField>
+
+<ValidatedField
+  id="rappel-endDate"
+  name="endDate"
+  data-cy="endDate"
+  label="Date de fin"
+  type="datetime-local"
+  style={{ display: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'block' : 'none' }}
+  validate={{ required: (selectedAction === 'prise de poids' || selectedAction === 'prise de epa' || selectedAction === 'prise de albumine' || selectedAction === 'Surveiller la prise daliments') ? 'Ce champ est obligatoire' : false }}
+  placeholder="YYYY-MM-DD HH:mm" />
    
 
 <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} onClick={toggle}>

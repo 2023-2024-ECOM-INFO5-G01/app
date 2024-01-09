@@ -3,11 +3,7 @@ import React from 'react';
 
 const SortFilter = ({ selectedFilter, setSelectedFilter, filterDisplayText }) => {
   return (
-    <p className='sortFilter'>{Object.keys(filterDisplayText).map((filter) => (
-      <option key={filter} value={filter}>
-        {filterDisplayText[filter]}
-      </option>
-    ))}</p>
+    <p className='sortFilter'>{filterDisplayText}</p>
 
     /* Version avec plusieurs filtres
     <select

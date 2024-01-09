@@ -15,6 +15,10 @@
   height: 80px;
 }
 
+.graphs {
+
+}
+
 .info_patient_administratives {
   display: flex;
   flex-wrap: wrap;

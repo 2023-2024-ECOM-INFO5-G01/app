@@ -20,20 +20,20 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityField": "id",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
       "otherEntityField": "login",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "alerte",
       "ownerSide": true,
       "relationshipName": "user",
       "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityField": "id",
-      "otherEntityName": "patient",
-      "relationshipName": "patient",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

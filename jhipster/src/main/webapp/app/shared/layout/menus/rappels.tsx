@@ -7,9 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt,faCalendar } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
-import { ToastContainer } from 'react-toastify';
 export const Rappels = () => {
   const account = useAppSelector(state => state.authentication.account);
   const dispatch = useAppDispatch();
@@ -71,37 +68,11 @@ export const Rappels = () => {
   };
 
   const [currentRappel, setCurrentRappel] = useState(null);
-
-  useEffect(() => {
-    const today = new Date();
-    const oneDaysAgo = new Date();
-    oneDaysAgo.setDate(today.getDate() - 1);
-
-    rappels.forEach(rappel => {
-      const rappelDate = new Date(rappel.date);
-  if (!rappel.verif && rappelDate.getTime() <= oneDaysAgo.getTime() && rappel.action == 'prise de poids') {
-        setCurrentRappel(rappel);
-        notify(rappel); 
-        console.log("alerte non verif: ", rappel);
-      }
-    });
-  }, [rappels]);
-  const notify = (rappel) => {
-    toast(`prise de poids pas faites: ${rappel.action} pour le patient: ${rappel.patient.nom}`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
   return (
     <div>
       <div>
       <select onChange={(e) => setFilter(e.target.value)}>
-        <option value="all">Toutes les rappels</option>
+        <option value="all">Tout les rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
         <option value="futur">Rappels futurs</option>
@@ -118,29 +89,29 @@ export const Rappels = () => {
       </div>
       {filteredRappels.map(rappel => (
   <div key={rappel.id} className="rappel">
-    <div className="rappel-content">
     <div className="rappel-icon">
-        {rappel.action === 'Regarder le dossier' ? '📁' : rappel.action === 'prise de poids' ? '⚖️' : '⚠️'}
-      </div>
-      <div>
-        <p>Tâche: {rappel.action}</p>
-        {rappel.patient && <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>}
-        <p>Date: {rappel.date}</p>
-      </div>
-      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
-      {rappel.verif ? '✅' : '⬜'}
-      </button>
+    ⚠️
     </div>
-    {rappel.patient && 
-      <div className="button-container">
-        <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
-        <FontAwesomeIcon icon={faFileAlt} />
-          Voir patient</Link>
+    <div className="rappel-content">
+      <div className="rappel-text1">
+        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
       </div>
-    }  
+      <div className="rappel-text2">
+        <p>Tâches: {rappel.action}</p>
+      </div>
+      <div className="rappel-text3">
+      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
+      </div>
+    </div>
+    {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
+      <FontAwesomeIcon icon={faFileAlt} />
+      Voir patient
+    </Link>}
+    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+      {rappel.verif ? '✅' : '⬜'}
+    </button>
   </div>
 ))}
-        <ToastContainer />
     </div>
   );
 };

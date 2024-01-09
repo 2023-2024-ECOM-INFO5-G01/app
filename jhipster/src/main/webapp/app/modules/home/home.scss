@@ -9,12 +9,22 @@ Main page styles
   background-size: contain;
 }
 
+@keyframes blink {
+  0% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.blinking-icon {
+  animation: blink 1s linear infinite;
+}
+
 
 .patient-card {
   border: 1px solid #cccccc; /* Ajoutez une bordure pour séparer les patients */
   padding: 16px; /* Ajoutez un espace interne de 16px autour de chaque patient */
   margin: 8px; /* Ajoutez une marge de 8px autour de chaque patient */
-  height: 200px;
+  //height: 200px;
 }
 
 .card-red {
@@ -66,8 +76,25 @@ Main page styles
 }
 
 .status-filter-container{
-  width: 200px;
+  display: flex;
+  flex-direction: row-reverse;
 }
+
+.status-filter-container div:nth-child(1) {
+  background-color: rgb(240, 98, 98);
+  color: white;
+}
+
+.status-filter-container div:nth-child(2) {
+  background-color: rgb(234, 153, 61);
+  color: white;
+}
+
+.status-filter-container div:nth-child(3) {
+  background-color: rgb(103, 103, 237);
+  color: white;
+}
+
 
 .status-menu {
   width: 200px;
@@ -125,3 +152,6 @@ Main page styles
   margin-top: 15px;
 }
 
+.input_statut {
+  margin-left: 5px;
+}

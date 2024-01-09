@@ -26,10 +26,6 @@ import PatientHeading from './PatientHeading';
 import PatientSearchResults from './PatientSearchResults';
 import Modal from 'react-modal';
 import { getAlertesByUser } from 'app/entities/alerte/alerte.reducer';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
-import { ToastContainer } from 'react-toastify';
-
 export const Home = () => {
   
 
@@ -75,13 +71,54 @@ const clearSearch = () => {
 
 const [filteredStatuses, setFilteredStatuses] = useState([]);
 
+const [patientsFiltres, setPatientsFiltres] = useState([]);
+
+const statusOptions = [
+  { value: 'surveillance prioritaire', label: 'Surveillance prioritaire' },
+  { value: 'surveillance particulière', label: 'Surveillance particulière' },
+  { value: 'normal', label: 'Normal' },
+];
+
 const handleStatusFilterChange = (status, isChecked) => {
-  if (isChecked) {
-    setFilteredStatuses(prevStatuses => [...prevStatuses, status]);
-  } else {
-    setFilteredStatuses(prevStatuses => prevStatuses.filter(s => s !== status));
-  }
+  setFilteredStatuses((prevStatuses) => {
+    if (prevStatuses.length === 0 && !isChecked) {
+      const firstTime = statusOptions.map((option) => {
+        if (option.value !== status) {
+          return option.value;
+        }
+        return null;
+      }).filter((value) => value !== null);
+      const updatedStatuses = firstTime
+
+      const filteredPatients = patientList.filter((patient) =>
+        updatedStatuses.includes(patient.status)
+      );
+
+      setPatientsFiltres(filteredPatients);
+
+      return updatedStatuses;
+    } else {
+      const updatedStatuses = isChecked
+      ? [...prevStatuses, status]
+      : prevStatuses.filter((s) => s !== status);
+
+      // Si toutes les cases sont décochées
+      if (updatedStatuses.length === 0) {
+        setPatientsFiltres([]); // Afficher aucun patient
+        return updatedStatuses;
+      }
+
+      const filteredPatients = patientList.filter((patient) =>
+        updatedStatuses.includes(patient.status)
+      );
+
+      setPatientsFiltres(filteredPatients);
+
+      return updatedStatuses;
+    }
+  });
 };
+
 
 const filterPatientsByStatus = () => {
   if (filteredStatuses.length === 0) {
@@ -93,9 +130,9 @@ const filterPatientsByStatus = () => {
 
 const getCardColorClass = (status) => {
   switch (status) {
-    case 'dénutrition avérée':
+    case 'surveillance prioritaire':
       return 'card-red';
-    case 'surveillance':
+    case 'surveillance particulière':
       return 'card-orange';
     case 'normal':
       return 'card-blue';
@@ -159,10 +196,19 @@ const getCardColorClass = (status) => {
     }
   };
 
-  const filters = ['datearrive'];
+  const getSortFieldName = (fieldName) => {
+    if (sortState.order == 'desc') {
+      return filterDisplayText.datearrive;
+    } else {
+      return filterDisplayText.datearrivelate;
+    }
+  }
+
+  const filters = ['datearrive', 'datearrivelate'];
 
   const filterDisplayText = {
-    datearrive: 'Les patients sont triés par ordre d\'arrivée',
+    datearrive: 'Plus récent',
+    datearrivelate: 'Plus ancien'
   };
 
   // État local pour stocker le filtre sélectionné
@@ -193,40 +239,23 @@ const getCardColorClass = (status) => {
   }, [ account.login, dispatch]);
 
   useEffect(() => {
-    alertes.forEach(alerte => {
-      if (!alerte.verif) {
-        setCurrentAlerte(alerte);
-        notify(alerte); 
-        console.log("alerte non verif: ", alerte);
-      }
-    });
+    const nonVerifiedAlerts = alertes.filter(alerte => !alerte.verif);
+    setCurrentAlerte(nonVerifiedAlerts);
   }, [alertes]);
   
-  const notify = (alerte) => {
-    if (alerte.patient) {
-      toast(`Alerte non vérifiée: ${alerte.action} pour le patient: ${alerte.patient.nom}`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  }
+  
   return (
     <div style={{ backgroundColor: '#F5F5F5'}}>
 <div>
   <PatientHeading loading={loading} handleSyncList={handleSyncList} />
 
   <PatientSearch patientsearch={patientsearch} setPatientsearch={setPatientsearch} handleRunPatient={handleRunPatient} />
-  <PatientSearchResults patients={patientsuggestion} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
+  <PatientSearchResults patients={patientsuggestion} alertes={currentAlerte} getCardColorClass={getCardColorClass} onClose={() => setpatientsuggestion([])} onClearSearch={clearSearch} />
 
   <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '6px' }}>
   <EhpadFilter patientList={patientList} selectedEhpadFilter={selectedEhpadFilter} setSelectedEhpadFilter={setSelectedEhpadFilter} />
- 
-    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={filterDisplayText} />
+
+    <SortFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} filterDisplayText={getSortFieldName(selectedFilter)} />
 
  
   <FontAwesomeIcon icon={getSortIconByFieldName(selectedFilter)} onClick={sort(selectedFilter)} />
@@ -244,13 +273,12 @@ const getCardColorClass = (status) => {
     key={`entity-${i}`}
     className={`patient-card ${getCardColorClass(patient.statut)}`} // Apply the card color class
   >
-    <PatientCard patient={patient} />
+    <PatientCard patient={patient} alertes={currentAlerte} />
               </div>
             ))}
           </div>
         </div>
         <div>
-        <ToastContainer />
       </div>
     </div>
   );
