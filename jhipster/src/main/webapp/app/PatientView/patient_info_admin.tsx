@@ -1,5 +1,5 @@
 import {TextFormat, Translate} from "react-jhipster";
-import {APP_DATE_FORMAT} from "app/config/constants";
+import {APP_LOCAL_DATE_FORMAT} from "app/config/constants";
 import React from "react";
 import { useAppDispatch } from "app/config/store";
 import { useParams } from "react-router-dom";
@@ -40,7 +40,7 @@ export const PatientInfoAdmin = (props) => {
       <div>
         <span id="dateNaissance">
           <Translate contentKey="ecomApp.patient.dateNaissance"></Translate>{props.patientEntity.dateNaissance ?
-          <TextFormat value={props.patientEntity.dateNaissance} type="date" format={APP_DATE_FORMAT}/> : null}
+          <TextFormat value={props.patientEntity.dateNaissance} type="date" format={APP_LOCAL_DATE_FORMAT}/> : null}
         </span>
       </div>
     </div>
@@ -48,7 +48,7 @@ export const PatientInfoAdmin = (props) => {
       <div>
         <span id="datearrive">
           <Translate contentKey="ecomApp.patient.datearrive"></Translate>{props.patientEntity.datearrive ?
-          <TextFormat value={props.patientEntity.datearrive} type="date" format={APP_DATE_FORMAT}/> : null}
+          <TextFormat value={props.patientEntity.datearrive} type="date" format={APP_LOCAL_DATE_FORMAT}/> : null}
         </span>
       </div>
       <div>
