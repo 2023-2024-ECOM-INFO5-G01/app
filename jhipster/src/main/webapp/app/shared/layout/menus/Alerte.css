@@ -39,9 +39,7 @@
     display: flex;
     align-items: center;
   }
-  .button-container {
-    align-self: flex-end;
-  }
+
   .alerte-check {
     font-size: 20px;
     border: none;

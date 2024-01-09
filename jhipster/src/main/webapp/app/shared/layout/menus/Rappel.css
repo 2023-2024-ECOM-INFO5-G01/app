@@ -5,20 +5,22 @@
     background-color: rgb(208, 226, 229);
     display: flex;
     flex-direction: column;
-    height: 200px;
+    height: 70px;
   }
 
   .rappel-content {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 40px;
     align-items: stretch; /* Change this from flex-start to stretch */
     flex-grow: 1;
     height: 150px;
   }
   
   .rappel-icon {
-    font-size: 150px;
+    font-size: 40px;
     margin-right: 10px;
+    margin-bottom: 50px;
     display: flex;
     align-items: center; /* Add this to center the icon vertically */
     justify-content: center; /* Add this to center the icon horizontally */
@@ -40,7 +42,10 @@
     align-items: center;
   }
   .button-container {
-    align-self: flex-end;
+    align-self: center;
+    display: flex;
+    margin-bottom: 50px;
+    align-items: center;
   }
   .rappel-check {
     font-size: 20px;
