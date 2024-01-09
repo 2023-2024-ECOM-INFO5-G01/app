@@ -48,8 +48,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: benjaminbracquier@gmail.com
-    password: wsfm jxxb sgpw rnlj
+    username: nutripro2024@gmail.com
+    password: zvmh pobl dnyu sfpu
     protocol: smtp
     tls: true
     properties.mail.smtp:
@@ -57,7 +57,7 @@ spring:
       starttls.enable: true
       ssl.trust: smtp.gmail.com
   messages:
-    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+    cache-duration: PT1S # 1 second, see the ISO 8601 st
   thymeleaf:
     cache: false
 
