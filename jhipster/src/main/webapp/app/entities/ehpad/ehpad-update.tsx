@@ -28,7 +28,7 @@ export const EhpadUpdate = () => {
   const updateSuccess = useAppSelector(state => state.ehpad.updateSuccess);
 
   const handleClose = () => {
-    navigate('/ehpad');
+    navigate('/');
   };
 
   useEffect(() => {
@@ -46,6 +46,7 @@ export const EhpadUpdate = () => {
       handleClose();
     }
   }, [updateSuccess]);
+  const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);
 
   const saveEntity = values => {
     const entity = {
@@ -95,16 +96,38 @@ export const EhpadUpdate = () => {
                 />
               ) : null}
               <ValidatedField label={translate('ecomApp.ehpad.nom')} id="ehpad-nom" name="nom" data-cy="nom" type="text" />
-              <ValidatedField label={translate('ecomApp.ehpad.user')} id="ehpad-user" data-cy="user" type="select" multiple name="users">
-                <option value="" key="0" />
-                {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+              <ValidatedField
+  label= "Users attribué"
+  id="patient-user"
+  data-cy="user"
+  type="select"
+  multiple
+  name="users"
+  onChange={event => {
+    const target = event.target as unknown as HTMLSelectElement;
+    const selectedOptions = Array.from(target.options)
+      .filter(option => option.selected)
+      .map(option => option.value);
+
+    const newSelectedUsers = selectedOptions.map(userId =>
+      users.find(user => user.id.toString() === userId)
+    ).filter(Boolean);
+
+    setSelectedUsers(newSelectedUsers);
+  }}
+  validate={{
+    required: 'Veuillez choisir un médecin et/ou des soignants',
+  }}
+>
+  <option value="" key="0" />
+  {users
+    ? users.map((user,i) => (
+        <option value={user.id} key={user.id}>
+          {user.login}
+        </option>
+      ))
+    : null}
+</ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/ehpad" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

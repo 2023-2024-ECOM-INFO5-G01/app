@@ -78,8 +78,25 @@ Main page styles
 }
 
 .status-filter-container{
-  width: 200px;
+  display: flex;
+  flex-direction: row-reverse;
 }
+
+.status-filter-container div:nth-child(1) {
+  background-color: rgb(240, 98, 98);
+  color: white;
+}
+
+.status-filter-container div:nth-child(2) {
+  background-color: rgb(234, 153, 61);
+  color: white;
+}
+
+.status-filter-container div:nth-child(3) {
+  background-color: rgb(103, 103, 237);
+  color: white;
+}
+
 
 .status-menu {
   width: 200px;
@@ -137,3 +154,6 @@ Main page styles
   margin-top: 15px;
 }
 
+.input_statut {
+  margin-left: 5px;
+}

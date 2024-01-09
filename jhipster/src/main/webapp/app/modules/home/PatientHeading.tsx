@@ -24,6 +24,13 @@ const PatientHeading = ({ loading, handleSyncList }) => {
           <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
         </Link>
       )}
+      {userHasRequiredRole && (
+        <Link to="/ehpad/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+        <FontAwesomeIcon icon="plus" />
+        &nbsp;
+        <Translate contentKey="ecomApp.ehpad.home.createLabel">Create new Ehpad</Translate>
+      </Link>
+      )}
     </div>
   );
 };

@@ -1,48 +1,49 @@
 .alerte {
-    border: 1px solid red;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f8d7da;
-    display: flex;
-    flex-direction: column;
-    height: 200px;
-  }
+  border: 1px solid red;
+  margin-bottom: 3px; /* Reduced the margin */
+  padding: 3px; /* Reduced the padding */
+  background-color: #f8d7da;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8em; /* Reduce the font size */
+}
 
-  .alerte-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch; /* Change this from flex-start to stretch */
-    flex-grow: 1;
-    height: 150px;
-  }
-  
-  .alerte-icon {
-    font-size: 150px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center; /* Add this to center the icon vertically */
-    justify-content: center; /* Add this to center the icon horizontally */
-  }
-  
-  .alerte-check {
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align items to the end */
-  }
-  
-  .alerte-button {
-    color: rgb(0, 0, 0);
-    background-color: rgb(255, 255, 255);
-    padding: 5px 10px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-  }
+.alerte-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row; /* Assure que les éléments sont alignés horizontalement */
+  justify-content: flex-start; /* Aligne les éléments au début de l'espace disponible */
+  align-items: center; 
+}
 
-  .alerte-check {
-    font-size: 20px;
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
+.alerte-text1,
+.alerte-text2,
+.alerte-text3 {
+  margin-right: 20px; /* Ajoutez cette ligne pour ajouter de l'espace à droite */
+}
+
+.alerte-icon {
+  font-size: 30px; /* Reduced the font size */
+  margin-right: 3px; /* Reduced the margin */
+}
+
+.alerte-check {
+  font-size: 15px; /* Reduced the font size */
+  border: none;
+  background: none;
+  cursor: pointer;
+  right: 25px; /* Add this to position the check button on the right */
+}
+
+.alerte-button {
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  padding: 3px 5px; /* Reduced the padding */
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-right: 3px; /* Reduced the margin */
+  font-size: 0.8em; /* Reduce the font size */
+}
