@@ -76,13 +76,13 @@
           "minlength": "Votre mot de passe doit comporter au moins 10 caractères.",
           "maxlength": "Votre mot de passe ne doit pas comporter plus de 32 caractères.",
           "strength": "Robustesse du mot de passe :",
-          "pattern": "Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole"
+          "pattern": "Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole."
         },
         "confirmpassword": {
           "required": "Votre confirmation du mot de passe est requise.",
           "minlength": "Votre confirmation du mot de passe doit comporter au moins 10 caractères.",
           "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 32 caractères.",
-          "pattern": "Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole"
+          "pattern": "Votre mot de passe doit comporter au moins une minuscule, une majuscule, un chiffre et un symbole."
         },
         "email": {
           "required": "Votre email est requis.",
