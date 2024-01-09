@@ -113,6 +113,40 @@ export const RegisterPage = () => {
                 required: { value: true, message: translate('global.messages.validate.confirmpassword.required') },
                 minLength: { value: 4, message: translate('global.messages.validate.confirmpassword.minlength') },
                 maxLength: { value: 50, message: translate('global.messages.validate.confirmpassword.maxlength') },
+                validate: v => v === password || translate('global.messages.error.dontmatch'),
+              }}
+              data-cy="secondPassword"
+            />
+            <div>
+              <input
+                type="checkbox"
+                id="acceptPolicy"
+                name="acceptPolicy"
+                checked={acceptPolicy}
+                onChange={() => setAcceptPolicy(!acceptPolicy)}
+              />
+              <label htmlFor="acceptPolicy">
+                J'accepte la <Link to="/lien-vers-votre-politique-de-confidentialite" target="_blank">Politique de Confidentialité</Link>.
+              </label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="acceptConsent"
+                name="acceptConsent"
+                checked={acceptConsent}
+                onChange={() => setAcceptConsent(!acceptConsent)}
+              />
+              <label htmlFor="acceptPolicy">
+                J'accepte la <Link to="/lien-vers-votre-politique-de-confidentialite" target="_blank">Politique de Confidentialité</Link>.
+              </label>
+            </div>
+            <Button id="register-submit" color="primary" type="submit" data-cy="submit">
+              <Translate contentKey="register.form.button">Register</Translate>
+            </Button>
+          </ValidatedForm>
+        </Col>
+      </Row>
     </div>
   );
 };
