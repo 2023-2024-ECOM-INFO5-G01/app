@@ -557,5 +557,38 @@ public ResponseEntity<Void> deleteAllPatient(@PathVariable Long id) {
         .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
         .build();
 }
+
+/**
+ * DELETE /patients/ehpad/{ehpadId} : Supprime tous les patients liés à une EHPAD.
+ *
+ * @param ehpadId L'ID de l'EHPAD pour lequel supprimer les patients.
+ * @return ResponseEntity avec le statut 204 (NO_CONTENT) si la suppression est réussie.
+ */
+@DeleteMapping("/patients/ehpad/{ehpadId}")
+public ResponseEntity<Void> deletePatientsByEhpad(@PathVariable Long ehpadId) {
+    log.debug("REST request to delete patients by EHPAD: {}", ehpadId);
+
+    // Récupérer tous les patients associés à l'ID de l'EHPAD
+    List<Patient> patientsToDelete = patientRepository.findByEhpadId(ehpadId);
+	log.info("Patients linked to EHPAD {}: {}", ehpadId, patientsToDelete);
+    for (Patient patient : patientsToDelete) {
+        alerteRepository.deleteByPatient_Id(patient.getId());
+		imcRepository.deleteByPatient_Id(patient.getId());
+		albumineRepository.deleteByPatient_Id(patient.getId());
+		poidsRepository.deleteByPatient_Id(patient.getId());
+		epaRepository.deleteByPatient_Id(patient.getId());
+		rappelRepository.deleteByPatient_Id(patient.getId());
+		noteRepository.deleteByPatient_Id(patient.getId());
+        patientRepository.deleteById(patient.getId());
+    }
+
+    log.info("Patients linked to EHPAD {} deleted successfully.", ehpadId);
+    
+    return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, "Patients", ehpadId.toString()))
+            .build();
+}
+
 	
 	}

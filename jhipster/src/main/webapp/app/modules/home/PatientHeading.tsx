@@ -26,11 +26,18 @@ const PatientHeading = ({ loading, handleSyncList }) => {
         </Link>
       )}
       {userHasRequiredRoleEhpad && (
+        <>
         <Link to="/ehpad/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
         <FontAwesomeIcon icon="plus" />
         &nbsp;
         <Translate contentKey="ecomApp.ehpad.home.createLabel">Create new Ehpad</Translate>
       </Link>
+      <Link to="/ehpad/supprimer" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+      <FontAwesomeIcon icon="plus" />
+      &nbsp;
+      <span>Delete Ehpad</span>
+    </Link>
+    </>
       )}
     </div>
   );

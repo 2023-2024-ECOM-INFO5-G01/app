@@ -88,6 +88,14 @@ export const updateEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
+export const deletePatientsByEhpad = createAsyncThunk(
+  'patient/delete_by_ehpad',
+  async (ehpadId: string | number) => {
+    const requestUrl = `${apiUrl}/ehpad/${ehpadId}`;
+    return axios.delete(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 
 export const partialUpdateEntity = createAsyncThunk(
   'patient/partial_update_entity',
