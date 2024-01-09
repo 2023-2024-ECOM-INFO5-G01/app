@@ -29,6 +29,7 @@ public interface AlerteRepository extends AlerteRepositoryWithBagRelationships, 
         return this.fetchBagRelationships(this.findAll(pageable));
     }
     List<Alerte> findByUsers_LoginOrderByDateDesc(String login);
+    void deleteByPatient_Id(Long id);
 
     List<Alerte> findByPatient_IdAndUsers_LoginOrderByDateDesc(Long id, String login);
     

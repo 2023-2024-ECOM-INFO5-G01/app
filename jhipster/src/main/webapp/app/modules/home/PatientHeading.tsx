@@ -8,6 +8,7 @@ import { useAppSelector } from 'app/config/store';
 const PatientHeading = ({ loading, handleSyncList }) => {
   const account = useAppSelector(state => state.authentication.account);
   const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
+  const userHasRequiredRoleEhpad = account.authorities.some(role => ['ROLE_ADMIN'].includes(role));
 
   return (
     <div className="d-flex justify-content-end">
@@ -24,7 +25,7 @@ const PatientHeading = ({ loading, handleSyncList }) => {
           <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
         </Link>
       )}
-      {userHasRequiredRole && (
+      {userHasRequiredRoleEhpad && (
         <Link to="/ehpad/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
         <FontAwesomeIcon icon="plus" />
         &nbsp;

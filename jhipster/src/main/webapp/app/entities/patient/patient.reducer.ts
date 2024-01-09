@@ -98,7 +98,14 @@ export const partialUpdateEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
-
+export const DeleteAllPatient = createAsyncThunk(
+  'patients/delete_All_patient',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/all/${id}`;
+    return axios.delete<IPatient>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 export const deleteEntity = createAsyncThunk(
   'patient/delete_entity',
   async (id: string | number, thunkAPI) => {

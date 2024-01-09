@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import fr.uga.repository.IMCRepository;
 import fr.uga.repository.PoidsRepository;
 import fr.uga.repository.AlbumineRepository;
+import fr.uga.domain.Note;
+import fr.uga.repository.NoteRepository;
 import fr.uga.domain.IMC;
 import fr.uga.domain.Poids;
 import fr.uga.domain.Albumine;
@@ -71,7 +73,9 @@ public class PatientResource {
 
 	private final RappelRepository rappelRepository;
 
-	public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository, EPARepository epaRepository, RappelRepository rappelRepository) {
+	private final NoteRepository noteRepository;
+
+	public PatientResource(PatientRepository patientRepository, IMCRepository imcRepository, AlbumineRepository albumineRepository, PoidsRepository poidsRepository, AlerteRepository alerteRepository, EPARepository epaRepository, RappelRepository rappelRepository, NoteRepository noteRepository) {
 		this.patientRepository = patientRepository;
 		this.imcRepository = imcRepository;
 		this.albumineRepository = albumineRepository;
@@ -79,6 +83,7 @@ public class PatientResource {
 		this.alerteRepository = alerteRepository;
 		this.epaRepository = epaRepository;
 		this.rappelRepository = rappelRepository;
+		this.noteRepository = noteRepository;
 	}
 
 	/**
@@ -528,6 +533,29 @@ else if (albumine != null && albumine.getAlbu() > 30 && albumine.getAlbu() < 35 
 else {
 	return "pas de dénutrition";
 }
+}
+
+ /**
+ * DELETE  /patients/all/:id : delete patient
+ *
+ * @param id the id of the patient 
+ * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+ */
+@DeleteMapping("/patients/all/{id}")
+public ResponseEntity<Void> deleteAllPatient(@PathVariable Long id) {
+    log.debug("REST request to delete Patient : {}", id);
+    alerteRepository.deleteByPatient_Id(id);
+	imcRepository.deleteByPatient_Id(id);
+	albumineRepository.deleteByPatient_Id(id);
+	poidsRepository.deleteByPatient_Id(id);
+	epaRepository.deleteByPatient_Id(id);
+	rappelRepository.deleteByPatient_Id(id);
+	noteRepository.deleteByPatient_Id(id);
+	patientRepository.deleteById(id);
+    return ResponseEntity
+        .noContent()
+        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+        .build();
 }
 	
 	}

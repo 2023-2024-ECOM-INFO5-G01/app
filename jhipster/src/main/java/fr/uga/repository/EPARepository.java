@@ -14,5 +14,6 @@ public interface EPARepository extends JpaRepository<EPA, Long> {
         List <EPA> findByPatientIdOrderByDateAsc(Long patientId);
 
        Optional <EPA> findFirstByPatientIdOrderByDateDesc(Long patientId);
+    void deleteByPatient_Id(Long id);
 
 }
