@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "poids": {
+      "home": {
+        "title": "Poids",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Poids",
+        "createOrEditLabel": "Créer ou éditer un Poids",
+        "notFound": "Aucun Poids trouvé"
+      },
+      "created": "Un nouveau Poids a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Poids avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Poids avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Poids {{ id }} ?"
+      },
+      "detail": {
+        "title": "Poids"
+      },
+      "id": "ID",
+      "poids": "Poids",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

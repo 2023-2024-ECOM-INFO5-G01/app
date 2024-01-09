@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "ePA": {
+      "home": {
+        "title": "EPAS",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau EPA",
+        "createOrEditLabel": "Créer ou éditer un EPA",
+        "notFound": "Aucun EPA trouvé"
+      },
+      "created": "Un nouveau EPA a été créé avec l'identifiant {{ param }}",
+      "updated": "Le EPA avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le EPA avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le EPA {{ id }} ?"
+      },
+      "detail": {
+        "title": "EPA"
+      },
+      "id": "ID",
+      "epa": "Epa",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "iMC": {
+      "home": {
+        "title": "IMCS",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new IMC",
+        "createOrEditLabel": "Create or edit a IMC",
+        "notFound": "No IMCS found"
+      },
+      "created": "A new IMC is created with identifier {{ param }}",
+      "updated": "A IMC is updated with identifier {{ param }}",
+      "deleted": "A IMC is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete IMC {{ id }}?"
+      },
+      "detail": {
+        "title": "IMC"
+      },
+      "id": "ID",
+      "imc": "Imc",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

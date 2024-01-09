@@ -1,0 +1,159 @@
+/* ==========================================================================
+Main page styles
+========================================================================== */
+.hipster {
+  display: inline-block;
+  width: 100%;
+  height: 497px;
+  background: url('/content/images/jhipster_family_member_0.svg') no-repeat center top;
+  background-size: contain;
+}
+
+@keyframes blink {
+  0% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.blinking-icon {
+  animation: blink 1s linear infinite;
+}
+
+
+.patient-card {
+  display: flex;
+  justify-content: center;
+  border: 2px solid #cccccc; /* Ajoutez une bordure pour séparer les patients */
+  padding: 8px; /* Ajoutez un espace interne de 16px autour de chaque patient */
+  margin: 5px; /* Ajoutez une marge de 8px autour de chaque patient */
+  //height: 200px;
+}
+
+.card-red {
+  background-color: rgb(240, 98, 98);
+  color: white;
+}
+
+.card-orange {
+  background-color: rgb(234, 153, 61);
+  color: white;
+}
+
+.card-blue {
+  background-color: rgb(103, 103, 237);
+  color: white;
+}
+
+.view_data_button {
+  background-color:rgb(39, 37, 37);
+  border: 1px solid white;
+}
+
+.custom-primary-button {
+  background-color:rgb(39, 37, 37);
+  border: 1px solid white;
+}
+
+.custom-search-button {
+  color:white;
+  padding:5px;
+  margin:3px;
+}
+
+.status-filter-container {
+  position: relative;
+}
+
+.status-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Ajoutez un espacement entre les éléments du menu */
+}
+
+.status-filter-container{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.status-filter-container div:nth-child(1) {
+  background-color: rgb(240, 98, 98);
+  color: white;
+}
+
+.status-filter-container div:nth-child(2) {
+  background-color: rgb(234, 153, 61);
+  color: white;
+}
+
+.status-filter-container div:nth-child(3) {
+  background-color: rgb(103, 103, 237);
+  color: white;
+}
+
+
+.status-menu {
+  width: 200px;
+  border: 1px solid black;
+}
+
+.checkbox-label{
+  margin:4px;
+}
+
+.sort-filter-container {
+  margin-right: 6px;
+}
+.filter-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Ajoutez ces styles pour personnaliser le bouton */
+.d-flex.justify-content-end .btn-primary {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 16px;
+  margin-top: 2px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.custom-search-button {
+  background-color: rgb(39, 37, 37);
+  color: white; /* Couleur du texte pendant le survol */
+  border: 1px solid white;
+}
+
+
+.custom-search-button:hover {
+  background-color: black;
+  color: white; /* Couleur du texte pendant le survol */
+  border: 1px solid black;
+}
+
+.custom-create-button {
+  background-color: rgb(39, 37, 37); /* Couleur de fond noire par défaut */
+  color: white; /* Texte blanc par défaut */
+  border: 1px solid white;
+}
+
+.custom-create-button:hover {
+  background-color: black;
+  color: white;
+}
+
+.sortFilter {
+  margin-top: 15px;
+}
+
+.input_statut {
+  margin-left: 5px;
+}

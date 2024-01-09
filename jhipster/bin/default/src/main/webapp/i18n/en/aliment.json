@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "aliment": {
+      "home": {
+        "title": "Aliments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Aliment",
+        "createOrEditLabel": "Create or edit a Aliment",
+        "notFound": "No Aliments found"
+      },
+      "created": "A new Aliment is created with identifier {{ param }}",
+      "updated": "A Aliment is updated with identifier {{ param }}",
+      "deleted": "A Aliment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aliment {{ id }}?"
+      },
+      "detail": {
+        "title": "Aliment"
+      },
+      "id": "ID",
+      "nom": "Nom",
+      "calories": "Calories",
+      "repas": "Repas"
+    }
+  }
+}

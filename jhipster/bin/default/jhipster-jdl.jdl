@@ -1,0 +1,75 @@
+
+entity Rappel {
+  date Instant,
+  action String
+}
+
+entity Patient {
+  nom String,
+  prenom String,
+  statut String,
+  dateNaissance Instant,
+  taille Float,
+  datearrive Instant
+}
+
+entity Ehpad {
+  nom String
+}
+
+entity Poids {
+  poids Float,
+  date Instant
+}
+
+entity IMC {
+  imc Float,
+  date Instant
+}
+
+entity EPA {
+  epa Float,
+  date Instant
+}
+
+entity Aliment {
+  nom String,
+  calories Float
+}
+
+entity Repas {
+    date Instant,
+    calories Float
+}
+
+entity Note {
+    date Instant,
+    note String
+}
+
+entity Albumine {
+  	albu Float,
+    date Instant
+}
+
+relationship OneToOne {
+  Patient to Albumine
+}
+
+relationship ManyToMany {
+  Patient to User with builtInEntity
+  Ehpad to User with builtInEntity
+}
+
+relationship ManyToOne {
+  Rappel to User with builtInEntity
+  Note to User with builtInEntity
+  Poids to Patient
+  EPA to Patient
+  IMC to Patient
+  Repas to Patient
+  Rappel to Patient
+  Note to Patient
+  Patient to Ehpad
+  Aliment to Repas
+}

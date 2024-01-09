@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "poids": {
+      "home": {
+        "title": "Poids",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Poids",
+        "createOrEditLabel": "Create or edit a Poids",
+        "notFound": "No Poids found"
+      },
+      "created": "A new Poids is created with identifier {{ param }}",
+      "updated": "A Poids is updated with identifier {{ param }}",
+      "deleted": "A Poids is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Poids {{ id }}?"
+      },
+      "detail": {
+        "title": "Poids"
+      },
+      "id": "ID",
+      "poids": "Poids",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "ecomApp": {
+    "ePA": {
+      "home": {
+        "title": "EPAS",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new EPA",
+        "createOrEditLabel": "Create or edit a EPA",
+        "notFound": "No EPAS found"
+      },
+      "created": "A new EPA is created with identifier {{ param }}",
+      "updated": "A EPA is updated with identifier {{ param }}",
+      "deleted": "A EPA is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete EPA {{ id }}?"
+      },
+      "detail": {
+        "title": "EPA"
+      },
+      "id": "ID",
+      "epa": "Epa",
+      "date": "Date",
+      "patient": "Patient"
+    }
+  }
+}

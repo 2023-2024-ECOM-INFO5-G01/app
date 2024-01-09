@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20231010132353",
+  "entityTableName": "ehpad",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Ehpad",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "ehpad",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "ehpad",
+      "relationshipName": "patient",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}
