@@ -26,7 +26,7 @@ export const RegisterPage = () => {
 
   const handleValidSubmit = ({ username, email, firstPassword }) => {
     if (!acceptPolicy || !acceptConsent) {
-      toast.error("Veuillez accepter la politique et fournir votre signature.");
+      toast.error("Veuillez accepter la politique de confidentialité et le formulaire de consentement.");
       return;
     } else {dispatch(handleRegister({ 
         login: username, 
@@ -59,6 +59,7 @@ export const RegisterPage = () => {
           </h1>
         </Col>
       </Row>
+    
       <Row className="justify-content-center">
         <Col md="8">
           <ValidatedForm id="register-form" onSubmit={handleValidSubmit}>
@@ -126,7 +127,7 @@ export const RegisterPage = () => {
                 onChange={() => setAcceptPolicy(!acceptPolicy)}
               />
               <label htmlFor="acceptPolicy">
-                J'accepte la <Link to="/lien-vers-votre-politique-de-confidentialite" target="_blank">Politique de Confidentialité</Link>.
+                J'accepte le <Link to="/lien-vers-votre-formulaire-de-consentement" target="_blank">Formulaire de consentement</Link>.
               </label>
             </div>
             <div>
