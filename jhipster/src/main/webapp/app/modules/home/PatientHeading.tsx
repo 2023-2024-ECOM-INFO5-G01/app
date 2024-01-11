@@ -22,7 +22,7 @@ const PatientHeading = ({ loading, handleSyncList }) => {
         >
           <FontAwesomeIcon icon="plus" />
           &nbsp;
-          <Translate contentKey="ecomApp.patient.home.createLabel">Create new Patient</Translate>
+          <Translate contentKey="ecomApp.patient.home.createLabel">Create Patient</Translate>
         </Link>
       )}
       {userHasRequiredRoleEhpad && (
@@ -30,7 +30,7 @@ const PatientHeading = ({ loading, handleSyncList }) => {
         <Link to="/ehpad/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
         <FontAwesomeIcon icon="plus" />
         &nbsp;
-        <Translate contentKey="ecomApp.ehpad.home.createLabel">Create new Ehpad</Translate>
+        <Translate contentKey="ecomApp.ehpad.home.createLabel">Create Ehpad</Translate>
       </Link>
       <Link to="/ehpad/supprimer" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
       <FontAwesomeIcon icon="plus" />

@@ -76,8 +76,8 @@ export const PatientThumbnail = (props) => {
     <>
     <div >
         {unverifiedAlertes.map(alerte => (
-          <div key={alerte.id} className="alerte-banner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , backgroundColor: '#f8d7da', padding: '1rem', marginBottom: '1rem'}}>
-            <p>Alerte non vérifiée : {alerte.action} </p>
+          <div key={alerte.id} className="alerte-banner">
+            <span className='title'>Alerte non vérifiée : </span> <span  style={{fontSize: '1.2em'}}>{alerte.action}</span> 
             <button  onClick={() => handleToggleVerif(alerte.id)} style={{cursor: 'pointer'}} >
       {alerte.verif ? '✅' : '⬜'}
     </button>

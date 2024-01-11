@@ -72,7 +72,7 @@ const handleToggleVerif = (alertId: string | number) => {
 return (
     <div>
       <div>
-      <select onChange={(e) => setFilter(e.target.value)}>
+      <select style={{marginRight: '5px'}} onChange={(e) => setFilter(e.target.value)}>
         <option value="all">Tout les Rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
@@ -93,20 +93,20 @@ return (
     <div className="rappel-icon">
     ⚠️
     </div>
-    <div className="rappel-content">
-      <div className="rappel-text1">
-        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
-      </div>
-      <div className="rappel-text2">
-        <p>Tâches: {rappel.action}</p>
-      </div>
-      <div className="rappel-text3">
-      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
-      </div>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Patient : </span> <span style={{fontSize: '1.2em'}}>{rappel.patient.nom} {rappel.patient.prenom}</span>
     </div>
-    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
-      {rappel.verif ? '✅' : '⬜'}
-    </button>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Tâches : </span> <span style={{fontSize: '1.2em'}}> {rappel.action}</span>
+    </div>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Date : </span> <span style={{fontSize: '1.2em'}}> {new Date(rappel.date).toLocaleDateString()}</span>
+    </div>
+    <div style={{ display: 'flex'}}>
+      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+        {rappel.verif ? '✅' : '⬜'}
+      </button>
+    </div>
   </div>
 ))}
     </div>

@@ -1,32 +1,33 @@
 .note {
-    border: 1px solid rgb(0, 0, 0);
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: gray;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  border: 1px solid rgb(0, 0, 0);
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: rgb(230, 224, 224);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
   
-  .note-title {
-    border: 1px solid rgb(0, 0, 0);
-    padding: 10px;
-    margin-bottom: 10px;
-  }
+.note-title {
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(235, 91, 104)!important;
+  padding: 10px;
+  margin-bottom: 10px;
+}
   
-  .note-buttons {
-    display: flex;
-    gap: 10px;
-  }
+.note-buttons {
+  display: flex;
+  gap: 10px;
+}
   
-  .note-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
+.note-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
   
-  .add-note-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
+.add-note-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
