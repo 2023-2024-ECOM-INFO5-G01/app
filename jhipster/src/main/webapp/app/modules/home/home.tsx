@@ -260,26 +260,22 @@ const getCardColorClass = (status) => {
   <StatusFilter handleStatusFilterChange={handleStatusFilterChange} />
 </div>
 
-
-          <div className="d-flex flex-wrap">
-          {filterPatientsByStatus()
-  .filter((patient) =>
+<div className="gridContainer">
+  {filterPatientsByStatus().filter((patient) =>
     selectedEhpadFilter === '' || patient.ehpad.nom === selectedEhpadFilter
-  )
-  .map((patient, i) => (
-    <div
-    key={`entity-${i}`}
-    className={`patient-card ${getCardColorClass(patient.statut)}`} // Apply the card color class
-  >
-    <PatientCard patient={patient} alertes={currentAlerte} />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-      </div>
+  ).map((patient, i) => (
+    <div key={`entity-${i}`} className={`patient-card ${getCardColorClass(patient.statut)}`}>
+      <PatientCard patient={patient} alertes={currentAlerte} />
     </div>
+  ))}
+</div>
+          
+</div>
+<div>
+</div>
+</div>
   );
 };
 
 export default Home;
+

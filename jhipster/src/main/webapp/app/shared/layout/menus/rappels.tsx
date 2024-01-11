@@ -68,9 +68,9 @@ export const Rappels = () => {
 
   const [currentRappel, setCurrentRappel] = useState(null);
   return (
-    <div>
+    <div style={{ minHeight: '1000px'}}>
       <div>
-      <select onChange={(e) => setFilter(e.target.value)}>
+      <select style={{marginRight: '5px'}} onChange={(e) => setFilter(e.target.value)}>
         <option value="all">Tout les rappels</option>
         <option value="verified">Rappels vérifiées</option>
         <option value="unverified">Rappels non vérifiées</option>
@@ -91,24 +91,24 @@ export const Rappels = () => {
     <div className="rappel-icon">
     ⚠️
     </div>
-    <div className="rappel-content">
-      <div className="rappel-text1">
-        <p>Patient: {rappel.patient.nom} {rappel.patient.prenom}</p>
-      </div>
-      <div className="rappel-text2">
-        <p>Tâches: {rappel.action}</p>
-      </div>
-      <div className="rappel-text3">
-      <p>Date: {new Date(rappel.date).toLocaleDateString()}</p>
-      </div>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Patient : </span> <span style={{fontSize: '1.2em'}}>{rappel.patient.nom} {rappel.patient.prenom}</span>
     </div>
-    {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
-      <FontAwesomeIcon icon={faFileAlt} />
-      Voir patient
-    </Link>}
-    <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
-      {rappel.verif ? '✅' : '⬜'}
-    </button>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Tâches : </span> <span style={{fontSize: '1.2em'}}> {rappel.action}</span>
+    </div>
+    <div style={{ display: 'flex'}}>
+      <span className="category">Date : </span> <span style={{fontSize: '1.2em'}}> {new Date(rappel.date).toLocaleDateString()}</span>
+    </div>
+    <div style={{ display: 'flex'}}>
+      {rappel.patient && <Link to={`/patients/${rappel.patient.id}`} className="rappel-button">
+        <FontAwesomeIcon icon={faFileAlt} />
+        Voir patient
+      </Link>}
+      <button className="rappel-check" onClick={() => handleToggleVerif(rappel.id)}>
+        {rappel.verif ? '✅' : '⬜'}
+      </button>
+    </div>
   </div>
 ))}
     </div>

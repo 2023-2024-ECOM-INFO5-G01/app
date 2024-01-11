@@ -60,7 +60,7 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
   return (
     <div>
       <div>
-        <select onChange={(e) => setFilter(e.target.value)}>
+        <select style={{marginRight: '5px'}} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">Toutes les alertes</option>
           <option value="verified">Alertes vérifiées</option>
           <option value="unverified">Alertes non vérifiées</option>
@@ -78,20 +78,20 @@ export const AlertePatient = ({idprops}: { idprops: string }) => {
       {filteredAlertes.map(alerte => (
         <div key={alerte.id} className="alerte">
           <div className="alerte-icon">⚠️</div>
-          <div className="alerte-content">
-            <div className="alerte-text1">
-              <p>Patient: {alerte.patient.nom} {alerte.patient.prenom}</p>
-            </div>
-            <div className="alerte-text2">
-              <p>Action: {alerte.action}</p>
-            </div>
-            <div className="alerte-text3">
-            <p>Date: {new Date(alerte.date).toLocaleDateString()}</p>
-            </div>
+          <div style={{ display: 'flex'}}>
+              <span className="category">Patient : </span> <span style={{fontSize: '1.2em'}}>{alerte.patient.nom} {alerte.patient.prenom}</span>
           </div>
-          <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
-            {alerte.verif ? '✅' : '⬜'}
-          </button>
+          <div style={{ display: 'flex'}}>
+            <span className="category">Action : </span> <span style={{fontSize: '1.2em'}}>{alerte.action}</span>
+          </div>
+          <div style={{ display: 'flex'}}>
+            <span className="category">Date : </span> <span style={{fontSize: '1.2em'}}>{new Date(alerte.date).toLocaleDateString()}</span>
+          </div>
+          <div style={{ display: 'flex'}}>
+            <button className="alerte-check" onClick={() => handleToggleVerif(alerte.id)}>
+              {alerte.verif ? '✅' : '⬜'}
+            </button>
+          </div>
         </div>
       ))}
     </div>

@@ -4,7 +4,7 @@
       "home": {
         "title": "Patients",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Patient",
+        "createLabel": "Créer un Patient",
         "createOrEditLabel": "Créer ou éditer un Patient",
         "notFound": "Aucun Patient trouvé"
       },
