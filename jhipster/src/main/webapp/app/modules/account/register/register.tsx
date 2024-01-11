@@ -127,7 +127,7 @@ export const RegisterPage = () => {
                 onChange={() => setAcceptPolicy(!acceptPolicy)}
               />
               <label htmlFor="acceptPolicy">
-                J'accepte le <Link to="/consent" target="_blank">Formulaire de consentement</Link>.
+                J'accepte le <Link to="account/consent" target="_blank">Formulaire de consentement</Link>.
               </label>
             </div>
             <div>
@@ -139,7 +139,7 @@ export const RegisterPage = () => {
                 onChange={() => setAcceptConsent(!acceptConsent)}
               />
               <label htmlFor="acceptPolicy">
-                J'accepte la <Link to="/privacy-policy" target="_blank">Politique de Confidentialité</Link>.
+                J'accepte la <Link to="account/confidentiality" target="_blank">Politique de Confidentialité</Link>.
               </label>
             </div>
             <Button id="register-submit" color="primary" type="submit" data-cy="submit">
