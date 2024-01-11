@@ -4,7 +4,7 @@
       "home": {
         "title": "Ehpads",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Ehpad",
+        "createLabel": "Créer un Ehpad",
         "createOrEditLabel": "Créer ou éditer un Ehpad",
         "notFound": "Aucun Ehpad trouvé"
       },

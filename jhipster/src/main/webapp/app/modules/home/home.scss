@@ -19,14 +19,27 @@ Main page styles
   animation: blink 1s linear infinite;
 }
 
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 500px));
+  row-gap: 5px;
+  column-gap: 15px;
+}
 
-.patient-card {
+@media screen and (max-width: 600px) {
+  .gridContainer {
+    grid-template-columns: 500px; /* Un élément par ligne pour les écrans de 600px ou moins */
+  }
+}
+
+.patient-card .patient-info {
   display: flex;
-  justify-content: center;
-  border: 2px solid #cccccc; /* Ajoutez une bordure pour séparer les patients */
-  padding: 8px; /* Ajoutez un espace interne de 16px autour de chaque patient */
-  margin: 5px; /* Ajoutez une marge de 8px autour de chaque patient */
-  //height: 200px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #cccccc;
+  padding: 2px;
+  margin: 5px;
 }
 
 .card-red {
@@ -47,6 +60,9 @@ Main page styles
 .view_data_button {
   background-color:rgb(39, 37, 37);
   border: 1px solid white;
+  width: 0px;
+  height: 0px;
+  margin-top: 4px;
 }
 
 .custom-primary-button {
@@ -156,4 +172,16 @@ Main page styles
 
 .input_statut {
   margin-left: 5px;
+}
+
+.category {
+  font-weight: bold;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 1.2em;
+}
+
+.Alerte_div {
+  display: flex;
+  justify-content: center;
 }
