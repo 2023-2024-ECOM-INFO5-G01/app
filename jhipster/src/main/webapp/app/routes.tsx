@@ -61,7 +61,9 @@ const AppRoutes = () => {
             <Patient />
           </PrivateRoute>
         } />
-   
+   <Route path="consent" element={<Consent />} />
+          <Route path="confidentiality" element={<Confidentiality />} />
+          <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
         <Route path="account">
@@ -73,9 +75,6 @@ const AppRoutes = () => {
               </PrivateRoute>
             }
           />
-          <Route path="consent" element={<Consent />} />
-          <Route path="confidentiality" element={<Confidentiality />} />
-          <Route path="register" element={<Register />} />
           <Route path="activate" element={<Activate />} />
           <Route path="reset">
             <Route path="request" element={<PasswordResetInit />} />

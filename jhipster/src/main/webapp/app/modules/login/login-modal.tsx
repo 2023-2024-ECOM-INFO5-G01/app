@@ -90,7 +90,7 @@ const LoginModal = (props: ILoginModalProps) => {
             <span>
               <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
             </span>{' '}
-            <Link to="/account/register">
+            <Link to="/register">
               <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
             </Link>
           </Alert>
