@@ -73,8 +73,8 @@ const AppRoutes = () => {
               </PrivateRoute>
             }
           />
-          <Route path="account/consent" element={<Consent />} />
-          <Route path="account/confidentiality" element={<Confidentiality />} />
+          <Route path="consent" element={<Consent />} />
+          <Route path="confidentiality" element={<Confidentiality />} />
           <Route path="register" element={<Register />} />
           <Route path="activate" element={<Activate />} />
           <Route path="reset">
