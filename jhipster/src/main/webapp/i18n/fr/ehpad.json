@@ -5,7 +5,8 @@
         "title": "Ehpads",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un Ehpad",
-        "createOrEditLabel": "Créer ou éditer un Ehpad",
+        "createOrEditLabel": "Créer un Ehpad",
+        "deletehpad": "Supprimer un Ehpad",
         "notFound": "Aucun Ehpad trouvé"
       },
       "created": "Un nouveau Ehpad a été créé avec l'identifiant {{ param }}",

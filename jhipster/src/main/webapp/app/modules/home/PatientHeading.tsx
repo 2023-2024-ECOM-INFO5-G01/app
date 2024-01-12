@@ -35,7 +35,7 @@ const PatientHeading = ({ loading, handleSyncList }) => {
       <Link to="/ehpad/supprimer" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
       <FontAwesomeIcon icon="plus" />
       &nbsp;
-      <span>Delete Ehpad</span>
+      <span>Surpprimer un Ehpad</span>
     </Link>
     </>
       )}

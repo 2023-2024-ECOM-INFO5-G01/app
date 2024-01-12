@@ -108,7 +108,7 @@ export const PatientUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ecomApp.patient.home.createOrEditLabel" data-cy="PatientCreateUpdateHeading">
-            <Translate contentKey="ecomApp.patient.home.createOrEditLabel">Create or edit a Patient</Translate>
+            <Translate contentKey="ecomApp.patient.home.createOrEditLabel">Créer un Patient</Translate>
           </h2>
         </Col>
       </Row>
@@ -224,7 +224,7 @@ export const PatientUpdate = () => {
       ))
     : null}
 </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">

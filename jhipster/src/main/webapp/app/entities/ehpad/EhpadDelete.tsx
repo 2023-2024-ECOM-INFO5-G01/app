@@ -66,7 +66,7 @@ export const EhpadDelete = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ecomApp.ehpad.home.createOrEditLabel" data-cy="EhpadCreateUpdateHeading">
-            <Translate contentKey="ecomApp.ehpad.home.createOrEditLabel">Delete</Translate>
+            <Translate contentKey="ecomApp.ehpad.home.deletehpad">Supprimer un Ehpad</Translate>
           </h2>
         </Col>
       </Row>
@@ -94,7 +94,15 @@ export const EhpadDelete = () => {
                       </option>
                     ))
                   : null}
-              </ValidatedField>              &nbsp;
+              </ValidatedField>
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/" replace color="info">
+                <FontAwesomeIcon icon="arrow-left" />
+                &nbsp;
+                <span className="d-none d-md-inline">
+                  <Translate contentKey="entity.action.back">Back</Translate>
+                </span>
+              </Button>
+                            &nbsp;
               <Button color="danger" id="delete-entity" data-cy="entityDeleteButton" type="submit" disabled={updating}>
   <FontAwesomeIcon icon="trash" />
   &nbsp;
