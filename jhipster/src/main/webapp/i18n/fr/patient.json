@@ -5,7 +5,7 @@
         "title": "Patients",
         "refreshListLabel": "Actualiser la liste",
         "createLabel": "Créer un Patient",
-        "createOrEditLabel": "Créer ou éditer un Patient",
+        "createOrEditLabel": "Créer un Patient",
         "notFound": "Aucun Patient trouvé"
       },
       "created": "Un nouveau Patient a été créé avec l'identifiant {{ param }}",

@@ -28,6 +28,9 @@ public interface RappelRepository extends RappelRepositoryWithBagRelationships, 
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
+    
+    void deleteByPatient_Id(Long id);
+    
     List<Rappel> findByUsers_LoginOrderByDateDesc(String login);
 
     List<Rappel> findByPatient_IdAndUsers_LoginOrderByDateDesc(Long id, String login);

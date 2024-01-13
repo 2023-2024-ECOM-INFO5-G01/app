@@ -88,6 +88,14 @@ export const updateEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
+export const deletePatientsByEhpad = createAsyncThunk(
+  'patient/delete_by_ehpad',
+  async (ehpadId: string | number) => {
+    const requestUrl = `${apiUrl}/ehpad/${ehpadId}`;
+    return axios.delete(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 
 export const partialUpdateEntity = createAsyncThunk(
   'patient/partial_update_entity',
@@ -98,7 +106,14 @@ export const partialUpdateEntity = createAsyncThunk(
   },
   { serializeError: serializeAxiosError },
 );
-
+export const DeleteAllPatient = createAsyncThunk(
+  'patients/delete_All_patient',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/all/${id}`;
+    return axios.delete<IPatient>(requestUrl);
+  },
+  { serializeError: serializeAxiosError },
+);
 export const deleteEntity = createAsyncThunk(
   'patient/delete_entity',
   async (id: string | number, thunkAPI) => {

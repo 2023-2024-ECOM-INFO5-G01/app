@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface IMCRepository extends JpaRepository<IMC, Long> {
     List <IMC> findByPatientIdOrderByDateAsc(Long patientId);
+    void deleteByPatient_Id(Long id);
 
     Optional<IMC> findFirstByPatientIdOrderByDateDesc(Long patientId);
 }

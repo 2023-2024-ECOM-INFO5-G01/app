@@ -51,7 +51,8 @@ export const AddDataPopup = () => {
           patient: { id: patient.id },
           albu: value
         };
-        dispatch(createAlbumine(albu));
+        await dispatch(createAlbumine(albu));
+        dispatch(denutrition_cases(patient.id));
         break;
       }
       case 'epa': {

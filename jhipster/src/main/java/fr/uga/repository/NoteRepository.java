@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface NoteRepository extends JpaRepository<Note, Long> {
     @Query("select note from Note note where note.user.login = ?#{principal.username}")
     List<Note> findByUserIsCurrentUser();
+    void deleteByPatient_Id(Long id);
 
     List<Note> findByPatient_IdAndUser_LoginOrderByDateDesc(Long patientId, String login);
 }
