@@ -22,6 +22,8 @@ import Notes from './note';
 import AlertePatient from './alertespatient';
 import PatientUpdate from './entities/patient/patient-update';
 import PatientEdit from './PatientView/patient_edit';
+import Confidentiality from './modules/account/register/Confidentiality';
+import Consent from './modules/account/register/Consent';
 
 const loading = <div>loading ...</div>;
 
@@ -59,7 +61,9 @@ const AppRoutes = () => {
             <Patient />
           </PrivateRoute>
         } />
-   
+   <Route path="consent" element={<Consent />} />
+          <Route path="confidentiality" element={<Confidentiality />} />
+          <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} />
         <Route path="logout" element={<Logout />} />
         <Route path="account">
@@ -71,7 +75,6 @@ const AppRoutes = () => {
               </PrivateRoute>
             }
           />
-          <Route path="register" element={<Register />} />
           <Route path="activate" element={<Activate />} />
           <Route path="reset">
             <Route path="request" element={<PasswordResetInit />} />
