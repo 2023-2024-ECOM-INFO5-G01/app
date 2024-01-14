@@ -128,6 +128,7 @@ export const RegisterPage = () => {
             />
             <div>
               <input
+                style={{marginRight: '5px'}}
                 type="checkbox"
                 id="acceptPolicy"
                 name="acceptPolicy"
@@ -140,6 +141,7 @@ export const RegisterPage = () => {
             </div>
             <div>
               <input
+                style={{marginRight: '5px'}}
                 type="checkbox"
                 id="acceptConsent"
                 name="acceptConsent"

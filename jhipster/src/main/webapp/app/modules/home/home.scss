@@ -45,16 +45,19 @@ Main page styles
 .card-red {
   background-color: rgb(240, 98, 98);
   color: white;
+  margin-right: 5px;
 }
 
 .card-orange {
   background-color: rgb(234, 153, 61);
   color: white;
+  margin-right: 5px;
 }
 
 .card-blue {
   background-color: rgb(103, 103, 237);
   color: white;
+  margin-right: 5px;
 }
 
 .view_data_button {
@@ -90,7 +93,7 @@ Main page styles
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Ajoutez un espacement entre les éléments du menu */
+  gap: 6px;
 }
 
 .status-filter-container{
