@@ -108,7 +108,7 @@ export const PatientUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ecomApp.patient.home.createOrEditLabel" data-cy="PatientCreateUpdateHeading">
-            <Translate contentKey="ecomApp.patient.home.createOrEditLabel">Create or edit a Patient</Translate>
+            <Translate contentKey="ecomApp.patient.home.createOrEditLabel">Créer un Patient</Translate>
           </h2>
         </Col>
       </Row>
@@ -146,14 +146,14 @@ export const PatientUpdate = () => {
                   <option value="surveillance prioritaire">Surveillance prioritaire</option>
               </ValidatedField>
               <ValidatedField
-                label={translate('ecomApp.patient.dateNaissance')}
-                id="patient-dateNaissance"
-                name="dateNaissance"
-                data-cy="dateNaissance"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-                validate={{required: 'Ce champs ne peut pas être vide',}}
-              />
+  label={translate('ecomApp.patient.dateNaissance')}
+  id="patient-dateNaissance"
+  name="dateNaissance"
+  data-cy="dateNaissance"
+  type="date"
+  placeholder="YYYY-MM-DD"
+  validate={{required: 'Ce champs ne peut pas être vide',}}
+/>
               <ValidatedField label={translate('ecomApp.patient.taille')} id="patient-taille" name="taille" data-cy="taille" type="text"
               validate={{
                 required: 'Ce champs ne peut pas être vide',
@@ -163,16 +163,16 @@ export const PatientUpdate = () => {
 
               />
               <ValidatedField
-                label={translate('ecomApp.patient.datearrive')}
-                id="patient-datearrive"
-                name="datearrive"
-                data-cy="datearrive"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-                validate={{
-                  required: 'Ce champs ne peut pas être vide',
-                }}
-              />
+  label={translate('ecomApp.patient.datearrive')}
+  id="patient-datearrive"
+  name="datearrive"
+  data-cy="datearrive"
+  type="date"
+  placeholder="YYYY-MM-DD"
+  validate={{
+    required: 'Ce champs ne peut pas être vide',
+  }}
+/>
               <ValidatedField
               id="patient-ehpad"
               name="ehpad"
@@ -224,7 +224,7 @@ export const PatientUpdate = () => {
       ))
     : null}
 </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/patient" replace color="info">
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">

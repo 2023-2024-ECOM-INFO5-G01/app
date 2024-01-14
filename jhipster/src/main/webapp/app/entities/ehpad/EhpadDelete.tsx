@@ -11,15 +11,17 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IEhpad } from 'app/shared/model/ehpad.model';
-import { getEntity, updateEntity, createEntity, reset } from './ehpad.reducer';
-
-export const EhpadUpdate = () => {
+import { getEntity, updateEntity, createEntity, reset,deleteEntity } from './ehpad.reducer';
+import { getEntities as getEhpads } from 'app/entities/ehpad/ehpad.reducer';
+import {deletePatientsByEhpad} from 'app/entities/patient/patient.reducer';
+export const EhpadDelete = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
+  const ehpads = useAppSelector(state => state.ehpad.entities);
 
   const users = useAppSelector(state => state.userManagement.users);
   const ehpadEntity = useAppSelector(state => state.ehpad.entity);
@@ -32,12 +34,7 @@ export const EhpadUpdate = () => {
   };
 
   useEffect(() => {
-    if (isNew) {
-      dispatch(reset());
-    } else {
-      dispatch(getEntity(id));
-    }
-
+    dispatch(getEhpads({}));
     dispatch(getUsers({}));
   }, []);
 
@@ -46,20 +43,15 @@ export const EhpadUpdate = () => {
       handleClose();
     }
   }, [updateSuccess]);
-  const [selectedUsers, setSelectedUsers] = useState<IUser[]>([]);
 
   const saveEntity = values => {
     const entity = {
       ...ehpadEntity,
       ...values,
-      users: mapIdList(values.users),
     };
-
-    if (isNew) {
-      dispatch(createEntity(entity));
-    } else {
-      dispatch(updateEntity(entity));
-    }
+    dispatch(deletePatientsByEhpad(entity.ehpad)).then(() => {
+        dispatch(deleteEntity(entity.ehpad));
+        });
   };
 
   const defaultValues = () =>
@@ -67,7 +59,6 @@ export const EhpadUpdate = () => {
       ? {}
       : {
           ...ehpadEntity,
-          users: ehpadEntity?.users?.map(e => e.id.toString()),
         };
 
   return (
@@ -75,7 +66,7 @@ export const EhpadUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="ecomApp.ehpad.home.createOrEditLabel" data-cy="EhpadCreateUpdateHeading">
-            <Translate contentKey="ecomApp.ehpad.home.createOrEditLabel">Create or edit a Ehpad</Translate>
+            <Translate contentKey="ecomApp.ehpad.home.deletehpad">Supprimer un Ehpad</Translate>
           </h2>
         </Col>
       </Row>
@@ -85,49 +76,25 @@ export const EhpadUpdate = () => {
             <p>Loading...</p>
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="ehpad-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
-              ) : null}
-              <ValidatedField label={translate('ecomApp.ehpad.nom')} id="ehpad-nom" name="nom" data-cy="nom" type="text" />
-              <ValidatedField
-  label= "Users attribué"
-  id="patient-user"
-  data-cy="user"
-  type="select"
-  multiple
-  name="users"
-  onChange={event => {
-    const target = event.target as unknown as HTMLSelectElement;
-    const selectedOptions = Array.from(target.options)
-      .filter(option => option.selected)
-      .map(option => option.value);
-
-    const newSelectedUsers = selectedOptions.map(userId =>
-      users.find(user => user.id.toString() === userId)
-    ).filter(Boolean);
-
-    setSelectedUsers(newSelectedUsers);
-  }}
-  validate={{
-    required: 'Veuillez choisir un médecin et/ou des soignants',
-  }}
->
-  <option value="" key="0" />
-  {users
-    ? users.map((user,i) => (
-        <option value={user.id} key={user.id}>
-          {user.login}
-        </option>
-      ))
-    : null}
-</ValidatedField>
+            <ValidatedField
+              id="patient-ehpad"
+              name="ehpad"
+              data-cy="ehpad"
+              label={translate('ecomApp.patient.ehpad')}
+              type="select"
+              validate={{
+                required: 'Veuillez choisir une option',
+              }}
+              >
+                <option value="" key="0" />
+                {ehpads
+                  ? ehpads.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.nom}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -135,12 +102,12 @@ export const EhpadUpdate = () => {
                   <Translate contentKey="entity.action.back">Back</Translate>
                 </span>
               </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
-              </Button>
+                            &nbsp;
+              <Button color="danger" id="delete-entity" data-cy="entityDeleteButton" type="submit" disabled={updating}>
+  <FontAwesomeIcon icon="trash" />
+  &nbsp;
+  <Translate contentKey="entity.action.delete">Delete</Translate>
+</Button>
             </ValidatedForm>
           )}
         </Col>
@@ -149,4 +116,4 @@ export const EhpadUpdate = () => {
   );
 };
 
-export default EhpadUpdate;
+export default EhpadDelete;

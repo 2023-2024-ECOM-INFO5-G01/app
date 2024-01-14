@@ -196,6 +196,39 @@
   height: 25px;
 }
 
+.alerte-banner {
+  display: flex;
+  justify-content:  space-between;
+  align-items: center;
+  background-color: #f8d7da;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: bold;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 1.2em;
+}
+
+.buttons_graph {
+  display: flex;
+  justify-content: center;
+}
+
+.bouton_modif_courbe {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: #5ecfcf;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+
 nav {
   background-color: #333;
   padding: 10px;

@@ -14,6 +14,7 @@ import java.time.Instant;
 public interface PoidsRepository extends JpaRepository<Poids, Long> {
     List <Poids> findByPatientIdOrderByDateAsc(Long patientId);
 
+    void deleteByPatient_Id(Long id);
 
     Optional <Poids> findFirstByPatientIdOrderByDateDesc(Long patientId);
     List <Poids> findByPatientIdAndDateBeforeOrderByDateDesc(Long patientId, Instant date);

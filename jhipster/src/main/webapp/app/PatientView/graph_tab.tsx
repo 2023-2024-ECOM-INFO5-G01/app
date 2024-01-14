@@ -131,18 +131,21 @@ export const GraphTab = (props) => {
   };
 
   return <div>
-    <Row>
-      <Col md="6">
-        <Line options={createOption('poids')} data={createData('Poids', poidsDates, poidsValues)} />
-      </Col>
-      <Col md="6">
-        <Line options={createOption('epa')} data={createData('EPA', epaDates, epaValues)} />
-      </Col>
-    </Row>
-    <button onClick={() => handleTimePeriod(14)}>2 semaines</button>
-    <button onClick={() => handleTimePeriod(30)}>1 mois</button>
-    <button onClick={() => handleTimePeriod(365)}>1 an</button>
-    <button onClick={() => handleTimePeriod(-1)}>Tout</button>
-
+    <div>
+      <Row>
+        <Col md="6">
+          <Line options={createOption('poids')} data={createData('Poids', poidsDates, poidsValues)} />
+        </Col>
+        <Col md="6">
+          <Line options={createOption('epa')} data={createData('EPA', epaDates, epaValues)} />
+        </Col>
+      </Row>
+    </div>
+    <div className='buttons_graph'>
+      <button className='bouton_modif_courbe' onClick={() => handleTimePeriod(14)}>2 semaines</button>
+      <button className='bouton_modif_courbe' onClick={() => handleTimePeriod(30)}>1 mois</button>
+      <button className='bouton_modif_courbe' onClick={() => handleTimePeriod(365)}>1 an</button>
+      <button className='bouton_modif_courbe' onClick={() => handleTimePeriod(-1)}>Tout</button>
+    </div>
   </div>;
 };

@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface AlbumineRepository extends JpaRepository<Albumine, Long> {
     Optional <Albumine> findFirstByPatientIdOrderByDateDesc(Long patientId);
+        void deleteByPatient_Id(Long id);
+
 }

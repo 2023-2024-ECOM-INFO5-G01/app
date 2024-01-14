@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { Col } from 'reactstrap';
+import { Button, Col } from 'reactstrap';
 import { PatientInfoAdmin } from 'app/PatientView/patient_info_admin';
 import { PatientInfoPerso } from 'app/PatientView/patient_info_perso';
 import CreationRappel from '../shared/layout/menus/creationRappel';
@@ -8,7 +8,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import PatientEdit from './patient_edit';
 import {AddDataPopup} from "app/PatientView/add_data_popup";
 import {getAlertesByPatientAndUser, toggleVerif} from "app/entities/alerte/alerte.reducer";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Translate } from 'react-jhipster';
+import { DeleteAllPatient } from 'app/entities/patient/patient.reducer';
 export const PatientThumbnail = (props) => {
   const account = useAppSelector(state => state.authentication.account);
   const userHasRequiredRole = account.authorities.some(role => ['ROLE_MEDECIN', 'ROLE_ADMIN'].includes(role));
@@ -74,8 +76,8 @@ export const PatientThumbnail = (props) => {
     <>
     <div >
         {unverifiedAlertes.map(alerte => (
-          <div key={alerte.id} className="alerte-banner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , backgroundColor: '#f8d7da', padding: '1rem', marginBottom: '1rem'}}>
-            <p>Alerte non vérifiée : {alerte.action} </p>
+          <div key={alerte.id} className="alerte-banner">
+            <span className='title'>Alerte non vérifiée : </span> <span  style={{fontSize: '1.2em'}}>{alerte.action}</span> 
             <button  onClick={() => handleToggleVerif(alerte.id)} style={{cursor: 'pointer'}} >
       {alerte.verif ? '✅' : '⬜'}
     </button>
@@ -96,6 +98,21 @@ export const PatientThumbnail = (props) => {
       <div className="info_buttons">
         {userHasRequiredRole && (
           <>
+          <Button 
+            onClick={() => {
+              dispatch(DeleteAllPatient(props.idprops));
+              navigate('/');
+              window.location.reload();
+            }}
+            color="danger" 
+            size="sm" 
+            data-cy="entityDeleteButton"
+            >
+            <FontAwesomeIcon icon="trash" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </span>
+            </Button>
             <button className="bouton_modif_patient" onClick={toggle2}>
               <img src="../../content/images/icons8-plus-50.png" alt="Icon svg plus" className="img_patient_plus"/>
               Données administratives

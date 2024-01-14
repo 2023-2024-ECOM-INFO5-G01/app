@@ -6,13 +6,10 @@ import { createEntity as createPoids } from 'app/entities/poids/poids.reducer';
 import { createEntity as createEPA } from 'app/entities/epa/epa.reducer';
 import { createEntity as createAlbumine } from 'app/entities/albumine/albumine.reducer';
 import { createEntity as createIMC } from 'app/entities/imc/imc.reducer';
-import { denutrition_cases,alerte_epas } from 'app/entities/patient/patient.reducer';
+import { denutrition_cases, alerte_epas, updateEntity, updateStatus } from 'app/entities/patient/patient.reducer';
 import { IEPA } from 'app/shared/model/epa.model';
 import { IAlbumine } from 'app/shared/model/albumine.model';
 import { IIMC } from 'app/shared/model/imc.model';
-import {IAlerte} from "app/shared/model/alerte.model";
-import {createEntity} from "app/entities/alerte/alerte.reducer";
-import {useForm} from "react-hook-form";
 export const AddDataPopup = () => {
 
   const dispatch = useAppDispatch();
@@ -25,10 +22,6 @@ export const AddDataPopup = () => {
     (async () => {
     const value = state[e];
     switch (e) {
-      case 'height': {
-        // ajouter taille pour ce patient en bdd
-        break;
-      }
       case 'weight': {
         const poids: IPoids = {
           date: new Date().toISOString(),
@@ -51,7 +44,11 @@ export const AddDataPopup = () => {
           patient: { id: patient.id },
           albu: value
         };
-        dispatch(createAlbumine(albu));
+        const createdAlbumin = await dispatch(createAlbumine(albu));
+        console.log(createdAlbumin.payload);
+        await dispatch(updateEntity({...patient, albumine : { id : (createdAlbumin.payload as any).data.id}}))
+
+        dispatch(denutrition_cases(patient.id));
         break;
       }
       case 'epa': {
